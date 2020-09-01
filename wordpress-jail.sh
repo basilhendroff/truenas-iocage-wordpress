@@ -1,6 +1,6 @@
 #!/bin/sh
-# Build an iocage jail under FreeNAS 11.3-12.0 using the current release of Nextcloud 19
-# https://github.com/danb35/freenas-iocage-nextcloud
+# Build an iocage jail under FreeNAS 11.3-12.0 using the current release of WordPress 5.5
+# https://github.com/basilhendroff/freenas-iocage-wordpress
 
 # Check for root privileges
 if ! [ $(id -u) = 0 ]; then
@@ -21,10 +21,10 @@ DEFAULT_GW_IP=""
 INTERFACE="vnet0"
 VNET="on"
 POOL_PATH=""
-JAIL_NAME="nextcloud"
+JAIL_NAME="wordpress"
 TIME_ZONE=""
 HOST_NAME=""
-DATABASE="mariadb"
+DATABASE="mysql"
 DB_PATH=""
 FILES_PATH=""
 PORTS_PATH=""
@@ -36,10 +36,9 @@ DNS_CERT=0
 NO_CERT=0
 DL_FLAGS=""
 DNS_SETTING=""
-CONFIG_NAME="nextcloud-config"
-#RELEASE="12.0-RELEASE"
+CONFIG_NAME="wordpress-config"
 
-# Check for nextcloud-config and set configuration
+# Check for wordpress-config and set configuration
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "${SCRIPT}")
 if ! [ -e "${SCRIPTPATH}"/"${CONFIG_NAME}" ]; then
@@ -54,8 +53,8 @@ DB_ROOT_PASSWORD=$(openssl rand -base64 16)
 DB_PASSWORD=$(openssl rand -base64 16)
 if [ "${DATABASE}" = "mariadb" ]; then
   DB_NAME="MariaDB"
-elif [ "${DATABASE}" = "pgsql" ]; then
-  DB_NAME="PostgreSQL"
+elif [ "${DATABASE}" = "mysql" ]; then
+  DB_NAME="MySQL"
 fi
 
 RELEASE=$(freebsd-version | sed "s/STABLE/RELEASE/g" | sed "s/-p[0-9]*//")
