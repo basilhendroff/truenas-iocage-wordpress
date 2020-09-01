@@ -127,7 +127,7 @@ fi
 
 #####
 #
-echo -e "${GREEN}Jail Creation...${NOCOLOUR}"
+echo -e "${GREEN}Jail Creation...`date`${NOCOLOUR}"
 #
 #####
 
@@ -155,7 +155,7 @@ rm /tmp/pkg.json
 
 #####
 #
-echo -e "${GREEN}Directory Creation and Mounting...${NOCOLOUR}"
+echo -e "${GREEN}Directory Creation and Mounting...`date`${NOCOLOUR}"
 #
 #####
 
