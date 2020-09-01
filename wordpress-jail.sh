@@ -1,6 +1,6 @@
 #!/bin/sh
 # Build an iocage jail under FreeNAS 11.3-12.0 using the current release of WordPress 5.5
-# https://github.com/basilhendroff/freenas-iocage-wordpress
+# git clone https://github.com/basilhendroff/freenas-iocage-wordpress
 
 # Check for root privileges
 if ! [ $(id -u) = 0 ]; then
@@ -246,8 +246,11 @@ rm /tmp/pkg.json
 #  iocage exec "${JAIL_NAME}" pkg install -qy postgresql10-server php74-pgsql php74-pdo_pgsql
 #fi
 
-# Ports not currently used, Commented out for future use
-#iocage exec "${JAIL_NAME}" "if [ -z /usr/ports ]; then portsnap fetch extract; else portsnap auto; fi"
+#####
+#
+# Install Caddy
+#
+#####
 
 # Build xcaddy, use it to build Caddy
 if ! iocage exec "${JAIL_NAME}" "go get -u github.com/caddyserver/xcaddy/cmd/xcaddy"
