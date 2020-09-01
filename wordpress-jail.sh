@@ -162,20 +162,29 @@ fi
 #####
 
 # List packages to be auto-installed after jail creation
-#  "nano","sudo","redis","php74-ctype","gnupg","bash","go","git",
-#  "php74-dom","php74-gd","php74-iconv","php74-json","php74-mbstring",
-#  "php74-posix","php74-simplexml","php74-xmlreader","php74-xmlwriter",
-#  "php74-zip","php74-zlib","php74-xml","php74","php74-pecl-redis",
-#  "php74-session","php74-xsl","php74-filter","php74-pecl-APCu",
-#  "php74-curl","php74-fileinfo","php74-bz2","php74-intl","php74-openssl",
-#  "php74-ldap","php74-ftp","php74-imap","php74-exif","php74-gmp",
-#  "php74-pecl-memcache","php74-pecl-imagick","php74-pecl-smbclient",
+#  "sudo","redis","php74-ctype","gnupg",
+#  
+#  "php74-posix","php74-xmlwriter",
+#  "php74-pecl-redis",
+#  "php74-session","php74-xsl","php74-pecl-APCu",
+#  "php74-bz2","php74-intl",
+#  "php74-ldap","php74-imap","php74-gmp",
+#  "php74-pecl-memcache","php74-pecl-smbclient",
 #  "php74-opcache","php74-pcntl","php74-bcmath","php74-pecl-APCu","perl5",
 #  "p5-Locale-gettext","help2man","texinfo","m4","autoconf"
+## Missing: hash,pcre,
+## New: mysqli
 cat <<__EOF__ >/tmp/pkg.json
 	{
   "pkgs":[
-  "nano","bash","go","git"
+  "nano","bash","go","git",
+  "php74","php74-curl","php74-dom","php74-exif","php74-fileinfo",
+  "php74-json","php74-mbstring","php74-mysqli","php74-openssl",
+  "php74-xml","php74-zip","php74-filter","php74-gd","php74-iconv",
+  "php74-simplexml","php74-xmlreader","php74-zlib","php74-ftp",
+  "php74-sockets","php74-pecl-libsodium",
+  "php74-pecl-imagick","php74-pecl-mcrypt","php74-pecl-ssh2",
+  "imagemagick7","ghostscript9-base"
   ]
 }
 __EOF__
