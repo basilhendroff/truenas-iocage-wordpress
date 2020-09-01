@@ -174,17 +174,18 @@ fi
 #  "p5-Locale-gettext","help2man","texinfo","m4","autoconf"
 ## Missing: hash,pcre,
 ## New: mysqli
+#  "nano","bash","go","git",
+#  "php74","php74-curl","php74-dom","php74-exif","php74-fileinfo",
+#  "php74-json","php74-mbstring","php74-mysqli","php74-openssl",
+#  "php74-xml","php74-zip","php74-filter","php74-gd","php74-iconv",
+#  "php74-simplexml","php74-xmlreader","php74-zlib","php74-ftp",
+#  "php74-sockets","php74-pecl-libsodium",
+#  "php74-pecl-imagick","php74-pecl-mcrypt","php74-pecl-ssh2",
+#  "imagemagick7","ghostscript9-base"
 cat <<__EOF__ >/tmp/pkg.json
 	{
   "pkgs":[
-  "nano","bash","go","git",
-  "php74","php74-curl","php74-dom","php74-exif","php74-fileinfo",
-  "php74-json","php74-mbstring","php74-mysqli","php74-openssl",
-  "php74-xml","php74-zip","php74-filter","php74-gd","php74-iconv",
-  "php74-simplexml","php74-xmlreader","php74-zlib","php74-ftp",
-  "php74-sockets","php74-pecl-libsodium",
-  "php74-pecl-imagick","php74-pecl-mcrypt","php74-pecl-ssh2",
-  "imagemagick7","ghostscript9-base"
+  "php74"
   ]
 }
 __EOF__
