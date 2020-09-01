@@ -262,30 +262,43 @@ rm /tmp/pkg.json
 #
 #####
 
+FILE="caddy_2.1.1_freebsd_amd64.tar.gz"
+if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://github.com/caddyserver/caddy/releases/download/v2.1.1/"${FILE}"
+then
+	echo "Failed to download Caddy"
+	exit 1
+fi
+if ! iocage exec "${JAIL_NAME}" tar xzf /tmp/"${FILE}" -C /usr/local/bin/
+then
+	echo "Failed to extract Caddy"
+	exit 1
+fi
+iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
+
 # Build xcaddy, use it to build Caddy
-if ! iocage exec "${JAIL_NAME}" "go get -u github.com/caddyserver/xcaddy/cmd/xcaddy"
-then
-  echo "Failed to get xcaddy, terminating."
-  exit 1
-fi
-if ! iocage exec "${JAIL_NAME}" go build -o /usr/local/bin/xcaddy github.com/caddyserver/xcaddy/cmd/xcaddy
-then
-  echo "Failed to build xcaddy, terminating."
-  exit 1
-fi
-if [ ${DNS_CERT} -eq 1 ]; then
-  if ! iocage exec "${JAIL_NAME}" xcaddy build master --output /usr/local/bin/caddy --with github.com/caddy-dns/"${DNS_PLUGIN}"
-  then
-    echo "Failed to build Caddy with ${DNS_PLUGIN} plugin, terminating."
-    exit 1
-  fi  
-else
-  if ! iocage exec "${JAIL_NAME}" xcaddy build --output /usr/local/bin/caddy
-  then
-    echo "Failed to build Caddy without plugin, terminating."
-    exit 1
-  fi  
-fi
+#if ! iocage exec "${JAIL_NAME}" "go get -u github.com/caddyserver/xcaddy/cmd/xcaddy"
+#then
+#  echo "Failed to get xcaddy, terminating."
+#  exit 1
+#fi
+#if ! iocage exec "${JAIL_NAME}" go build -o /usr/local/bin/xcaddy github.com/caddyserver/xcaddy/cmd/xcaddy
+#then
+#  echo "Failed to build xcaddy, terminating."
+#  exit 1
+#fi
+#if [ ${DNS_CERT} -eq 1 ]; then
+#  if ! iocage exec "${JAIL_NAME}" xcaddy build master --output /usr/local/bin/caddy --with github.com/caddy-dns/"${DNS_PLUGIN}"
+#  then
+#    echo "Failed to build Caddy with ${DNS_PLUGIN} plugin, terminating."
+#    exit 1
+#  fi  
+#else
+#  if ! iocage exec "${JAIL_NAME}" xcaddy build --output /usr/local/bin/caddy
+#  then
+#    echo "Failed to build Caddy without plugin, terminating."
+#    exit 1
+#  fi  
+#fi
 
 #####
 #
