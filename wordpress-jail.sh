@@ -162,30 +162,16 @@ fi
 #####
 
 # List packages to be auto-installed after jail creation
-#  "sudo","redis","php74-ctype","gnupg",
-#  
-#  "php74-posix","php74-xmlwriter",
-#  "php74-pecl-redis",
-#  "php74-session","php74-xsl","php74-pecl-APCu",
-#  "php74-bz2","php74-intl",
-#  "php74-ldap","php74-imap","php74-gmp",
-#  "php74-pecl-memcache","php74-pecl-smbclient",
-#  "php74-opcache","php74-pcntl","php74-bcmath","php74-pecl-APCu","perl5",
-#  "p5-Locale-gettext","help2man","texinfo","m4","autoconf"
-## Missing: hash,pcre,
-## New: mysqli
-#  "nano","bash","go","git",
-#  "php74","php74-curl","php74-dom","php74-exif","php74-fileinfo",
-#  "php74-json","php74-mbstring","php74-mysqli","php74-openssl",
-#  "php74-xml","php74-zip","php74-filter","php74-gd","php74-iconv",
-#  "php74-simplexml","php74-xmlreader","php74-zlib","php74-ftp",
-#  "php74-sockets","php74-pecl-libsodium",
-#  "php74-pecl-imagick","php74-pecl-mcrypt","php74-pecl-ssh2",
-#  "imagemagick7","ghostscript9-base"
+# See https://make.wordpress.org/hosting/handbook/handbook/server-environment/
+
 cat <<__EOF__ >/tmp/pkg.json
 	{
   "pkgs":[
-  "php74"
+  "php74","php74-curl","php74-dom","php74-exif","php74-fileinfo","php74-json","php74-mbstring",
+  "php74-mysqli","php74-pecl-libsodium","php74-openssl","php74-pecl-imagick","php74-xml","php74-zip",
+  "php74-filter","php74-gd","php74-iconv","php74-pecl-mcrypt","php74-simplexml","php74-xmlreader","php74-zlib",
+  "php74-ftp","php74-pecl-ssh2","php74-sockets"
+  "mariadb104-server"
   ]
 }
 __EOF__
@@ -258,7 +244,7 @@ rm /tmp/pkg.json
 
 #####
 #
-# Install Caddy
+# Caddy download
 #
 #####
 
@@ -274,31 +260,6 @@ then
 	exit 1
 fi
 iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
-
-# Build xcaddy, use it to build Caddy
-#if ! iocage exec "${JAIL_NAME}" "go get -u github.com/caddyserver/xcaddy/cmd/xcaddy"
-#then
-#  echo "Failed to get xcaddy, terminating."
-#  exit 1
-#fi
-#if ! iocage exec "${JAIL_NAME}" go build -o /usr/local/bin/xcaddy github.com/caddyserver/xcaddy/cmd/xcaddy
-#then
-#  echo "Failed to build xcaddy, terminating."
-#  exit 1
-#fi
-#if [ ${DNS_CERT} -eq 1 ]; then
-#  if ! iocage exec "${JAIL_NAME}" xcaddy build master --output /usr/local/bin/caddy --with github.com/caddy-dns/"${DNS_PLUGIN}"
-#  then
-#    echo "Failed to build Caddy with ${DNS_PLUGIN} plugin, terminating."
-#    exit 1
-#  fi  
-#else
-#  if ! iocage exec "${JAIL_NAME}" xcaddy build --output /usr/local/bin/caddy
-#  then
-#    echo "Failed to build Caddy without plugin, terminating."
-#    exit 1
-#  fi  
-#fi
 
 #####
 #
