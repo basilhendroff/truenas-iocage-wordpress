@@ -8,12 +8,12 @@ if ! [ $(id -u) = 0 ]; then
    exit 1
 fi
 
-BLUE="\e[0;34m"
+GREEN="\e[1;32m"
 NOCOLOUR="\e[0m"
 
 #####
 #
-echo -e "${BLUE}General configuration...${NOCOLOUR}"
+echo -e "${GREEN}General configuration...${NOCOLOUR}"
 #
 #####
 
@@ -50,7 +50,7 @@ JAILS_MOUNT=$(zfs get -H -o value mountpoint $(iocage get -p)/iocage)
 
 #####
 #
-echo "Input/Config Sanity checks..."
+echo "${GREEN}Input/Config Sanity checks...${NOCOLOUR}"
 #
 #####
 
@@ -127,7 +127,7 @@ fi
 
 #####
 #
-echo "Jail Creation..."
+echo "${GREEN}Jail Creation...${NOCOLOUR}"
 #
 #####
 
@@ -155,7 +155,7 @@ rm /tmp/pkg.json
 
 #####
 #
-echo "Directory Creation and Mounting..."
+echo "${GREEN}Directory Creation and Mounting...${NOCOLOUR}"
 #
 #####
 
@@ -171,7 +171,7 @@ iocage fstab -a "${JAIL_NAME}" "${WP_PATH}"  /usr/local/www/wordpress  nullfs  r
 
 #####
 #
-echo "Caddy download..."
+echo "${GREEN}Caddy download...${NOCOLOUR}"
 #
 #####
 
@@ -190,7 +190,7 @@ iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
 
 #####
 #
-echo "Wordpress download..."  
+echo "${GREEN}Wordpress download...${NOCOLOUR}"  
 #
 #####
 
