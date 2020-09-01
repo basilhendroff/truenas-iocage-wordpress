@@ -4,13 +4,13 @@
 
 # Check for root privileges
 if ! [ $(id -u) = 0 ]; then
-   echo "This script must be run with root privileges"
+   echo "This script must be run with root privileges"mkdir 
    exit 1
 fi
 
 #####
 #
-# General configuration
+echo "General configuration..."
 #
 #####
 
@@ -24,18 +24,8 @@ POOL_PATH=""
 JAIL_NAME="wordpress"
 TIME_ZONE=""
 HOST_NAME=""
-DATABASE="mysql"
 DB_PATH=""
-FILES_PATH=""
-PORTS_PATH=""
-CONFIG_PATH=""
-THEMES_PATH=""
-STANDALONE_CERT=0
-SELFSIGNED_CERT=0
-DNS_CERT=0
-NO_CERT=1
-DL_FLAGS=""
-DNS_SETTING=""
+WP_PATH=""
 CONFIG_NAME="wordpress-config"
 
 # Check for wordpress-config and set configuration
@@ -51,18 +41,13 @@ INCLUDES_PATH="${SCRIPTPATH}"/includes
 ADMIN_PASSWORD=$(openssl rand -base64 12)
 DB_ROOT_PASSWORD=$(openssl rand -base64 16)
 DB_PASSWORD=$(openssl rand -base64 16)
-if [ "${DATABASE}" = "mariadb" ]; then
-  DB_NAME="MariaDB"
-elif [ "${DATABASE}" = "mysql" ]; then
-  DB_NAME="MySQL"
-fi
 
 RELEASE=$(freebsd-version | sed "s/STABLE/RELEASE/g" | sed "s/-p[0-9]*//")
 JAILS_MOUNT=$(zfs get -H -o value mountpoint $(iocage get -p)/iocage)
 
 #####
 #
-# Input/Config Sanity checks
+echo "Input/Config Sanity checks..."
 #
 #####
 
@@ -91,42 +76,24 @@ fi
 #  echo 'Configuration error: HOST_NAME must be set'
 #  exit 1
 #fi
-if [ $STANDALONE_CERT -eq 0 ] && [ $DNS_CERT -eq 0 ] && [ $NO_CERT -eq 0 ] && [ $SELFSIGNED_CERT -eq 0 ]; then
-  echo 'Configuration error: Either STANDALONE_CERT, DNS_CERT, NO_CERT,'
-  echo 'or SELFSIGNED_CERT must be set to 1.'
-  exit 1
-fi
-if [ $STANDALONE_CERT -eq 1 ] && [ $DNS_CERT -eq 1 ] ; then
-  echo 'Configuration error: Only one of STANDALONE_CERT and DNS_CERT'
-  echo 'may be set to 1.'
-  exit 1
-fi
 
-if [ $DNS_CERT -eq 1 ] && [ -z "${DNS_PLUGIN}" ] ; then
-  echo "DNS_PLUGIN must be set to a supported DNS provider."
-  echo "See https://caddyserver.com/download for available plugins."
-  echo "Use only the last part of the name.  E.g., for"
-  echo "\"github.com/caddy-dns/cloudflare\", enter \"coudflare\"."
-  exit 1
-fi
-
-# If DATA_PATH and CONFIG_PATH weren't set in rslsync-config, set them
+# If DB_PATH and WP_PATH weren't set in wordpress-config, set them
 if [ -z "${DB_PATH}" ]; then
   DB_PATH="${POOL_PATH}"/apps/wordpress/db
 fi
-if [ -z "${HTML_PATH}" ]; then
-  HTML_PATH="${POOL_PATH}"/apps/wordpress/html
+if [ -z "${WP_PATH}" ]; then
+  WP_PATH="${POOL_PATH}"/apps/wordpress/wp
 fi
 
-# Sanity check DB_PATH and HTML_PATH -- they have to be different and can't be the same as POOL_PATH
-if [ "${HTML_PATH}" = "${DB_PATH}" ]
+# Sanity check DB_PATH and WP_PATH -- they have to be different and can't be the same as POOL_PATH
+if [ "${WP_PATH}" = "${DB_PATH}" ]
 then
-  echo "HTML_PATH and DB_PATH must be different!"
+  echo "WP_PATH and DB_PATH must be different!"
   exit 1
 fi
-if [ "${DB_PATH}" = "${POOL_PATH}" ] || [ "${HTML_PATH}" = "${POOL_PATH}" ]
+if [ "${DB_PATH}" = "${POOL_PATH}" ] || [ "${WP_PATH}" = "${POOL_PATH}" ]
 then
-  echo "DB_PATH and HTML_PATH must all be different from POOL_PATH!"
+  echo "DB_PATH and WP_PATH must all be different from POOL_PATH!"
   exit 1
 fi
 
@@ -157,7 +124,7 @@ fi
 
 #####
 #
-# Jail Creation
+echo "Jail Creation..."
 #
 #####
 
@@ -185,65 +152,24 @@ rm /tmp/pkg.json
 
 #####
 #
-# Directory Creation and Mounting
+echo "Directory Creation and Mounting..."
 #
 #####
 
-#mkdir -p "${DB_PATH}"/"${DATABASE}"
-#chown -R 88:88 "${DB_PATH}"/
-#mkdir -p "${FILES_PATH}"
-#chown -R 80:80 "${FILES_PATH}"
-#mkdir -p "${CONFIG_PATH}"
-#mkdir -p "${THEMES_PATH}"
-#mkdir -p "${PORTS_PATH}"/ports
-#mkdir -p "${PORTS_PATH}"/db
-#iocage exec "${JAIL_NAME}" mkdir -p /mnt/files
-#if [ "${DATABASE}" = "mariadb" ]; then
-#  iocage exec "${JAIL_NAME}" mkdir -p /var/db/mysql
-#elif [ "${DATABASE}" = "pgsql" ]; then
-#  iocage exec "${JAIL_NAME}" mkdir -p /var/db/postgres
-#fi
-#iocage exec "${JAIL_NAME}" mkdir -p /mnt/includes
-#iocage exec "${JAIL_NAME}" mkdir -p /mnt/files
-#iocage exec "${JAIL_NAME}" mkdir -p /usr/local/www/nextcloud/config
-#iocage exec "${JAIL_NAME}" mkdir -p /usr/local/www/nextcloud/themes
+mkdir -p "${DB_PATH}"
+chown -R 88:88 "${DB_PATH}"
+mkdir -p "${WP_PATH}"
+chown -R 80:80 "${WP_PATH}"
 
-# Ports not currently used, Commented out for future use
-#mkdir -p "${JAILS_MOUNT}"/jails/${JAIL_NAME}/root/var/db/portsnap
-#mkdir -p "${JAILS_MOUNT}"/jails/${JAIL_NAME}/root/usr/ports
-#iocage fstab -a "${JAIL_NAME}" "${PORTS_PATH}"/ports /usr/ports nullfs rw 0 0
-#iocage fstab -a "${JAIL_NAME}" "${PORTS_PATH}"/db /var/db/portsnap nullfs rw 0 0
+iocage exec "${JAIL_NAME}" mkdir -p /usr/local/www/wordpress
+iocage exec "${JAIL_NAME}" chown -R www:www /usr/local/www/wordpress
 
-#iocage fstab -a "${JAIL_NAME}" "${FILES_PATH}" /mnt/files nullfs rw 0 0
-#iocage fstab -a "${JAIL_NAME}" "${CONFIG_PATH}" /usr/local/www/nextcloud/config nullfs rw 0 0
-#iocage fstab -a "${JAIL_NAME}" "${THEMES_PATH}" /usr/local/www/nextcloud/themes nullfs rw 0 0
-#if [ "${DATABASE}" = "mariadb" ]; then
-#  mkdir -p "${JAILS_MOUNT}"/jails/${JAIL_NAME}/root/var/db/mysql
-#  iocage fstab -a "${JAIL_NAME}" "${DB_PATH}/mariadb"  /var/db/mysql  nullfs  rw  0  0
-#elif [ "${DATABASE}" = "pgsql" ]; then
-#  mkdir -p "${JAILS_MOUNT}"/jails/${JAIL_NAME}/root/var/db/postgres
-#  iocage fstab -a "${JAIL_NAME}" "${DB_PATH}/psql"  /var/db/postgres  nullfs  rw  0  0
-#fi
-#iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" /mnt/includes nullfs rw 0 0
-#iocage exec "${JAIL_NAME}" chown -R www:www /mnt/files
-#iocage exec "${JAIL_NAME}" chmod -R 770 /mnt/files#
-
+iocage fstab -a "${JAIL_NAME}" "${DB_PATH}"  /var/db/mysql  nullfs  rw  0  0
+iocage fstab -a "${JAIL_NAME}" "${WP_PATH}"  /usr/local/www/wordpress  nullfs  rw  0  0
 
 #####
 #
-# Additional Dependency installation
-#
-#####
-
-#if [ "${DATABASE}" = "mariadb" ]; then
-#	iocage exec "${JAIL_NAME}" pkg install -qy mariadb103-server php74-pdo_mysql php74-mysqli
-#elif [ "${DATABASE}" = "pgsql" ]; then
-#  iocage exec "${JAIL_NAME}" pkg install -qy postgresql10-server php74-pgsql php74-pdo_pgsql
-#fi
-
-#####
-#
-# Caddy download
+echo "Caddy download..."
 #
 #####
 
@@ -262,25 +188,22 @@ iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
 
 #####
 #
-# Webserver Setup and Nextcloud Download  
+echo "Wordpress download..."  
 #
 #####
 
-#FILE="latest-19.tar.bz2"
-#if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://download.nextcloud.com/server/releases/"${FILE}" https://download.nextcloud.com/server/releases/"${FILE}".asc https://nextcloud.com/nextcloud.asc
-#then
-#	echo "Failed to download Nextcloud"
-#	exit 1
-#fi
-#iocage exec "${JAIL_NAME}" gpg --import /tmp/nextcloud.asc
-#if ! iocage exec "${JAIL_NAME}" gpg --verify /tmp/"${FILE}".asc
-#then
-#	echo "GPG Signature Verification Failed!"
-#	echo "The Nextcloud download is corrupt."
-#	exit 1
-#fi
-#iocage exec "${JAIL_NAME}" tar xjf /tmp/"${FILE}" -C /usr/local/www/
-#iocage exec "${JAIL_NAME}" chown -R www:www /usr/local/www/nextcloud/
+FILE="latest.tar.gz"
+if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://wordpress.org/"${FILE}"
+then
+	echo "Failed to download WordPress"
+	exit 1
+fi
+if ! iocage exec "${JAIL_NAME}" tar xzf /tmp/"${FILE}" -C /usr/local/www/
+then
+	echo "Failed to extract WordPress"
+	exit 1
+fi
+
 #if [ "${DATABASE}" = "mariadb" ]; then
 #  iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
 #elif [ "${DATABASE}" = "pgsql" ]; then
@@ -288,16 +211,6 @@ iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
 #fi
 #iocage exec "${JAIL_NAME}" sysrc redis_enable="YES"
 #iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
-
-
-# Generate and install self-signed cert, if necessary
-#if [ $SELFSIGNED_CERT -eq 1 ]; then
-#  iocage exec "${JAIL_NAME}" mkdir -p /usr/local/etc/pki/tls/private
-#  iocage exec "${JAIL_NAME}" mkdir -p /usr/local/etc/pki/tls/certs
-#  openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=${HOST_NAME}" -keyout "${INCLUDES_PATH}"/privkey.pem -out "${INCLUDES_PATH}"/fullchain.pem
-#  iocage exec "${JAIL_NAME}" cp /mnt/includes/privkey.pem /usr/local/etc/pki/tls/private/privkey.pem
-#  iocage exec "${JAIL_NAME}" cp /mnt/includes/fullchain.pem /usr/local/etc/pki/tls/certs/fullchain.pem
-#fi
 
 # Copy and edit pre-written config files
 #iocage exec "${JAIL_NAME}" cp -f /mnt/includes/php.ini /usr/local/etc/php.ini
@@ -334,8 +247,6 @@ iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
 
 #iocage exec "${JAIL_NAME}" sysrc caddy_enable="YES"
 #iocage exec "${JAIL_NAME}" sysrc caddy_config="/usr/local/www/Caddyfile"
-##iocage exec "${JAIL_NAME}" sysrc caddy_cert_email="${CERT_EMAIL}"
-##iocage exec "${JAIL_NAME}" sysrc caddy_env="${DNS_ENV}"
 
 iocage restart "${JAIL_NAME}"
 
