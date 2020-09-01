@@ -8,9 +8,12 @@ if ! [ $(id -u) = 0 ]; then
    exit 1
 fi
 
+BLUE="\e[0;34m"
+NOCOLOUR="\e[0m"
+
 #####
 #
-echo "General configuration..."
+echo -e "${BLUE}General configuration...${NOCOLOUR}"
 #
 #####
 
@@ -162,7 +165,6 @@ mkdir -p "${WP_PATH}"
 chown -R 80:80 "${WP_PATH}"
 
 iocage exec "${JAIL_NAME}" mkdir -p /usr/local/www/wordpress
-iocage exec "${JAIL_NAME}" chown -R www:www /usr/local/www/wordpress
 
 iocage fstab -a "${JAIL_NAME}" "${DB_PATH}"  /var/db/mysql  nullfs  rw  0  0
 iocage fstab -a "${JAIL_NAME}" "${WP_PATH}"  /usr/local/www/wordpress  nullfs  rw  0  0
@@ -203,6 +205,7 @@ then
 	echo "Failed to extract WordPress"
 	exit 1
 fi
+iocage exec "${JAIL_NAME}" chown -R www:www /usr/local/www/wordpress
 
 #if [ "${DATABASE}" = "mariadb" ]; then
 #  iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
