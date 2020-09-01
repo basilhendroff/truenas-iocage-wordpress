@@ -60,7 +60,7 @@ if [ -z "${JAIL_IP}" ]; then
   exit 1
 fi
 if [ -z "${JAIL_INTERFACES}" ]; then
-  echo 'JAIL_INTERFACES not set, defaulting to: vnet0:bridge0'
+  echo 'JAIL_INTERFACES defaulting to: vnet0:bridge0'
   JAIL_INTERFACES="vnet0:bridge0"
 fi
 if [ -z "${DEFAULT_GW_IP}" ]; then
