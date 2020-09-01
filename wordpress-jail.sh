@@ -50,7 +50,7 @@ JAILS_MOUNT=$(zfs get -H -o value mountpoint $(iocage get -p)/iocage)
 
 #####
 #
-echo "${GREEN}Input/Config Sanity checks...${NOCOLOUR}"
+echo -e "${GREEN}Input/Config Sanity checks...${NOCOLOUR}"
 #
 #####
 
@@ -127,7 +127,7 @@ fi
 
 #####
 #
-echo "${GREEN}Jail Creation...${NOCOLOUR}"
+echo -e "${GREEN}Jail Creation...${NOCOLOUR}"
 #
 #####
 
@@ -155,7 +155,7 @@ rm /tmp/pkg.json
 
 #####
 #
-echo "${GREEN}Directory Creation and Mounting...${NOCOLOUR}"
+echo -e "${GREEN}Directory Creation and Mounting...${NOCOLOUR}"
 #
 #####
 
@@ -171,7 +171,7 @@ iocage fstab -a "${JAIL_NAME}" "${WP_PATH}"  /usr/local/www/wordpress  nullfs  r
 
 #####
 #
-echo "${GREEN}Caddy download...${NOCOLOUR}"
+echo -e "${GREEN}Caddy download...${NOCOLOUR}"
 #
 #####
 
@@ -190,7 +190,7 @@ iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
 
 #####
 #
-echo "${GREEN}Wordpress download...${NOCOLOUR}"  
+echo -e "${GREEN}Wordpress download...${NOCOLOUR}"  
 #
 #####
 
