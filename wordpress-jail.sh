@@ -128,6 +128,7 @@ fi
 #####
 #
 echo -e "${GREEN}Jail Creation...`date`${NOCOLOUR}"
+echo -e "${GREEN}Time for a cuppa. This will take a while.${NOCOLOUR}"
 #
 #####
 
@@ -211,29 +212,34 @@ iocage exec "${JAIL_NAME}" chown -R www:www /usr/local/www/wordpress
 
 #####
 #
-echo -e "${GREEN}Directory Configure Caddy...${NOCOLOUR}"
+echo -e "${GREEN}Configure Caddy...${NOCOLOUR}"
 #
 #####
 
+# Copy and edit pre-written config files
 iocage exec "${JAIL_NAME}" cp -f /mnt/includes/Caddyfile /usr/local/www
 iocage exec "${JAIL_NAME}" cp -f /mnt/includes/caddy /usr/local/etc/rc.d/
 
 iocage exec "${JAIL_NAME}" sysrc caddy_enable="YES"
 iocage exec "${JAIL_NAME}" sysrc caddy_config="/usr/local/www/Caddyfile"
 
+#####
+#
+echo -e "${GREEN}Configure PHP-FPM...${NOCOLOUR}"
+#
+#####
+
+# Copy and edit pre-written config files
+iocage exec "${JAIL_NAME}" cp -f /mnt/includes/php.ini /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" cp -f /mnt/includes/www.conf /usr/local/etc/php-fpm.d/
+
+iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
+
+
 
 
 
 #iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
-#iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
-
-# Copy and edit pre-written config files
-#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/php.ini /usr/local/etc/php.ini
-#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/www.conf /usr/local/etc/php-fpm.d/
-
-
-
-
 
 #if [ "${DATABASE}" = "mariadb" ]; then
 #  iocage exec "${JAIL_NAME}" cp -f /mnt/includes/my-system.cnf /var/db/mysql/my.cnf
