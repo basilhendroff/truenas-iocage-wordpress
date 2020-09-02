@@ -218,8 +218,14 @@ echo -e "${GREEN}Directory Configure Caddy...${NOCOLOUR}"
 iocage exec "${JAIL_NAME}" cp -f /mnt/includes/Caddyfile /usr/local/www
 iocage exec "${JAIL_NAME}" cp -f /mnt/includes/caddy /usr/local/etc/rc.d/
 
-iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
-iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
+iocage exec "${JAIL_NAME}" sysrc caddy_enable="YES"
+iocage exec "${JAIL_NAME}" sysrc caddy_config="/usr/local/www/Caddyfile"
+
+
+
+
+#iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
+#iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
 
 # Copy and edit pre-written config files
 #iocage exec "${JAIL_NAME}" cp -f /mnt/includes/php.ini /usr/local/etc/php.ini
@@ -232,13 +238,9 @@ iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
 #if [ "${DATABASE}" = "mariadb" ]; then
 #  iocage exec "${JAIL_NAME}" cp -f /mnt/includes/my-system.cnf /var/db/mysql/my.cnf
 #fi
-#iocage exec "${JAIL_NAME}" sed -i '' "s/yourhostnamehere/${HOST_NAME}/" /usr/local/www/Caddyfile
-#iocage exec "${JAIL_NAME}" sed -i '' "s/jail_ip/${IP}/" /usr/local/www/Caddyfile
-#iocage exec "${JAIL_NAME}" sed -i '' "s/youremailhere/${CERT_EMAIL}/" /usr/local/www/Caddyfile
 #iocage exec "${JAIL_NAME}" sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
 
-#iocage exec "${JAIL_NAME}" sysrc caddy_enable="YES"
-#iocage exec "${JAIL_NAME}" sysrc caddy_config="/usr/local/www/Caddyfile"
+
 
 iocage restart "${JAIL_NAME}"
 
