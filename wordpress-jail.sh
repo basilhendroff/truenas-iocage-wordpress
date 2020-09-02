@@ -212,7 +212,7 @@ iocage exec "${JAIL_NAME}" chown -R www:www /usr/local/www/wordpress
 
 #####
 #
-echo -e "${GREEN}Configure Caddy...${NOCOLOUR}"
+echo -e "${GREEN}Configure and start Caddy...${NOCOLOUR}"
 #
 #####
 
@@ -223,33 +223,41 @@ iocage exec "${JAIL_NAME}" cp -f /mnt/includes/caddy /usr/local/etc/rc.d/
 iocage exec "${JAIL_NAME}" sysrc caddy_enable="YES"
 iocage exec "${JAIL_NAME}" sysrc caddy_config="/usr/local/www/Caddyfile"
 
+iocage exec "${JAIL_NAME}" service caddy start
+
 #####
 #
-echo -e "${GREEN}Configure PHP-FPM...${NOCOLOUR}"
+echo -e "${GREEN}Configure and start PHP-FPM...${NOCOLOUR}"
 #
 #####
 
 # Copy and edit pre-written config files
-iocage exec "${JAIL_NAME}" cp -f /mnt/includes/php.ini /usr/local/etc/php.ini
-iocage exec "${JAIL_NAME}" cp -f /mnt/includes/www.conf /usr/local/etc/php-fpm.d/
+iocage exec "${JAIL_NAME}" cp -f /usr/local/etc/php-production.ini /usr/local/etc/php.ini
+#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/php.ini /usr/local/etc/php.ini
+#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/www.conf /usr/local/etc/php-fpm.d/
 
 iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
 
+iocage exec "${JAIL_NAME}" service php-fpm start
 
+#####
+#
+echo -e "${GREEN}Configure and start MariaDB...${NOCOLOUR}"
+#
+#####
 
-
-
-#iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
-
-#if [ "${DATABASE}" = "mariadb" ]; then
-#  iocage exec "${JAIL_NAME}" cp -f /mnt/includes/my-system.cnf /var/db/mysql/my.cnf
-#fi
+# Copy and edit pre-written config files
+#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/my-system.cnf /var/db/mysql/my.cnf
 #iocage exec "${JAIL_NAME}" sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
 
+iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
+
+iocage exec "${JAIL_NAME}" service mysql-server start
 
 
-iocage restart "${JAIL_NAME}"
 
+
+#iocage restart "${JAIL_NAME}"
 
 #####
 #
