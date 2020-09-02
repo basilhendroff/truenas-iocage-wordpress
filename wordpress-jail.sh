@@ -128,7 +128,7 @@ fi
 #####
 #
 echo -e "${GREEN}Jail Creation...`date`${NOCOLOUR}"
-echo -e "${GREEN}Time for a cuppa. This will take a while.${NOCOLOUR}"
+echo -e "${GREEN}Time for a cuppa. This could take a while (10 minutes or more).${NOCOLOUR}"
 #
 #####
 
@@ -230,8 +230,8 @@ echo -e "${GREEN}Configure PHP-FPM...${NOCOLOUR}"
 #####
 
 # Copy and edit pre-written config files
-#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/php.ini /usr/local/etc/php.ini
-#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/www.conf /usr/local/etc/php-fpm.d/
+iocage exec "${JAIL_NAME}" cp -f /mnt/includes/php.ini /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" cp -f /mnt/includes/www.conf /usr/local/etc/php-fpm.d/
 
 iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
 
