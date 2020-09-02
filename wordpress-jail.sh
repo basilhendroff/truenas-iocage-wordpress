@@ -215,6 +215,9 @@ echo -e "${GREEN}Directory Configure Caddy...${NOCOLOUR}"
 #
 #####
 
+iocage exec "${JAIL_NAME}" cp -f /mnt/includes/Caddyfile /usr/local/www
+iocage exec "${JAIL_NAME}" cp -f /mnt/includes/caddy /usr/local/etc/rc.d/
+
 iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
 iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
 
@@ -222,9 +225,9 @@ iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
 #iocage exec "${JAIL_NAME}" cp -f /mnt/includes/php.ini /usr/local/etc/php.ini
 #iocage exec "${JAIL_NAME}" cp -f /mnt/includes/www.conf /usr/local/etc/php-fpm.d/
 
-#  iocage exec "${JAIL_NAME}" cp -f /mnt/includes/Caddyfile-nossl /usr/local/www/Caddyfile
 
-#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/caddy /usr/local/etc/rc.d/
+
+
 
 #if [ "${DATABASE}" = "mariadb" ]; then
 #  iocage exec "${JAIL_NAME}" cp -f /mnt/includes/my-system.cnf /var/db/mysql/my.cnf
