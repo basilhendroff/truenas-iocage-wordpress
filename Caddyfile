@@ -1,6 +1,0 @@
-:80 {
-  root * /usr/local/www/wordpress
-  encode gzip zstd
-  php_fastcgi unix//var/run/php-fpm/sockets/php-fpm.sock
-  file_server
-}
