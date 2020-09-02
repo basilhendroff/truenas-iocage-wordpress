@@ -2,14 +2,14 @@
 # Build an iocage jail under FreeNAS 11.3-12.0 using the current release of WordPress 5.5
 # git clone https://github.com/basilhendroff/freenas-iocage-wordpress
 
+GREEN="\e[1;32m"
+NOCOLOUR="\e[0m"
+
 # Check for root privileges
 if ! [ $(id -u) = 0 ]; then
    echo "This script must be run with root privileges" 
    exit 1
 fi
-
-GREEN="\e[1;32m"
-NOCOLOUR="\e[0m"
 
 #####
 #
@@ -161,13 +161,15 @@ echo -e "${GREEN}Directory Creation and Mounting...`date`${NOCOLOUR}"
 
 mkdir -p "${DB_PATH}"
 chown -R 88:88 "${DB_PATH}"
+iocage fstab -a "${JAIL_NAME}" "${DB_PATH}"  /var/db/mysql  nullfs  rw  0  0
+
 mkdir -p "${WP_PATH}"
 chown -R 80:80 "${WP_PATH}"
-
 iocage exec "${JAIL_NAME}" mkdir -p /usr/local/www/wordpress
-
-iocage fstab -a "${JAIL_NAME}" "${DB_PATH}"  /var/db/mysql  nullfs  rw  0  0
 iocage fstab -a "${JAIL_NAME}" "${WP_PATH}"  /usr/local/www/wordpress  nullfs  rw  0  0
+
+iocage exec "${JAIL_NAME}" mkdir -p /mnt/includes
+iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" /mnt/includes nullfs rw 0 0
 
 #####
 #
