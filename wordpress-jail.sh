@@ -4,7 +4,7 @@
 
 # Check for root privileges
 if ! [ $(id -u) = 0 ]; then
-   echo "This script must be run with root privileges"mkdir 
+   echo "This script must be run with root privileges" 
    exit 1
 fi
 
@@ -207,43 +207,27 @@ then
 fi
 iocage exec "${JAIL_NAME}" chown -R www:www /usr/local/www/wordpress
 
-#if [ "${DATABASE}" = "mariadb" ]; then
-#  iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
-#elif [ "${DATABASE}" = "pgsql" ]; then
-#  iocage exec "${JAIL_NAME}" sysrc postgresql_enable="YES"
-#fi
-#iocage exec "${JAIL_NAME}" sysrc redis_enable="YES"
-#iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
+#####
+#
+echo -e "${GREEN}Directory Configure Caddy...${NOCOLOUR}"
+#
+#####
+
+iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
+iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
 
 # Copy and edit pre-written config files
 #iocage exec "${JAIL_NAME}" cp -f /mnt/includes/php.ini /usr/local/etc/php.ini
-#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/redis.conf /usr/local/etc/redis.conf
 #iocage exec "${JAIL_NAME}" cp -f /mnt/includes/www.conf /usr/local/etc/php-fpm.d/
-#if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
-#  iocage exec "${JAIL_NAME}" cp -f /mnt/includes/remove-staging.sh /root/
-#fi
-#if [ $NO_CERT -eq 1 ]; then
-#  echo "Copying Caddyfile for no SSL"
+
 #  iocage exec "${JAIL_NAME}" cp -f /mnt/includes/Caddyfile-nossl /usr/local/www/Caddyfile
-#elif [ $SELFSIGNED_CERT -eq 1 ]; then
-#  echo "Copying Caddyfile for self-signed cert"
-#  iocage exec "${JAIL_NAME}" cp -f /mnt/includes/Caddyfile-selfsigned /usr/local/www/Caddyfile
-#elif [ $DNS_CERT -eq 1 ]; then
-#  echo "Copying Caddyfile for Let's Encrypt DNS cert"
-#  iocage exec "${JAIL_NAME}" cp -f /mnt/includes/Caddyfile-dns /usr/local/www/Caddyfile
-#else
-#  echo "Copying Caddyfile for Let's Encrypt cert"
-#  iocage exec "${JAIL_NAME}" cp -f /mnt/includes/Caddyfile /usr/local/www/
-#fi
+
 #iocage exec "${JAIL_NAME}" cp -f /mnt/includes/caddy /usr/local/etc/rc.d/
 
 #if [ "${DATABASE}" = "mariadb" ]; then
 #  iocage exec "${JAIL_NAME}" cp -f /mnt/includes/my-system.cnf /var/db/mysql/my.cnf
 #fi
 #iocage exec "${JAIL_NAME}" sed -i '' "s/yourhostnamehere/${HOST_NAME}/" /usr/local/www/Caddyfile
-##iocage exec "${JAIL_NAME}" sed -i '' "s/DNS-PLACEHOLDER/${DNS_SETTING}/" /usr/local/www/Caddyfile
-#iocage exec "${JAIL_NAME}" sed -i '' "s/dns_plugin/${DNS_PLUGIN}/" /usr/local/www/Caddyfile
-#iocage exec "${JAIL_NAME}" sed -i '' "s/api_token/${DNS_TOKEN}/" /usr/local/www/Caddyfile
 #iocage exec "${JAIL_NAME}" sed -i '' "s/jail_ip/${IP}/" /usr/local/www/Caddyfile
 #iocage exec "${JAIL_NAME}" sed -i '' "s/youremailhere/${CERT_EMAIL}/" /usr/local/www/Caddyfile
 #iocage exec "${JAIL_NAME}" sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
@@ -356,11 +340,8 @@ iocage restart "${JAIL_NAME}"
 
 # Done!
 #echo "Installation complete!"
-#if [ $NO_CERT -eq 1 ]; then
 #  echo "Using your web browser, go to http://${HOST_NAME} to log in"
-#else
-#  echo "Using your web browser, go to https://${HOST_NAME} to log in"
-#fi
+
 
 #if [ "${REINSTALL}" == "true" ]; then
 #	echo "You did a reinstall, please use your old database and account credentials"
@@ -375,23 +356,4 @@ iocage restart "${JAIL_NAME}"
 #	echo "The ${DB_NAME} root password is ${DB_ROOT_PASSWORD}"
 #	echo ""
 #	echo "All passwords are saved in /root/${JAIL_NAME}_db_password.txt"
-#fi
-
-#echo ""
-#if [ $STANDALONE_CERT -eq 1 ] || [ $DNS_CERT -eq 1 ]; then
-#  echo "You have obtained your Let's Encrypt certificate using the staging server."
-#  echo "This certificate will not be trusted by your browser and will cause SSL errors"
-#  echo "when you connect.  Once you've verified that everything else is working"
-#  echo "correctly, you should issue a trusted certificate.  To do this, run:"
-#  echo "  iocage exec ${JAIL_NAME} /root/remove-staging.sh"
-#  echo ""
-#elif [ $SELFSIGNED_CERT -eq 1 ]; then
-#  echo "You have chosen to create a self-signed TLS certificate for your Nextcloud"
-#  echo "installation.  This certificate will not be trusted by your browser and"
-#  echo "will cause SSL errors when you connect.  If you wish to replace this certificate"
-#  echo "with one obtained elsewhere, the private key is located at:"
-#  echo "/usr/local/etc/pki/tls/private/privkey.pem"
-#  echo "The full chain (server + intermediate certificates together) is at:"
-#  echo "/usr/local/etc/pki/tls/certs/fullchain.pem"
-#  echo ""
 #fi
