@@ -41,10 +41,6 @@ fi
 . "${SCRIPTPATH}"/"${CONFIG_NAME}"
 INCLUDES_PATH="${SCRIPTPATH}"/includes
 
-ADMIN_PASSWORD=$(openssl rand -base64 12)
-DB_ROOT_PASSWORD=$(openssl rand -base64 16)
-DB_PASSWORD=$(openssl rand -base64 16)
-
 RELEASE=$(freebsd-version | sed "s/STABLE/RELEASE/g" | sed "s/-p[0-9]*//")
 JAILS_MOUNT=$(zfs get -H -o value mountpoint $(iocage get -p)/iocage)
 
@@ -253,12 +249,45 @@ echo -e "${GREEN}Configure and start MariaDB...${NOCOLOUR}"
 
 iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
 
+iocage exec "${JAIL_NAME}" chown mysql:mysql /ver/run/mysql
 #iocage exec "${JAIL_NAME}" service mysql-server start
 
+#####
+#
+echo -e "${GREEN}Create the WordPress database...${NOCOLOUR}"
+#
+#####
 
+ADMIN_PASSWORD=$(openssl rand -base64 12)
+DB_ROOT_PASSWORD=$(openssl rand -base64 16)
+DB_PASSWORD=$(openssl rand -base64 16)
 
+iocage exec "${JAIL_NAME}" mysql -u root -e "CREATE DATABASE wordpress;"
+iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
+iocage exec "${JAIL_NAME}" mysql -u root -e "FLUSH PRIVILEGES;"
+
+iocage exec "${JAIL_NAME}" mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
+
+# Save passwords for later reference
+iocage exec "${JAIL_NAME}" echo "${DB_NAME} root password is ${DB_ROOT_PASSWORD}" > /root/${JAIL_NAME}_db_password.txt
+iocage exec "${JAIL_NAME}" echo "Nextcloud database password is ${DB_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
+iocage exec "${JAIL_NAME}" echo "Nextcloud Administrator password is ${ADMIN_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
 
 #iocage restart "${JAIL_NAME}"
+
+echo "Default user is admin, password is ${ADMIN_PASSWORD}"
+echo ""
+echo "Database Information"
+echo "--------------------"
+echo "Database user = nextcloud"
+echo "Database password = ${DB_PASSWORD}"
+echo "The ${DB_NAME} root password is ${DB_ROOT_PASSWORD}"
+echo ""
+echo "All passwords are saved in /root/${JAIL_NAME}_db_password.txt"
+
+
+
+
 
 #####
 #
@@ -279,7 +308,7 @@ iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
 #else
 
 # Secure database, set root password, create Nextcloud DB, user, and password
-#if [ "${DATABASE}" = "mariadb" ]; then
+
 #  iocage exec "${JAIL_NAME}" mysql -u root -e "CREATE DATABASE nextcloud;"
 #  iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL ON nextcloud.* TO nextcloud@localhost IDENTIFIED BY '${DB_PASSWORD}';"
 #  iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
@@ -290,18 +319,7 @@ iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
 ##  iocage exec "${JAIL_NAME}" mysqladmin reload
 #  iocage exec "${JAIL_NAME}" cp -f /mnt/includes/my.cnf /root/.my.cnf
 #  iocage exec "${JAIL_NAME}" sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
-#elif [ "${DATABASE}" = "pgsql" ]; then
-#  iocage exec "${JAIL_NAME}" cp -f /mnt/includes/pgpass /root/.pgpass
-#  iocage exec "${JAIL_NAME}" chmod 600 /root/.pgpass
-#  iocage exec "${JAIL_NAME}" chown postgres /var/db/postgres/
-#  iocage exec "${JAIL_NAME}" /usr/local/etc/rc.d/postgresql initdb
-#  iocage exec "${JAIL_NAME}" su -m postgres -c '/usr/local/bin/pg_ctl -D /var/db/postgres/data10 start'
-#  iocage exec "${JAIL_NAME}" sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.pgpass
-#  iocage exec "${JAIL_NAME}" psql -U postgres -c "CREATE DATABASE nextcloud;"
-#  iocage exec "${JAIL_NAME}" psql -U postgres -c "CREATE USER nextcloud WITH ENCRYPTED PASSWORD '${DB_PASSWORD}';"
-#  iocage exec "${JAIL_NAME}" psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE nextcloud TO nextcloud;"
-#  iocage exec "${JAIL_NAME}" psql -U postgres -c "SELECT pg_reload_conf();"
-#fi
+
 
 # Save passwords for later reference
 #iocage exec "${JAIL_NAME}" echo "${DB_NAME} root password is ${DB_ROOT_PASSWORD}" > /root/${JAIL_NAME}_db_password.txt
