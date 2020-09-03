@@ -124,7 +124,7 @@ fi
 #####
 #
 echo -e "${GREEN}Jail Creation...`date`${NOCOLOUR}"
-echo -e "${GREEN}Time for a cuppa. This could take a while (10 minutes or more).${NOCOLOUR}"
+echo -e "${GREEN}Time for a cuppa. Installing packages will take a while.${NOCOLOUR}"
 #
 #####
 
