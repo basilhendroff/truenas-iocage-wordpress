@@ -232,7 +232,8 @@ echo -e "${GREEN}Configure and start PHP-FPM...${NOCOLOUR}"
 #####
 
 # Copy and edit pre-written config files
-iocage exec "${JAIL_NAME}" cp -f /usr/local/etc/php-production.ini /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" ln -s /usr/local/etc/php.ini-production /usr/local/etc/php.ini
+##iocage exec "${JAIL_NAME}" cp -f /usr/local/etc/php-production.ini /usr/local/etc/php.ini
 #iocage exec "${JAIL_NAME}" cp -f /mnt/includes/php.ini /usr/local/etc/php.ini
 #iocage exec "${JAIL_NAME}" cp -f /mnt/includes/www.conf /usr/local/etc/php-fpm.d/
 
