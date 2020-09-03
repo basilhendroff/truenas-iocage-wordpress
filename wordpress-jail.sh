@@ -249,7 +249,7 @@ echo -e "${GREEN}Configure and start MariaDB...${NOCOLOUR}"
 
 iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
 
-iocage exec "${JAIL_NAME}" chown mysql:mysql /ver/run/mysql
+iocage exec "${JAIL_NAME}" chown mysql:mysql /var/run/mysql
 #iocage exec "${JAIL_NAME}" service mysql-server start
 
 #####
