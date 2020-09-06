@@ -262,10 +262,10 @@ ADMIN_PASSWORD=$(openssl rand -base64 12)
 DB_ROOT_PASSWORD=$(openssl rand -base64 16)
 DB_PASSWORD=$(openssl rand -base64 16)
 
-#iocage exec "${JAIL_NAME}" mysql -u root -e "CREATE DATABASE wordpress;"
+iocage exec "${JAIL_NAME}" mysql -u root -e "CREATE DATABASE wordpress;"
 #iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
-#iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY 123;"
-#iocage exec "${JAIL_NAME}" mysql -u root -e "FLUSH PRIVILEGES;"
+iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '123';"
+iocage exec "${JAIL_NAME}" mysql -u root -e "FLUSH PRIVILEGES;"
 
 #iocage exec "${JAIL_NAME}" mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
 
