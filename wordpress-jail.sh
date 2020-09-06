@@ -229,9 +229,12 @@ echo -e "${GREEN}Configure and start PHP-FPM...${NOCOLOUR}"
 
 # Copy and edit pre-written config files
 iocage exec "${JAIL_NAME}" cp -f /usr/local/etc/php.ini-production /usr/local/etc/php.ini
-iocage exec "${JAIL_NAME}" sed -i '' "s|memory_limit = 128M|memory_limit = 512M|" /usr/local/etc/php.ini
-iocage exec "${JAIL_NAME}" sed -i '' "s|post_max_size = 8M|post_max_size = 16G|" /usr/local/etc/php.ini
-iocage exec "${JAIL_NAME}" sed -i '' "s|upload_max_filesize = 2M|upload_max_filesize = 16G|" /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" sed -i '' "s|memory_limit = 128M|memory_limit = 256M|" /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" sed -i '' "s|post_max_size = 8M|post_max_size = 64M|" /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" sed -i '' "s|upload_max_filesize = 2M|upload_max_filesize = 64M|" /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" sed -i '' "s|max_execution_time = 30|max_execution_time = 300|" /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" sed -i '' "s|max_input_time = 60|max_execution_time = 1000|" /usr/local/etc/php.ini
+
 
 #iocage exec "${JAIL_NAME}" ln -s /usr/local/etc/php.ini-production /usr/local/etc/php.ini
 #iocage exec "${JAIL_NAME}" cp -f /mnt/includes/db_php.ini /usr/local/etc/php.ini
