@@ -228,10 +228,10 @@ echo -e "${GREEN}Configure and start PHP-FPM...${NOCOLOUR}"
 #####
 
 # Copy and edit pre-written config files
-iocage exec "${JAIL_NAME}" ln -s /usr/local/etc/php.ini-production /usr/local/etc/php.ini
+#iocage exec "${JAIL_NAME}" ln -s /usr/local/etc/php.ini-production /usr/local/etc/php.ini
 ##iocage exec "${JAIL_NAME}" cp -f /usr/local/etc/php-production.ini /usr/local/etc/php.ini
-#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/php.ini /usr/local/etc/php.ini
-#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/www.conf /usr/local/etc/php-fpm.d/
+iocage exec "${JAIL_NAME}" cp -f /mnt/includes/db_php.ini /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" cp -f /mnt/includes/db_www.conf /usr/local/etc/php-fpm.d/www.conf
 
 iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
 
@@ -244,7 +244,7 @@ echo -e "${GREEN}Configure and start MariaDB...${NOCOLOUR}"
 #####
 
 # Copy and edit pre-written config files
-#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/my-system.cnf /var/db/mysql/my.cnf
+iocage exec "${JAIL_NAME}" cp -f /mnt/includes/db_my-system.cnf /var/db/mysql/my.cnf
 #iocage exec "${JAIL_NAME}" sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
 
 iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
