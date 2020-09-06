@@ -275,9 +275,9 @@ iocage exec "${JAIL_NAME}" mysqladmin --user=root password "${DB_ROOT_PASSWORD}"
 #iocage exec "${JAIL_NAME}" cp -f /mnt/includes/db_my.cnf /root/.my.cnf
 
 # Save passwords for later reference
-iocage exec "${JAIL_NAME}" echo "${DB_NAME} root password is ${DB_ROOT_PASSWORD}" > /root/${JAIL_NAME}_db_password.txt
-iocage exec "${JAIL_NAME}" echo "Wordpress  database password is ${DB_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
-iocage exec "${JAIL_NAME}" echo "Nextcloud Administrator password is ${ADMIN_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
+iocage exec "${JAIL_NAME}" echo "MariaDB root password is ${DB_ROOT_PASSWORD}" > /root/${JAIL_NAME}_db_password.txt
+iocage exec "${JAIL_NAME}" echo "MariaDB database user wordpress password is ${DB_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
+iocage exec "${JAIL_NAME}" echo "Wordpress admin password is ${ADMIN_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
 
 #####
 #
@@ -285,10 +285,10 @@ echo -e "${GREEN}Configure WordPress...${NOCOLOUR}"
 #
 #####
 
-#iocage exec "${JAIL_NAME}" cp -f /usr/local/www/wordpress/wp-config-sample.php /usr/local/www/wordpress/wp-config.php
-#iocage exec "${JAIL_NAME}" sed -i '' "s|database_name_here|wordpress|" /usr/local/www/wordpress/wp-config.php
-#iocage exec "${JAIL_NAME}" sed -i '' "s|username_here|wordpress|" /usr/local/www/wordpress/wp-config.php
-#iocage exec "${JAIL_NAME}" sed -i '' "s|password_here|${DB_PASSWORD}|" /usr/local/www/wordpress/wp-config.php
+iocage exec "${JAIL_NAME}" cp -f /usr/local/www/wordpress/wp-config-sample.php /usr/local/www/wordpress/wp-config.php
+iocage exec "${JAIL_NAME}" sed -i '' "s|database_name_here|wordpress|" /usr/local/www/wordpress/wp-config.php
+iocage exec "${JAIL_NAME}" sed -i '' "s|username_here|wordpress|" /usr/local/www/wordpress/wp-config.php
+iocage exec "${JAIL_NAME}" sed -i '' "s|password_here|${DB_PASSWORD}|" /usr/local/www/wordpress/wp-config.php
 
 #####
 #
@@ -296,17 +296,8 @@ echo -e "${GREEN}Installation complete!${NOCOLOUR}"
 #
 #####
 
-echo "Default user is admin, password is ${ADMIN_PASSWORD}"
-echo ""
-echo "Database Information"
-echo "--------------------"
-echo "Database user = wordpress"
-echo "Database password = ${DB_PASSWORD}"
-echo "The ${DB_NAME} root password is ${DB_ROOT_PASSWORD}"
-echo ""
+cat /root/${JAIL_NAME}_db_password.txt"
 echo "All passwords are saved in /root/${JAIL_NAME}_db_password.txt"
-
-
 
 
 
