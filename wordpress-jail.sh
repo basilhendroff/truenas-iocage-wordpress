@@ -128,7 +128,7 @@ echo -e "${GREEN}Time for a cuppa. Installing packages will take a while.${NOCOL
 #
 #####
 
-# List packages to be auto-installed after jail creation
+# List packages to be auto-installed after jail creation (,"php74-pdo_mysql")
 # See https://make.wordpress.org/hosting/handbook/handbook/server-environment/
 
 cat <<__EOF__ >/tmp/pkg.json
@@ -137,7 +137,7 @@ cat <<__EOF__ >/tmp/pkg.json
   "php74","php74-curl","php74-dom","php74-exif","php74-fileinfo","php74-json","php74-mbstring",
   "php74-mysqli","php74-pecl-libsodium","php74-openssl","php74-pecl-imagick","php74-xml","php74-zip",
   "php74-filter","php74-gd","php74-iconv","php74-pecl-mcrypt","php74-simplexml","php74-xmlreader","php74-zlib",
-  "php74-ftp","php74-pecl-ssh2","php74-sockets","mariadb103-server","php74-pdo_mysql"
+  "php74-ftp","php74-pecl-ssh2","php74-sockets","mariadb103-server"
   ]
 }
 __EOF__
@@ -228,10 +228,10 @@ echo -e "${GREEN}Configure and start PHP-FPM...${NOCOLOUR}"
 #####
 
 # Copy and edit pre-written config files
-#iocage exec "${JAIL_NAME}" ln -s /usr/local/etc/php.ini-production /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" ln -s /usr/local/etc/php.ini-production /usr/local/etc/php.ini
 ##iocage exec "${JAIL_NAME}" cp -f /usr/local/etc/php-production.ini /usr/local/etc/php.ini
-iocage exec "${JAIL_NAME}" cp -f /mnt/includes/db_php.ini /usr/local/etc/php.ini
-iocage exec "${JAIL_NAME}" cp -f /mnt/includes/db_www.conf /usr/local/etc/php-fpm.d/www.conf
+#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/db_php.ini /usr/local/etc/php.ini
+#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/db_www.conf /usr/local/etc/php-fpm.d/www.conf
 
 iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
 
