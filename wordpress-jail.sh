@@ -175,7 +175,7 @@ echo -e "${GREEN}Caddy download...${NOCOLOUR}"
 #####
 
 FILE="caddy_2.1.1_freebsd_amd64.tar.gz"
-if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://github.com/caddyserver/caddy/releases/download/v2.1.1/"${FILE}"
+if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://github.com/caddyserver/caddy/releases/latest/download/"${FILE}"
 then
 	echo "Failed to download Caddy"
 	exit 1
@@ -244,12 +244,12 @@ echo -e "${GREEN}Configure and start MariaDB...${NOCOLOUR}"
 #####
 
 # Copy and edit pre-written config files
-iocage exec "${JAIL_NAME}" cp -f /mnt/includes/db_my-system.cnf /var/db/mysql/my.cnf
+#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/db_my-system.cnf /var/db/mysql/my.cnf
 #iocage exec "${JAIL_NAME}" sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
 
 iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
 
-iocage exec "${JAIL_NAME}" chown mysql:mysql /var/run/mysql
+#iocage exec "${JAIL_NAME}" chown mysql:mysql /var/run/mysql
 iocage exec "${JAIL_NAME}" service mysql-server start
 
 #####
@@ -265,14 +265,14 @@ DB_PASSWORD=$(openssl rand -base64 16)
 iocage exec "${JAIL_NAME}" mysql -u root -e "CREATE DATABASE wordpress;"
 #iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
 iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '123';"
-  iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
-  iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
-  iocage exec "${JAIL_NAME}" mysql -u root -e "DROP DATABASE IF EXISTS test;"
-  iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
+#  iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
+#  iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+#  iocage exec "${JAIL_NAME}" mysql -u root -e "DROP DATABASE IF EXISTS test;"
+#  iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 iocage exec "${JAIL_NAME}" mysql -u root -e "FLUSH PRIVILEGES;"
 
 iocage exec "${JAIL_NAME}" mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
-iocage exec "${JAIL_NAME}" cp -f /mnt/includes/db_my.cnf /root/.my.cnf
+#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/db_my.cnf /root/.my.cnf
 
 # Save passwords for later reference
 iocage exec "${JAIL_NAME}" echo "${DB_NAME} root password is ${DB_ROOT_PASSWORD}" > /root/${JAIL_NAME}_db_password.txt
