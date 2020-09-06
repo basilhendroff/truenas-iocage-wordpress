@@ -67,10 +67,10 @@ if [ -z "${POOL_PATH}" ]; then
   POOL_PATH="/mnt/$(iocage get -p)"
   echo 'POOL_PATH defaulting to '$POOL_PATH
 fi
-#if [ -z "${TIME_ZONE}" ]; then
-#  echo 'Configuration error: TIME_ZONE must be set'
-#  exit 1
-#fi
+if [ -z "${TIME_ZONE}" ]; then
+  echo 'Configuration error: TIME_ZONE must be set'
+  exit 1
+fi
 #if [ -z "${HOST_NAME}" ]; then
 #  echo 'Configuration error: HOST_NAME must be set'
 #  exit 1
@@ -234,6 +234,7 @@ iocage exec "${JAIL_NAME}" sed -i '' "s|post_max_size = 8M|post_max_size = 64M|"
 iocage exec "${JAIL_NAME}" sed -i '' "s|upload_max_filesize = 2M|upload_max_filesize = 64M|" /usr/local/etc/php.ini
 iocage exec "${JAIL_NAME}" sed -i '' "s|max_execution_time = 30|max_execution_time = 300|" /usr/local/etc/php.ini
 iocage exec "${JAIL_NAME}" sed -i '' "s|max_input_time = 60|max_execution_time = 1000|" /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" sed -i '' "s|;date.timezone =|date.timezone = ${TIME_ZONE}|" /usr/local/etc/php.ini
 
 
 #iocage exec "${JAIL_NAME}" ln -s /usr/local/etc/php.ini-production /usr/local/etc/php.ini
