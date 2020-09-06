@@ -296,7 +296,7 @@ echo -e "${GREEN}Installation complete!${NOCOLOUR}"
 #
 #####
 
-cat /root/${JAIL_NAME}_db_password.txt"
+cat /root/${JAIL_NAME}_db_password.txt
 echo "All passwords are saved in /root/${JAIL_NAME}_db_password.txt"
 
 
