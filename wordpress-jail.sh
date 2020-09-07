@@ -14,7 +14,7 @@ fi
 #####
 #
 echo -e "${GREEN}General configuration...${NOCOLOUR}"
-#
+echo
 #####
 
 # Initialize defaults
@@ -54,9 +54,9 @@ RELEASE=$(freebsd-version | sed "s/STABLE/RELEASE/g" | sed "s/-p[0-9]*//")
 JAILS_MOUNT=$(zfs get -H -o value mountpoint $(iocage get -p)/iocage)
 
 #####
-#
+# 
 echo -e "${GREEN}Input/Config Sanity checks...${NOCOLOUR}"
-#
+echo
 #####
 
 # Check that necessary variables were set by nextcloud-config
@@ -134,7 +134,7 @@ fi
 #
 echo -e "${GREEN}Jail Creation...`date`${NOCOLOUR}"
 echo -e "${GREEN}Time for a cuppa. Installing packages will take a while.${NOCOLOUR}"
-#
+echo
 #####
 
 # List packages to be auto-installed after jail creation (,"php74-pdo_mysql")
@@ -181,7 +181,7 @@ iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" /mnt/includes nullfs rw 0 0
 #####
 #
 echo -e "${GREEN}Caddy download...${NOCOLOUR}"
-#
+echo
 #####
 
 FILE="caddy_2.1.1_freebsd_amd64.tar.gz"
@@ -200,7 +200,7 @@ iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
 #####
 #
 echo -e "${GREEN}Wordpress download...${NOCOLOUR}"  
-#
+echo
 #####
 
 FILE="latest.tar.gz"
@@ -219,7 +219,7 @@ iocage exec "${JAIL_NAME}" chown -R www:www /usr/local/www/wordpress
 #####
 #
 echo -e "${GREEN}Configure and start Caddy...${NOCOLOUR}"
-#
+echo
 #####
 
 # Copy and edit pre-written config files
@@ -234,7 +234,7 @@ iocage exec "${JAIL_NAME}" service caddy start
 #####
 #
 echo -e "${GREEN}Configure and start PHP-FPM...${NOCOLOUR}"
-#
+echo
 #####
 
 # Copy and edit pre-written config files
@@ -252,7 +252,7 @@ iocage exec "${JAIL_NAME}" service php-fpm start
 #####
 #
 echo -e "${GREEN}Configure and start MariaDB...${NOCOLOUR}"
-#
+echo
 #####
 
 # Copy and edit pre-written config files
@@ -262,7 +262,7 @@ iocage exec "${JAIL_NAME}" service mysql-server start
 #####
 #
 echo -e "${GREEN}Create the WordPress database...${NOCOLOUR}"
-#
+echo
 #####
 
 ADMIN_PASSWORD=$(openssl rand -base64 12)
@@ -287,7 +287,7 @@ iocage exec "${JAIL_NAME}" echo "Wordpress admin password is ${ADMIN_PASSWORD}" 
 #####
 #
 echo -e "${GREEN}Configure WordPress...${NOCOLOUR}"
-#
+echo
 #####
 
 iocage exec "${JAIL_NAME}" cp -f /usr/local/www/wordpress/wp-config-sample.php /usr/local/www/wordpress/wp-config.php
@@ -299,7 +299,7 @@ iocage exec "${JAIL_NAME}" sed -i '' "s|password_here|${DB_PASSWORD}|" /usr/loca
 #####
 #
 echo -e "${GREEN}Installation complete!${NOCOLOUR}"
-#
+echo
 #####
 
 cat /root/${JAIL_NAME}_db_password.txt
