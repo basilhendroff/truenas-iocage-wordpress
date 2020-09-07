@@ -31,6 +31,15 @@ DB_PATH=""
 WP_PATH=""
 CONFIG_NAME="wordpress-config"
 
+# Exposed configuration parameters
+# php.ini
+MEMORY_LIMIT="256M"		# default=128M
+POST_MAX_SIZE="64M"		# default=8M
+UPLOAD_MAX_FILESIZE="64M"	# default=2M
+MAX_EXECUTION_TIME=300		# default=30 seconds
+MAX_INPUT_TIME=1000		# default=60 seconds
+
+
 # Check for wordpress-config and set configuration
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "${SCRIPT}")
@@ -229,20 +238,14 @@ echo -e "${GREEN}Configure and start PHP-FPM...${NOCOLOUR}"
 
 # Copy and edit pre-written config files
 iocage exec "${JAIL_NAME}" cp -f /usr/local/etc/php.ini-production /usr/local/etc/php.ini
-iocage exec "${JAIL_NAME}" sed -i '' "s|memory_limit = 128M|memory_limit = 256M|" /usr/local/etc/php.ini
-iocage exec "${JAIL_NAME}" sed -i '' "s|post_max_size = 8M|post_max_size = 64M|" /usr/local/etc/php.ini
-iocage exec "${JAIL_NAME}" sed -i '' "s|upload_max_filesize = 2M|upload_max_filesize = 64M|" /usr/local/etc/php.ini
-iocage exec "${JAIL_NAME}" sed -i '' "s|max_execution_time = 30|max_execution_time = 300|" /usr/local/etc/php.ini
-iocage exec "${JAIL_NAME}" sed -i '' "s|max_input_time = 60|max_execution_time = 1000|" /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" sed -i '' "s|memory_limit = 128M|memory_limit = ${MEMORY_LIMIT}|" /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" sed -i '' "s|post_max_size = 8M|post_max_size = ${POST_MAX_SIZE}|" /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" sed -i '' "s|upload_max_filesize = 2M|upload_max_filesize = ${UPLOAD_MAX_FILESIZE}|" /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" sed -i '' "s|max_execution_time = 30|max_execution_time = ${MAX_EXECUTION_TIME}|" /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" sed -i '' "s|max_input_time = 60|max_input_time = ${MAX_INPUT_TIME}|" /usr/local/etc/php.ini
 iocage exec "${JAIL_NAME}" sed -i '' "s|;date.timezone =|date.timezone = ${TIME_ZONE}|" /usr/local/etc/php.ini
 
-
-#iocage exec "${JAIL_NAME}" ln -s /usr/local/etc/php.ini-production /usr/local/etc/php.ini
-#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/db_php.ini /usr/local/etc/php.ini
-#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/db_www.conf /usr/local/etc/php-fpm.d/www.conf
-
 iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
-
 iocage exec "${JAIL_NAME}" service php-fpm start
 
 #####
@@ -252,12 +255,7 @@ echo -e "${GREEN}Configure and start MariaDB...${NOCOLOUR}"
 #####
 
 # Copy and edit pre-written config files
-#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/db_my-system.cnf /var/db/mysql/my.cnf
-#iocage exec "${JAIL_NAME}" sed -i '' "s|mytimezone|${TIME_ZONE}|" /usr/local/etc/php.ini
-
 iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
-
-#iocage exec "${JAIL_NAME}" chown mysql:mysql /var/run/mysql
 iocage exec "${JAIL_NAME}" service mysql-server start
 
 #####
@@ -273,14 +271,12 @@ DB_PASSWORD=$(openssl rand -base64 16)
 iocage exec "${JAIL_NAME}" mysql -u root -e "CREATE DATABASE wordpress;"
 iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
 iocage exec "${JAIL_NAME}" mysql -u root -e "FLUSH PRIVILEGES;"
-#iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '123';"
 #  iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
 #  iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
 #  iocage exec "${JAIL_NAME}" mysql -u root -e "DROP DATABASE IF EXISTS test;"
 #  iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 
 iocage exec "${JAIL_NAME}" mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
-#iocage exec "${JAIL_NAME}" cp -f /mnt/includes/db_my.cnf /root/.my.cnf
 
 # Save passwords for later reference
 iocage exec "${JAIL_NAME}" echo "MariaDB root password is ${DB_ROOT_PASSWORD}" > /root/${JAIL_NAME}_db_password.txt
@@ -306,119 +302,3 @@ echo -e "${GREEN}Installation complete!${NOCOLOUR}"
 
 cat /root/${JAIL_NAME}_db_password.txt
 echo "All passwords are saved in /root/${JAIL_NAME}_db_password.txt"
-
-
-
-
-
-
-
-#iocage restart "${JAIL_NAME}"
-#####
-#
-# Nextcloud Install 
-#
-#####
-
-#iocage exec "${JAIL_NAME}" touch /var/log/nextcloud.log
-#iocage exec "${JAIL_NAME}" chown www /var/log/nextcloud.log
-
-# Skip generation of config and database for reinstall (this already exists when doing a reinstall)
-#if [ "${REINSTALL}" == "true" ]; then
-#	echo "Reinstall detected, skipping generation of new config and database"
-#	if [ "${DATABASE}" = "mariadb" ]; then
-#	iocage exec "${JAIL_NAME}" cp -f /mnt/includes/my.cnf /root/.my.cnf
-#	iocage exec "${JAIL_NAME}" sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
-#	fi
-#else
-
-# Secure database, set root password, create Nextcloud DB, user, and password
-
-#  iocage exec "${JAIL_NAME}" mysql -u root -e "CREATE DATABASE nextcloud;"
-#  iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL ON nextcloud.* TO nextcloud@localhost IDENTIFIED BY '${DB_PASSWORD}';"
-#  iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
-#  iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
-#  iocage exec "${JAIL_NAME}" mysql -u root -e "DROP DATABASE IF EXISTS test;"
-#  iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
-#  iocage exec "${JAIL_NAME}" mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
-##  iocage exec "${JAIL_NAME}" mysqladmin reload
-#  iocage exec "${JAIL_NAME}" cp -f /mnt/includes/my.cnf /root/.my.cnf
-#  iocage exec "${JAIL_NAME}" sed -i '' "s|mypassword|${DB_ROOT_PASSWORD}|" /root/.my.cnf
-
-
-# Save passwords for later reference
-#iocage exec "${JAIL_NAME}" echo "${DB_NAME} root password is ${DB_ROOT_PASSWORD}" > /root/${JAIL_NAME}_db_password.txt
-#iocage exec "${JAIL_NAME}" echo "Nextcloud database password is ${DB_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
-#iocage exec "${JAIL_NAME}" echo "Nextcloud Administrator password is ${ADMIN_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt#
-
-# CLI installation and configuration of Nextcloud
-
-#if [ "${DATABASE}" = "mariadb" ]; then
-#  iocage exec "${JAIL_NAME}" su -m www -c "php /usr/local/www/nextcloud/occ maintenance:install --database=\"mysql\" --database-name=\"nextcloud\" --database-user=\"nextcloud\" --database-pass=\"${DB_PASSWORD}\" --database-host=\"localhost:/tmp/mysql.sock\" --admin-user=\"admin\" --admin-pass=\"${ADMIN_PASSWORD}\" --data-dir=\"/mnt/files\""
-#  iocage exec "${JAIL_NAME}" su -m www -c "php /usr/local/www/nextcloud/occ config:system:set mysql.utf8mb4 --type boolean --value=\"true\""
-#elif [ "${DATABASE}" = "pgsql" ]; then
-#  iocage exec "${JAIL_NAME}" su -m www -c "php /usr/local/www/nextcloud/occ maintenance:install --database=\"pgsql\" --database-name=\"nextcloud\" --database-user=\"nextcloud\" --database-pass=\"${DB_PASSWORD}\" --database-host=\"localhost:/tmp/.s.PGSQL.5432\" --admin-user=\"admin\" --admin-pass=\"${ADMIN_PASSWORD}\" --data-dir=\"/mnt/files\""
-#fi
-#iocage exec "${JAIL_NAME}" su -m www -c "php /usr/local/www/nextcloud/occ db:add-missing-indices"
-#iocage exec "${JAIL_NAME}" su -m www -c "php /usr/local/www/nextcloud/occ db:convert-filecache-bigint --no-interaction"
-#iocage exec "${JAIL_NAME}" su -m www -c "php /usr/local/www/nextcloud/occ config:system:set logtimezone --value=\"${TIME_ZONE}\""
-#iocage exec "${JAIL_NAME}" su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set log_type --value="file"'
-#iocage exec "${JAIL_NAME}" su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set logfile --value="/var/log/nextcloud.log"'
-#iocage exec "${JAIL_NAME}" su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set loglevel --value="2"'
-#iocage exec "${JAIL_NAME}" su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set logrotate_size --value="104847600"'
-#iocage exec "${JAIL_NAME}" su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set memcache.local --value="\OC\Memcache\APCu"'
-#iocage exec "${JAIL_NAME}" su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set redis host --value="/var/run/redis/redis.sock"'
-#iocage exec "${JAIL_NAME}" su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set redis port --value=0 --type=integer'
-#iocage exec "${JAIL_NAME}" su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set memcache.locking --value="\OC\Memcache\Redis"'
-#iocage exec "${JAIL_NAME}" su -m www -c "php /usr/local/www/nextcloud/occ config:system:set overwritehost --value=\"${HOST_NAME}\""
-#if [ $NO_CERT -eq 1 ]; then
-#  iocage exec "${JAIL_NAME}" su -m www -c "php /usr/local/www/nextcloud/occ config:system:set overwrite.cli.url --value=\"http://${HOST_NAME}/\""
-#  iocage exec "${JAIL_NAME}" su -m www -c "php /usr/local/www/nextcloud/occ config:system:set overwriteprotocol --value=\"http\""
-#else
-#  iocage exec "${JAIL_NAME}" su -m www -c "php /usr/local/www/nextcloud/occ config:system:set overwrite.cli.url --value=\"https://${HOST_NAME}/\""
-#  iocage exec "${JAIL_NAME}" su -m www -c "php /usr/local/www/nextcloud/occ config:system:set overwriteprotocol --value=\"https\""
-#fi
-#iocage exec "${JAIL_NAME}" su -m www -c 'php /usr/local/www/nextcloud/occ config:system:set htaccess.RewriteBase --value="/"'
-#iocage exec "${JAIL_NAME}" su -m www -c 'php /usr/local/www/nextcloud/occ maintenance:update:htaccess'
-#iocage exec "${JAIL_NAME}" su -m www -c "php /usr/local/www/nextcloud/occ config:system:set trusted_domains 1 --value=\"${HOST_NAME}\""
-#iocage exec "${JAIL_NAME}" su -m www -c "php /usr/local/www/nextcloud/occ config:system:set trusted_domains 2 --value=\"${IP}\""
-##iocage exec "${JAIL_NAME}" su -m www -c 'php /usr/local/www/nextcloud/occ app:enable encryption'
-##iocage exec "${JAIL_NAME}" su -m www -c 'php /usr/local/www/nextcloud/occ encryption:enable'
-##iocage exec "${JAIL_NAME}" su -m www -c 'php /usr/local/www/nextcloud/occ encryption:disable'
-#iocage exec "${JAIL_NAME}" su -m www -c 'php /usr/local/www/nextcloud/occ background:cron'
-#fi
-
-#iocage exec "${JAIL_NAME}" su -m www -c 'php -f /usr/local/www/nextcloud/cron.php'
-#iocage exec "${JAIL_NAME}" crontab -u www /mnt/includes/www-crontab
-
-# Add the www user to the redis group to allow it to access the socket
-#iocage exec "${JAIL_NAME}" pw usermod www -G redis
-
-# Don't need /mnt/includes any more, so unmount it
-#iocage fstab -r "${JAIL_NAME}" "${INCLUDES_PATH}" /mnt/includes nullfs rw 0 0
-
-#####
-#
-# Output results to console
-#
-#####
-
-# Done!
-#echo "Installation complete!"
-#  echo "Using your web browser, go to http://${HOST_NAME} to log in"
-
-
-#if [ "${REINSTALL}" == "true" ]; then
-#	echo "You did a reinstall, please use your old database and account credentials"
-#else
-
-#	echo "Default user is admin, password is ${ADMIN_PASSWORD}"
-#	echo ""
-#	echo "Database Information"
-#	echo "--------------------"
-#	echo "Database user = nextcloud"
-#	echo "Database password = ${DB_PASSWORD}"
-#	echo "The ${DB_NAME} root password is ${DB_ROOT_PASSWORD}"
-#	echo ""
-#	echo "All passwords are saved in /root/${JAIL_NAME}_db_password.txt"
-#fi
