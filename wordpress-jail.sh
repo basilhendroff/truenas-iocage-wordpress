@@ -12,7 +12,7 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 #####
-#
+echo
 echo -e "${GREEN}General configuration...${NOCOLOUR}"
 echo
 #####
@@ -54,7 +54,7 @@ RELEASE=$(freebsd-version | sed "s/STABLE/RELEASE/g" | sed "s/-p[0-9]*//")
 JAILS_MOUNT=$(zfs get -H -o value mountpoint $(iocage get -p)/iocage)
 
 #####
-# 
+echo 
 echo -e "${GREEN}Input/Config Sanity checks...${NOCOLOUR}"
 echo
 #####
@@ -131,7 +131,7 @@ fi
 #fi
 
 #####
-#
+echo
 echo -e "${GREEN}Jail Creation...`date`${NOCOLOUR}"
 echo -e "${GREEN}Time for a cuppa. Installing packages will take a while.${NOCOLOUR}"
 echo
@@ -161,9 +161,9 @@ fi
 rm /tmp/pkg.json
 
 #####
-#
+echo
 echo -e "${GREEN}Directory Creation and Mounting...`date`${NOCOLOUR}"
-#
+echo
 #####
 
 mkdir -p "${DB_PATH}"
@@ -179,7 +179,7 @@ iocage exec "${JAIL_NAME}" mkdir -p /mnt/includes
 iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" /mnt/includes nullfs rw 0 0
 
 #####
-#
+echo
 echo -e "${GREEN}Caddy download...${NOCOLOUR}"
 echo
 #####
@@ -198,7 +198,7 @@ fi
 iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
 
 #####
-#
+echo
 echo -e "${GREEN}Wordpress download...${NOCOLOUR}"  
 echo
 #####
@@ -217,7 +217,7 @@ fi
 iocage exec "${JAIL_NAME}" chown -R www:www /usr/local/www/wordpress
 
 #####
-#
+echo
 echo -e "${GREEN}Configure and start Caddy...${NOCOLOUR}"
 echo
 #####
@@ -232,7 +232,7 @@ iocage exec "${JAIL_NAME}" sysrc caddy_config="/usr/local/www/Caddyfile"
 iocage exec "${JAIL_NAME}" service caddy start
 
 #####
-#
+echo
 echo -e "${GREEN}Configure and start PHP-FPM...${NOCOLOUR}"
 echo
 #####
@@ -250,7 +250,7 @@ iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
 iocage exec "${JAIL_NAME}" service php-fpm start
 
 #####
-#
+echo
 echo -e "${GREEN}Configure and start MariaDB...${NOCOLOUR}"
 echo
 #####
@@ -260,7 +260,7 @@ iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
 iocage exec "${JAIL_NAME}" service mysql-server start
 
 #####
-#
+echo
 echo -e "${GREEN}Create the WordPress database...${NOCOLOUR}"
 echo
 #####
@@ -285,7 +285,7 @@ iocage exec "${JAIL_NAME}" echo "MariaDB database user wordpress password is ${D
 iocage exec "${JAIL_NAME}" echo "Wordpress admin password is ${ADMIN_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
 
 #####
-#
+echo
 echo -e "${GREEN}Configure WordPress...${NOCOLOUR}"
 echo
 #####
@@ -297,7 +297,7 @@ iocage exec "${JAIL_NAME}" sed -i '' "s|username_here|wordpress|" /usr/local/www
 iocage exec "${JAIL_NAME}" sed -i '' "s|password_here|${DB_PASSWORD}|" /usr/local/www/wordpress/wp-config.php
 
 #####
-#
+echo
 echo -e "${GREEN}Installation complete!${NOCOLOUR}"
 echo
 #####
