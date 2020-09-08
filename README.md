@@ -19,4 +19,9 @@ Do these within the jail.
 2. Secret key generation. Update wp-config.php
 https://api.wordpress.org/secret-key/1.1/salt/
 
-3. Set up multisite (optional)
+3. Set up reverse proxy
+
+4. Patch wp-config.php. See 
+
+
+5. Set up multisite (optional)
