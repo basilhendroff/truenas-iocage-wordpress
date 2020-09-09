@@ -33,12 +33,12 @@ CONFIG_NAME="wordpress-config"
 
 # Exposed configuration parameters
 # php.ini
+UPLOAD_MAX_FILESIZE="32M"	# default=2M
+POST_MAX_SIZE="48M"		# default=8M
 MEMORY_LIMIT="256M"		# default=128M
-POST_MAX_SIZE="64M"		# default=8M
-UPLOAD_MAX_FILESIZE="64M"	# default=2M
-MAX_EXECUTION_TIME=300		# default=30 seconds
+MAX_EXECUTION_TIME=600		# default=30 seconds
+MAX_INPUT_VARS=3000		# default=1000
 MAX_INPUT_TIME=1000		# default=60 seconds
-
 
 # Check for wordpress-config and set configuration
 SCRIPT=$(readlink -f "$0")
@@ -239,10 +239,11 @@ echo
 
 # Copy and edit pre-written config files
 iocage exec "${JAIL_NAME}" cp -f /usr/local/etc/php.ini-production /usr/local/etc/php.ini
-iocage exec "${JAIL_NAME}" sed -i '' "s|memory_limit = 128M|memory_limit = ${MEMORY_LIMIT}|" /usr/local/etc/php.ini
-iocage exec "${JAIL_NAME}" sed -i '' "s|post_max_size = 8M|post_max_size = ${POST_MAX_SIZE}|" /usr/local/etc/php.ini
 iocage exec "${JAIL_NAME}" sed -i '' "s|upload_max_filesize = 2M|upload_max_filesize = ${UPLOAD_MAX_FILESIZE}|" /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" sed -i '' "s|post_max_size = 8M|post_max_size = ${POST_MAX_SIZE}|" /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" sed -i '' "s|memory_limit = 128M|memory_limit = ${MEMORY_LIMIT}|" /usr/local/etc/php.ini
 iocage exec "${JAIL_NAME}" sed -i '' "s|max_execution_time = 30|max_execution_time = ${MAX_EXECUTION_TIME}|" /usr/local/etc/php.ini
+iocage exec "${JAIL_NAME}" sed -i '' "s|;max_input_vars = 1000|max_input_vars = ${MAX_INPUT_VARS}|" /usr/local/etc/php.ini
 iocage exec "${JAIL_NAME}" sed -i '' "s|max_input_time = 60|max_input_time = ${MAX_INPUT_TIME}|" /usr/local/etc/php.ini
 iocage exec "${JAIL_NAME}" sed -i '' "s|;date.timezone =|date.timezone = ${TIME_ZONE}|" /usr/local/etc/php.ini
 
