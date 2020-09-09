@@ -303,11 +303,11 @@ echo -e "${GREEN}Configure sSMTP...${NOCOLOUR}"
 echo
 #####
 
-iocage exec "${JAIL_NAME}" sed -i '' "s|sendmail	/usr/libexec/sendmail/sendmail||sendmail	/usr/local/sbin/ssmtp|" /etc/mail/mailer.conf
-iocage exec "${JAIL_NAME}" sed -i '' "s|mailq		/usr/libexec/sendmail/sendmail||mailq		/usr/local/sbin/ssmtp|" /etc/mail/mailer.conf
-iocage exec "${JAIL_NAME}" sed -i '' "s|newaliases	/usr/libexec/sendmail/sendmail||newaliases	/usr/local/sbin/ssmtp|" /etc/mail/mailer.conf
-iocage exec "${JAIL_NAME}" sed -i '' "s|hoststat	/usr/bin/true||hoststat	/usr/bin/true|" /etc/mail/mailer.conf
-iocage exec "${JAIL_NAME}" sed -i '' "s|purgestat	/usr/bin/true||purgestat	/usr/bin/true|" /etc/mail/mailer.conf
+iocage exec "${JAIL_NAME}" sed -i '' "s|sendmail\t/usr/libexec/sendmail/sendmail||sendmail\t/usr/local/sbin/ssmtp|" /etc/mail/mailer.conf
+iocage exec "${JAIL_NAME}" sed -i '' "s|mailq\t\t/usr/libexec/sendmail/sendmail||mailq\t\t/usr/local/sbin/ssmtp|" /etc/mail/mailer.conf
+iocage exec "${JAIL_NAME}" sed -i '' "s|newaliases\t/usr/libexec/sendmail/sendmail||newaliases\t/usr/local/sbin/ssmtp|" /etc/mail/mailer.conf
+iocage exec "${JAIL_NAME}" sed -i '' "s|hoststat\t/usr/bin/true||hoststat\t/usr/bin/true|" /etc/mail/mailer.conf
+iocage exec "${JAIL_NAME}" sed -i '' "s|purgestat\t/usr/bin/true||purgestat\t/usr/bin/true|" /etc/mail/mailer.conf
 
 iocage exec "${JAIL_NAME}" pw useradd ssmtp -g nogroup -h - -s /sbin/nologin -d /nonexistent -c "sSMTP pseudo-user"
 iocage exec "${JAIL_NAME}" chown ssmtp:wheel /usr/local/etc/ssmtp
