@@ -266,9 +266,14 @@ echo -e "${GREEN}Create the WordPress database...${NOCOLOUR}"
 echo
 #####
 
-ADMIN_PASSWORD=$(openssl rand -base64 12)
+#ADMIN_PASSWORD=$(openssl rand -base64 12)
 DB_ROOT_PASSWORD=$(openssl rand -base64 16)
 DB_PASSWORD=$(openssl rand -base64 16)
+
+# Save passwords for later reference
+iocage exec "${JAIL_NAME}" echo "MariaDB root password is ${DB_ROOT_PASSWORD}" > /root/${JAIL_NAME}_db_password.txt
+iocage exec "${JAIL_NAME}" echo "MariaDB database user wordpress password is ${DB_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
+#iocage exec "${JAIL_NAME}" echo "Wordpress admin password is ${ADMIN_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
 
 iocage exec "${JAIL_NAME}" mysql -u root -e "CREATE DATABASE wordpress;"
 iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
@@ -280,10 +285,6 @@ iocage exec "${JAIL_NAME}" mysql -u root -e "FLUSH PRIVILEGES;"
 
 iocage exec "${JAIL_NAME}" mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
 
-# Save passwords for later reference
-iocage exec "${JAIL_NAME}" echo "MariaDB root password is ${DB_ROOT_PASSWORD}" > /root/${JAIL_NAME}_db_password.txt
-iocage exec "${JAIL_NAME}" echo "MariaDB database user wordpress password is ${DB_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
-iocage exec "${JAIL_NAME}" echo "Wordpress admin password is ${ADMIN_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
 
 #####
 echo
@@ -303,11 +304,11 @@ echo -e "${GREEN}Configure sSMTP...${NOCOLOUR}"
 echo
 #####
 
-iocage exec "${JAIL_NAME}" sed -i '' "s|sendmail\t/usr/libexec/sendmail/sendmail||sendmail\t/usr/local/sbin/ssmtp|" /etc/mail/mailer.conf
-iocage exec "${JAIL_NAME}" sed -i '' "s|mailq\t\t/usr/libexec/sendmail/sendmail||mailq\t\t/usr/local/sbin/ssmtp|" /etc/mail/mailer.conf
-iocage exec "${JAIL_NAME}" sed -i '' "s|newaliases\t/usr/libexec/sendmail/sendmail||newaliases\t/usr/local/sbin/ssmtp|" /etc/mail/mailer.conf
-iocage exec "${JAIL_NAME}" sed -i '' "s|hoststat\t/usr/bin/true||hoststat\t/usr/bin/true|" /etc/mail/mailer.conf
-iocage exec "${JAIL_NAME}" sed -i '' "s|purgestat\t/usr/bin/true||purgestat\t/usr/bin/true|" /etc/mail/mailer.conf
+#iocage exec "${JAIL_NAME}" sed -i '' "s|sendmail\t/usr/libexec/sendmail/sendmail||sendmail\t/usr/local/sbin/ssmtp|" /etc/mail/mailer.conf
+#iocage exec "${JAIL_NAME}" sed -i '' "s|mailq\t\t/usr/libexec/sendmail/sendmail||mailq\t\t/usr/local/sbin/ssmtp|" /etc/mail/mailer.conf
+#iocage exec "${JAIL_NAME}" sed -i '' "s|newaliases\t/usr/libexec/sendmail/sendmail||newaliases\t/usr/local/sbin/ssmtp|" /etc/mail/mailer.conf
+#iocage exec "${JAIL_NAME}" sed -i '' "s|hoststat\t/usr/bin/true||hoststat\t/usr/bin/true|" /etc/mail/mailer.conf
+#iocage exec "${JAIL_NAME}" sed -i '' "s|purgestat\t/usr/bin/true||purgestat\t/usr/bin/true|" /etc/mail/mailer.conf
 
 iocage exec "${JAIL_NAME}" pw useradd ssmtp -g nogroup -h - -s /sbin/nologin -d /nonexistent -c "sSMTP pseudo-user"
 iocage exec "${JAIL_NAME}" chown ssmtp:wheel /usr/local/etc/ssmtp
