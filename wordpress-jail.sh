@@ -303,11 +303,21 @@ echo -e "${GREEN}Configure sSMTP...${NOCOLOUR}"
 echo
 #####
 
+iocage exec "${JAIL_NAME}" sed -i '' "s|sendmail	/usr/libexec/sendmail/sendmail||sendmail	/usr/local/sbin/ssmtp|" /etc/mail/mailer.conf
+iocage exec "${JAIL_NAME}" sed -i '' "s|mailq		/usr/libexec/sendmail/sendmail||mailq		/usr/local/sbin/ssmtp|" /etc/mail/mailer.conf
+iocage exec "${JAIL_NAME}" sed -i '' "s|newaliases	/usr/libexec/sendmail/sendmail||newaliases	/usr/local/sbin/ssmtp|" /etc/mail/mailer.conf
+iocage exec "${JAIL_NAME}" sed -i '' "s|hoststat	/usr/bin/true||hoststat	/usr/bin/true|" /etc/mail/mailer.conf
+iocage exec "${JAIL_NAME}" sed -i '' "s|purgestat	/usr/bin/true||purgestat	/usr/bin/true|" /etc/mail/mailer.conf
+
 iocage exec "${JAIL_NAME}" pw useradd ssmtp -g nogroup -h - -s /sbin/nologin -d /nonexistent -c "sSMTP pseudo-user"
-iocage exec "${JAIL_NAME}" chown ssmtp:wheel /usr/local/etc/ssmtp && chmod 4750 /usr/local/etc/ssmtp
+iocage exec "${JAIL_NAME}" chown ssmtp:wheel /usr/local/etc/ssmtp
+iocage exec "${JAIL_NAME}" chmod 4750 /usr/local/etc/ssmtp
 iocage exec "${JAIL_NAME}" cp /usr/local/etc/ssmtp/ssmtp.conf.sample /usr/local/etc/ssmtp/ssmtp.conf
-iocage exec "${JAIL_NAME}" chown ssmtp:wheel /usr/local/etc/ssmtp/ssmtp.conf && chmod 640 /usr/local/etc/ssmtp/ssmtp.conf
-iocage exec "${JAIL_NAME}" chown ssmtp:nogroup /usr/local/sbin/ssmtp && chmod 4555 /usr/local/sbin/ssmtp
+iocage exec "${JAIL_NAME}" cp /usr/local/etc/ssmtp/revaliases.sample /usr/local/etc/ssmtp/revaliases
+iocage exec "${JAIL_NAME}" chown ssmtp:wheel /usr/local/etc/ssmtp/ssmtp.conf
+iocage exec "${JAIL_NAME}" chmod 640 /usr/local/etc/ssmtp/ssmtp.conf
+iocage exec "${JAIL_NAME}" chown ssmtp:nogroup /usr/local/sbin/ssmtp
+iocage exec "${JAIL_NAME}" chmod 4555 /usr/local/sbin/ssmtp
 
 #####
 echo
