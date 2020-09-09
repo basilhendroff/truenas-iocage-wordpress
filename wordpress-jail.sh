@@ -304,11 +304,10 @@ echo
 #####
 
 iocage exec "${JAIL_NAME}" pw useradd ssmtp -g nogroup -h - -s /sbin/nologin -d /nonexistent -c "sSMTP pseudo-user"
-iocage exec "${JAIL_NAME}" cd /usr/local/etc/ssmtp && chown ssmtp:wheel . && chmod 4750 .
+iocage exec "${JAIL_NAME}" chown ssmtp:wheel /usr/local/etc/ssmtp && chmod 4750 /usr/local/etc/ssmtp
 iocage exec "${JAIL_NAME}" cp /usr/local/etc/ssmtp/ssmtp.conf.sample /usr/local/etc/ssmtp/ssmtp.conf
-iocage exec "${JAIL_NAME}" cd /usr/local/etc/ssmtp && chown ssmtp:wheel . ssmtp.conf && chmod 640 ssmtp.conf
-iocage exec "${JAIL_NAME}" chown ssmtp:nogroup /usr/local/sbin/ssmtp
-iocage exec "${JAIL_NAME}" chmod 4555 /usr/local/sbin/ssmtp
+iocage exec "${JAIL_NAME}" chown ssmtp:wheel /usr/local/etc/ssmtp/ssmtp.conf && chmod 640 /usr/local/etc/ssmtp/ssmtp.conf
+iocage exec "${JAIL_NAME}" chown ssmtp:nogroup /usr/local/sbin/ssmtp && chmod 4555 /usr/local/sbin/ssmtp
 
 #####
 echo
@@ -319,5 +318,5 @@ echo
 cat /root/${JAIL_NAME}_db_password.txt
 echo "All passwords are saved in /root/${JAIL_NAME}_db_password.txt"
 echo
-echo "Proceed to the POST-INSTALLATION TASKS"
+echo "Proceed to the POST-INSTALLATION Tasks"
 
