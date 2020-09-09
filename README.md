@@ -21,7 +21,9 @@ https://api.wordpress.org/secret-key/1.1/salt/
 
 3. Set up reverse proxy
 
-4. Patch wp-config.php. See 
+4. Patch wp-config.php. See https://www.cloudbooklet.com/install-wordpress-with-nginx-reverse-proxy-to-apache-on-ubuntu-18-04-google-cloud/
+
+5. Run WP configuration
 
 
 5. Set up multisite (optional)
