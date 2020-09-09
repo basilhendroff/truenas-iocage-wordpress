@@ -147,7 +147,7 @@ cat <<__EOF__ >/tmp/pkg.json
   "php74-mysqli","php74-pecl-libsodium","php74-openssl","php74-pecl-imagick","php74-xml","php74-zip",
   "php74-filter","php74-gd","php74-iconv","php74-pecl-mcrypt","php74-simplexml","php74-xmlreader","php74-zlib",
   "php74-ftp","php74-pecl-ssh2","php74-sockets","mariadb103-server",
-  "unix2dos"
+  "unix2dos","ssmtp"
   ]
 }
 __EOF__
@@ -299,6 +299,19 @@ iocage exec "${JAIL_NAME}" sed -i '' "s|password_here|${DB_PASSWORD}|" /usr/loca
 
 #####
 echo
+echo -e "${GREEN}Configure sSMTP...${NOCOLOUR}"
+echo
+#####
+
+iocage exec "${JAIL_NAME}" pw useradd ssmtp -g nogroup -h - -s /sbin/nologin -d /nonexistent -c "sSMTP pseudo-user"
+iocage exec "${JAIL_NAME}" cd /usr/local/etc/ssmtp && chown ssmtp:wheel . && chmod 4750 .
+iocage exec "${JAIL_NAME}" cp /usr/local/etc/ssmtp/ssmtp.conf.sample /usr/local/etc/ssmtp/ssmtp.conf
+iocage exec "${JAIL_NAME}" cd /usr/local/etc/ssmtp && chown ssmtp:wheel . ssmtp.conf && chmod 640 ssmtp.conf
+iocage exec "${JAIL_NAME}" chown ssmtp:nogroup /usr/local/sbin/ssmtp
+iocage exec "${JAIL_NAME}" chmod 4555 /usr/local/sbin/ssmtp
+
+#####
+echo
 echo -e "${GREEN}Installation complete!${NOCOLOUR}"
 echo
 #####
@@ -306,8 +319,5 @@ echo
 cat /root/${JAIL_NAME}_db_password.txt
 echo "All passwords are saved in /root/${JAIL_NAME}_db_password.txt"
 echo
-echo "POST-INSTALLATION TASKS"
-echo "1. Secure the database"
-echo "2. Seed"
-echo "3. Set up multi-site (optional)"
+echo "Proceed to the POST-INSTALLATION TASKS"
 
