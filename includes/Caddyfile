@@ -1,9 +1,18 @@
 :80 {
   root * /usr/local/www/wordpress
   encode gzip
-  php_fastcgi 127.0.0.1:9000
+  php_fastcgi 127.0.0.1:9000 {
+    env SERVER_PORT 80
+  }
   file_server
   
   # Prevent malicious PHP uploads from running
   respond /uploads/*.php 404
+
+  log {
+    format json
+    output file /var/log/access.log {
+      roll_keep 7
+    }
+  }
 }
