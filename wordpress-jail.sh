@@ -147,7 +147,7 @@ cat <<__EOF__ >/tmp/pkg.json
   "php74-mysqli","php74-pecl-libsodium","php74-openssl","php74-pecl-imagick","php74-xml","php74-zip",
   "php74-filter","php74-gd","php74-iconv","php74-pecl-mcrypt","php74-simplexml","php74-xmlreader","php74-zlib",
   "php74-ftp","php74-pecl-ssh2","php74-sockets",
-  "mariadb103-server","unix2dos","ssmtp","php74-xmlrpc"
+  "mariadb103-server","unix2dos","ssmtp","php74-xmlrpc","php74-ctype"
   ]
 }
 __EOF__
