@@ -6,13 +6,20 @@
   }
   file_server
   
-  # Prevent malicious PHP uploads from running
-  respond /uploads/*.php 404
-
   log {
     format json
     output file /var/log/access.log {
       roll_keep 7
     }
   }
+
+  # External access denied to these files.
+  @forbidden {
+    path /wp-content/uploads/*.php
+    path /.user.ini
+    path /wp-content/debug.log
+  }
+
+  respond @forbidden 404
 }
+
