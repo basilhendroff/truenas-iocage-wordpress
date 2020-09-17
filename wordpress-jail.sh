@@ -90,7 +90,7 @@ if [ -z "${DB_PATH}" ]; then
   DB_PATH="${POOL_PATH}"/apps/wordpress/db
 fi
 if [ -z "${FILES_PATH}" ]; then
-  WP_PATH="${POOL_PATH}"/apps/wordpress/files
+  FILES_PATH="${POOL_PATH}"/apps/wordpress/files
 fi
 
 # Sanity check DB_PATH and FILES_PATH -- they have to be different and can't be the same as POOL_PATH
