@@ -28,7 +28,7 @@ JAIL_NAME="wordpress"
 TIME_ZONE=""
 HOST_NAME=""
 DB_PATH=""
-WP_PATH=""
+FILES_PATH=""
 CONFIG_NAME="wordpress-config"
 
 # Exposed configuration parameters
@@ -85,23 +85,23 @@ fi
 #  exit 1
 #fi
 
-# If DB_PATH and WP_PATH weren't set in wordpress-config, set them
+# If DB_PATH and FILES_PATH weren't set in wordpress-config, set them
 if [ -z "${DB_PATH}" ]; then
   DB_PATH="${POOL_PATH}"/apps/wordpress/db
 fi
-if [ -z "${WP_PATH}" ]; then
-  WP_PATH="${POOL_PATH}"/apps/wordpress/wp
+if [ -z "${FILES_PATH}" ]; then
+  WP_PATH="${POOL_PATH}"/apps/wordpress/files
 fi
 
-# Sanity check DB_PATH and WP_PATH -- they have to be different and can't be the same as POOL_PATH
-if [ "${WP_PATH}" = "${DB_PATH}" ]
+# Sanity check DB_PATH and FILES_PATH -- they have to be different and can't be the same as POOL_PATH
+if [ "${FILES_PATH}" = "${DB_PATH}" ]
 then
-  echo "WP_PATH and DB_PATH must be different!"
+  echo "FILES_PATH and DB_PATH must be different!"
   exit 1
 fi
-if [ "${DB_PATH}" = "${POOL_PATH}" ] || [ "${WP_PATH}" = "${POOL_PATH}" ]
+if [ "${DB_PATH}" = "${POOL_PATH}" ] || [ "${FILES_PATH}" = "${POOL_PATH}" ]
 then
-  echo "DB_PATH and WP_PATH must all be different from POOL_PATH!"
+  echo "DB_PATH and FILES_PATH must all be different from POOL_PATH!"
   exit 1
 fi
 
@@ -170,10 +170,10 @@ mkdir -p "${DB_PATH}"
 chown -R 88:88 "${DB_PATH}"
 iocage fstab -a "${JAIL_NAME}" "${DB_PATH}"  /var/db/mysql  nullfs  rw  0  0
 
-mkdir -p "${WP_PATH}"
-chown -R 80:80 "${WP_PATH}"
+mkdir -p "${FILES_PATH}"
+chown -R 80:80 "${FILES_PATH}"
 iocage exec "${JAIL_NAME}" mkdir -p /usr/local/www/wordpress
-iocage fstab -a "${JAIL_NAME}" "${WP_PATH}"  /usr/local/www/wordpress  nullfs  rw  0  0
+iocage fstab -a "${JAIL_NAME}" "${FILES_PATH}"  /usr/local/www/wordpress  nullfs  rw  0  0
 
 iocage exec "${JAIL_NAME}" mkdir -p /mnt/includes
 iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" /mnt/includes nullfs rw 0 0
