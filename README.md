@@ -97,9 +97,9 @@ Questions or issues about this resource can be raised in [this forum thread](). 
 ### Troubleshooting
 
 ### To Do
-Some, if not all, of the manual post-installation tasks could be included into the script. I was also unsuccesful in getting later versions of MariaDB to work with WordPress. If you're able to assist with any of this, or help refine the script and its dependencies, please consider submitting a pull request at https://github.com/basilhendroff/freenas-iocage-wordpress. 
+There are a number of opportunites to continue to improve the script. Much of is outside my current knowledge base. For instance, some, if not all, of the manual post-installation tasks could be included in the script. I was also unsuccessful in getting later versions of MariaDB to work with WordPress. You can find the outstanding to-do list at xxx. If you're able to assist with any of this, or can help refine the script in other ways, please consider submitting a pull request at https://github.com/basilhendroff/freenas-iocage-wordpress. 
 
-I'd also like to hear of any other suggestions for improving the performance, reliability, or security of this resource in the context of its scope i.e HTTP for the WordPress jail(s) as the local network is trusted with external (HTTPS) access granted via a reverse proxy. It's not my intention to expand the resource scope.
+I'd also like to hear of any other suggestions for improving the performance, reliability, or security of this resource in the context of its scope i.e HTTP for the WordPress jail (assumes the local network is trusted), with external (HTTPS) access granted via a reverse proxy. It's not my intention to expand the resource scope.
 
 ## Disclaimer
 It's your data. It's your responsibility. This resource is provided as a community service. Use it at your own risk.
