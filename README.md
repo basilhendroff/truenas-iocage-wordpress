@@ -29,7 +29,7 @@ https://api.wordpress.org/secret-key/1.1/salt/
 5. Set up multisite (optional)
 
 # freenas-iocage-wordpress
-Script to create an iocage jail on FreeNAS for the latest WordPress release, including Caddy 2.1.1, MariaDB 7.3 and PHP74 scripting language.
+Script to create an iocage jail on FreeNAS for the latest WordPress release, including Caddy 2.1.1, MariaDB 7.3 and PHP 7.4 scripting language.
 
 This script will create an iocage jail on FreeNAS 11.3 or TrueNAS CORE 12.0 with the latest release of WordPress, along with its dependencies. It will configure the jail to store the database and WordPress data outside the jail, so it will not be lost in the event you need to rebuild the jail.
 
@@ -39,7 +39,7 @@ This script will work with FreeNAS 11.3, and it should also work with TrueNAS CO
 ## Usage
 
 ### Prerequisites (Reverse Proxy)
-The WordPress jail created by this script is designed to work behind a reverse proxy.
+The WordPress jail created by this script is designed to work behind a reverse proxy. If you don't have a reverse proxy set up, you must set this up first. Do not attempt to access the WordPress jail directly to do thie initial setup of WordPress. It messes with the formatting making it impossible (well, I haven't worked out how) to retrofit WordPress behind a reverse proxy later. I cannot impress this enough, you must do the initial setup of WordPress using the FQDN for the jail and not the jail IP.
 
 ### Prerequisites (Other)
 Although not required, it's recommended to create a Dataset named `apps` with a sub-dataset named `wordpress` on your main storage pool and nested sub-datasets `files` and `db`.  Many other jail guides also store their configuration and data in subdirectories of `pool/apps/` 
@@ -81,10 +81,12 @@ DB_PATH="/mnt/tank/apps/wordpress/site1/db"
 ```
 
 ### Execution
-Once you've downloaded the script and prepared the configuration file, run this script (`script wordpress.log ./wordpress-jail.sh`).  The script will run for several minutes.  When it finishes, your jail will be created, and WordPress will be installed with all its dependencies. Next, proceed to the post-installation tasks. You must set up the WordPress jail behind your reverse proxy. You can configure WordPress using the FQDN for the jail. Do not attempt to configure WordPress via the jail IP address. It messes with the formatting making it impossible (well, I haven't worked out how) to retrofit WordPress behind a reverse proxy later.
+Once you've downloaded the script and prepared the configuration file, run this script (`script wordpress.log ./wordpress-jail.sh`).  The script will run for several minutes.  When it finishes, your jail will be created, and WordPress will be installed with all its dependencies. Next, proceed to the post-installation tasks. 
 
 ### To Do
-I'd appreciate any suggestions (or, better yet, pull requests) to improve the various config files I'm using.  Most of them are adapted from the default configuration files that ship with the software in question, and have only been lightly edited to work in this application.  But if there are changes to settings or organization that could improve performance, reliability, or security, I'd like to hear about them.
+Some, if not all, of the manual post-installation tasks could be included into the script. I was also unsuccesful in getting later versions of MariaDB to work with WordPress. If you're able to assist with any of this, or help refine the script and its dependencies, please consider submitting a pull request at https://github.com/basilhendroff/freenas-iocage-wordpress. 
+
+I'd also like to hear of any other suggestions for improving the performance, reliability, or security of this resource in the context of the present scope i.e HTTP for the WordPress jail(s) as the local network is trusted with external (HTTPS) access to the WordPress jail(s) granted via a reverse proxy. This resource scope will not change.
 
 ## Disclaimer
 It's your data. It's your responsibility. This resource is provided as a community service. Use it at your own risk.
