@@ -81,7 +81,7 @@ DB_PATH="/mnt/tank/apps/wordpress/site1/db"
 ```
 
 ### Execution
-Once you've downloaded the script and prepared the configuration file, run this script (`script wordpress.log ./wordpress-jail.sh`).  The script will run for several minutes.  When it finishes, your jail will be created, and WordPress will be installed with all its dependencies. Next, proceed to the post-installation tasks. You must set up the WordPress jail behind your reverse proxy. You can configure WordPress using the FQDN for the jail. Do not attempt to configure WordPress via the jail IP address. It messes with the formatting making it difficult (I haven't worked it out!) to retrofit WordPress behind a reverse proxy later.
+Once you've downloaded the script and prepared the configuration file, run this script (`script wordpress.log ./wordpress-jail.sh`).  The script will run for several minutes.  When it finishes, your jail will be created, and WordPress will be installed with all its dependencies. Next, proceed to the post-installation tasks. You must set up the WordPress jail behind your reverse proxy. You can configure WordPress using the FQDN for the jail. Do not attempt to configure WordPress via the jail IP address. It messes with the formatting making it impossible (well, I haven't worked out how) to retrofit WordPress behind a reverse proxy later.
 
 ### To Do
 I'd appreciate any suggestions (or, better yet, pull requests) to improve the various config files I'm using.  Most of them are adapted from the default configuration files that ship with the software in question, and have only been lightly edited to work in this application.  But if there are changes to settings or organization that could improve performance, reliability, or security, I'd like to hear about them.
