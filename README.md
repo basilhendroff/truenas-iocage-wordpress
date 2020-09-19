@@ -88,7 +88,7 @@ Questions or issues about this resource can be raised in [this forum thread](). 
 
 ### Troubleshooting
 
-Having installation or post-installation issues? First thing to check is `wordpress-config`. You may be asked to provide this if requesting assistance in the discussion area for this resource. You may find the logs below useful for troubleshooting. Assuming you jail is named `wordpress`, you can access these through a terminal using `iocage console wordpress`.
+Having installation or post-installation issues? First thing to check is `wordpress-config`. You may be asked to provide this if requesting assistance in the discussion area. You may find the logs below useful for troubleshooting. Assuming you jail is named `wordpress`, you can access these through a terminal using `iocage console wordpress`.
 1. The Caddy webserver log file at `/var/log/caddy.log`
 2. The MariaDB error log for the site `wordpress` at `/var/db/mysql/wordpress.err`
 3. The PHP-FPM log file at `/var/log/php-fpm.log`
@@ -97,7 +97,11 @@ Having installation or post-installation issues? First thing to check is `wordpr
 ### To Do
 There are a number of opportunities to continue to improve the script. Much of it is outside my current sphere of knowledge. You can find the outstanding to-do list at xxx. If you're able to assist with any of this, or can help refine the script in other ways, please consider submitting a pull request at https://github.com/basilhendroff/freenas-iocage-wordpress. 
 
-I'd also like to hear of any other suggestions for improving the performance, reliability, or security of this resource in the context of its scope i.e HTTP for the WordPress jail (assumes the local network is trusted), with external (HTTPS) access granted via a reverse proxy. It's not my intention to expand the resource scope.
+I'd also like to hear of any other suggestions for improving the performance, reliability, or security of the scripted resource in the context of its scope, which is: 
+
+> The assumption is that the local network is trusted so local HTTP access to the WordPress jail is considered acceptable. External (HTTPS) access to the WordPress service is granted via a reverse proxy.
+
+It's not my intention to expand the resource scope.
 
 ## Disclaimer
 It's your data. It's your responsibility. This resource is provided as a community service. Use it at your own risk.
