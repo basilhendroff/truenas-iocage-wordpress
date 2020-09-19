@@ -39,7 +39,9 @@ This script will work with FreeNAS 11.3, and it should also work with TrueNAS CO
 ## Usage
 
 ### Prerequisites (Reverse Proxy)
-The WordPress jail created by this script is designed to work behind a reverse proxy. If you don't have a reverse proxy set up, you must set this up first. Do not attempt to access the WordPress jail directly to do thie initial setup of WordPress. It messes with the formatting making it impossible (well, I haven't worked out how) to retrofit WordPress behind a reverse proxy later. I cannot impress this enough, you must do the initial setup of WordPress using the FQDN for the jail and not the jail IP.
+The WordPress jail created by this script is designed to work behind a reverse proxy. If you don't already have a reverse proxy in place, you must set this up first. Do not attempt to access the WordPress jail directly to do thie initial setup of WordPress. It messes with the formatting making it impossible (well, I haven't worked out how) to retrofit WordPress behind a reverse proxy later. I cannot impress the importance of this enough; you must do the initial setup of WordPress using the FQDN for the jail (as configured in the reverse proxy) and not via the jail IP.
+
+DO NOT ATTEMPT TO SET UP AND USE THIS RESOURCE WITHOUT A REVERSE PROXY. IT MAY BE IMPOSSIBLE TO LATER RETROFIT IT BEHIND A REVERSE PROXY.
 
 ### Prerequisites (Other)
 Although not required, it's recommended to create a Dataset named `apps` with a sub-dataset named `wordpress` on your main storage pool and nested sub-datasets `files` and `db`.  Many other jail guides also store their configuration and data in subdirectories of `pool/apps/` 
@@ -82,6 +84,12 @@ DB_PATH="/mnt/tank/apps/wordpress/site1/db"
 
 ### Execution
 Once you've downloaded the script and prepared the configuration file, run this script (`script wordpress.log ./wordpress-jail.sh`).  The script will run for several minutes.  When it finishes, your jail will be created, and WordPress will be installed with all its dependencies. Next, proceed to the post-installation tasks. 
+
+### Post-Installation Tasks
+
+
+
+## Support and Discussion
 
 ### To Do
 Some, if not all, of the manual post-installation tasks could be included into the script. I was also unsuccesful in getting later versions of MariaDB to work with WordPress. If you're able to assist with any of this, or help refine the script and its dependencies, please consider submitting a pull request at https://github.com/basilhendroff/freenas-iocage-wordpress. 
