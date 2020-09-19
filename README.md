@@ -2,12 +2,6 @@
 
 Under development
 
-###Troubleshooting
-1. Caddy - /var/log/caddy.log
-2. PHP-FPM - /var/log/php-fpm.log
-3. MariaDB - var/db/mysql/wordpress.err
-4. WordPress - 
-
 ###Post-Installation Tasks
 
 Do these within the jail.
@@ -26,10 +20,8 @@ https://api.wordpress.org/secret-key/1.1/salt/
 5. Run WP configuration
 
 
-5. Set up multisite (optional)
-
 # freenas-iocage-wordpress
-Script to create an iocage jail on FreeNAS for the latest WordPress release, including Caddy 2.1.1, MariaDB 7.3 and PHP 7.4 scripting language.
+Script to create an iocage jail on FreeNAS for the latest WordPress release, including Caddy, MariaDB and the PHP scripting language.
 
 This script will create an iocage jail on FreeNAS 11.3 or TrueNAS CORE 12.0 with the latest release of WordPress, along with its dependencies. It will configure the jail to store the database and WordPress data outside the jail, so it will not be lost in the event you need to rebuild the jail.
 
@@ -90,11 +82,17 @@ Once you've downloaded the script and prepared the configuration file, run this 
 
 ## Support and Discussion
 
-There are numberous resources for WordPress and it's themes and plugins.
+There are self-help resources for WordPress at https://wordpress.org/support/ and support for WordPress, it's themes and plugins in the WordPress support forums at https://wordpress.org/support/forums/.
 
-Questions or issues about this resource can be raised in [this forum thread](). Support is limited to getting WordPress up and running in a FreeNAS jail. It doesn't extend to theme and plugin set-up and configuration.
+Questions or issues about this resource can be raised in [this forum thread](). Support is limited to getting WordPress up and running in a FreeNAS jail. 
 
 ### Troubleshooting
+
+Having installation or post-installation issues? First thing to check is `wordpress-config`. You may be asked to provide this if requesting assistance in the discussion area for this resource. You may find the logs below useful for troubleshooting. Assuming you jail is named `wordpress`, you can access these through a terminal using `iocage console wordpress`.
+1. The Caddy webserver log file at `/var/log/caddy.log`
+2. The MariaDB error log for the site `wordpress` at `/var/db/mysql/wordpress.err`
+3. The PHP-FPM log file at `/var/log/php-fpm.log`
+4. If enabled, the WordPress log file at `/usr/local/www/wordpress/wp-content/debug.log`
 
 ### To Do
 There are a number of opportunites to continue to improve the script. Much of is outside my current knowledge base. For instance, some, if not all, of the manual post-installation tasks could be included in the script. I was also unsuccessful in getting later versions of MariaDB to work with WordPress. You can find the outstanding to-do list at xxx. If you're able to assist with any of this, or can help refine the script in other ways, please consider submitting a pull request at https://github.com/basilhendroff/freenas-iocage-wordpress. 
