@@ -95,7 +95,7 @@ Having installation or post-installation issues? First thing to check is `wordpr
 4. If enabled, the WordPress log file at `/usr/local/www/wordpress/wp-content/debug.log`
 
 ### To Do
-There are a number of opportunities to continue to improve the script. Much of it is outside my current sphere of knowledge. You can find the outstanding to-do list at xxx. If you're able to assist with any of this, or can help refine the script in other ways, please consider submitting a pull request at https://github.com/basilhendroff/freenas-iocage-wordpress. 
+There are a number of opportunities to continue to improve the script. Much of it is outside my current sphere of knowledge. You can find the outstanding to-do list at https://blog.udance.com.au/2020/09/20/wordpress-script-opportunities-for-improvement/. If you're able to assist with any of this, or can help refine the script in other ways, please consider submitting a pull request at https://github.com/basilhendroff/freenas-iocage-wordpress. 
 
 I'd also like to hear of any other suggestions for improving the performance, reliability, or security of the scripted resource in the context of its scope, which is: 
 
