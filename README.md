@@ -49,7 +49,7 @@ For optimal performance, set the record size of the `db` dataset to 16 KB (under
 If these datasets are not present, directories `/apps/wordpress/files` and `/apps/wordpress/db` will be created in `$POOL_PATH`.
 
 ### Installation
-Download the repository to a convenient directory on your FreeNAS system by changing to that directory and running `git clone https://github.com/basilhendroff/freenas-iocage-wordpress`.  Then change into the new `freenas-iocage-wordpress` directory and create a file called `wordpress-config` with your favorite text editor.  In its minimal form, it would look like this:
+Download the repository to a convenient directory on your FreeNAS system by changing to that directory and running `git clone https://github.com/basilhendroff/freenas-iocage-wordpress`.  Then change into the new `freenas-iocage-wordpress` directory and create a file called `wordpress-config` with your favorite text editor.  In its minimal form, applicable to single site, it would look like this:
 ```
 JAIL_IP="192.168.1.4"
 DEFAULT_GW_IP="192.168.1.1"
@@ -70,8 +70,21 @@ In addition, there are some other options which have sensible defaults, but can 
 - INTERFACE: The network interface to use for the jail. Defaults to `vnet0`.
 - VNET: Whether to use the iocage virtual network stack. Defaults to `on`.
 
+In a multiple site, multiple database configuration, the minimal form for `wordpress-config` changes to:
+```
+JAIL_IP="192.168.1.4"
+DEFAULT_GW_IP="192.168.1.1"
+TIME_ZONE="Australia/Perth"
+JAIL_NAME="site1"
+FILES_PATH="/mnt/tank/apps/wordpress/site1/files"
+DB_PATH="/mnt/tank/apps/wordpress/site1/db"
+```
+
 ### Execution
-Once you've downloaded the script and prepared the configuration file, run this script (`script wordpress.log ./wordpress-jail.sh`).  The script will run for several minutes.  When it finishes, your jail will be created, and WordPress will be installed with all its dependencies. Next, proceed to the post-installation tasks. You must set up the WordPress jail behind your reverse proxy. You can configure WordPress using the FQDN for the jail. Do not attempt to configure WordPress via the jail IP address. 
+Once you've downloaded the script and prepared the configuration file, run this script (`script wordpress.log ./wordpress-jail.sh`).  The script will run for several minutes.  When it finishes, your jail will be created, and WordPress will be installed with all its dependencies. Next, proceed to the post-installation tasks. You must set up the WordPress jail behind your reverse proxy. You can configure WordPress using the FQDN for the jail. Do not attempt to configure WordPress via the jail IP address. It messes with the formatting making it difficult (I haven't worked it out!) to retrofit WordPress behind a reverse proxy later.
 
 ### To Do
 I'd appreciate any suggestions (or, better yet, pull requests) to improve the various config files I'm using.  Most of them are adapted from the default configuration files that ship with the software in question, and have only been lightly edited to work in this application.  But if there are changes to settings or organization that could improve performance, reliability, or security, I'd like to hear about them.
+
+## Disclaimer
+It's your data. It's your responsibility. This resource is provided as a community service. Use it at your own risk.
