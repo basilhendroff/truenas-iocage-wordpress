@@ -31,9 +31,14 @@ This script will work with FreeNAS 11.3, and it should also work with TrueNAS CO
 ## Usage
 
 ### Prerequisites (Reverse Proxy)
-The WordPress jail created by this script is designed to work behind a reverse proxy. If you don't already have a reverse proxy in place, you must set this up first. Do not attempt to run the WordPress setup wizard directly from the jail. It later messes with the formatting when trying to retrofit WordPress behind a reverse proxy. I cannot impress the importance of this enough; you must do the initial setup of WordPress using the FQDN for the jail (as configured in the reverse proxy) and not via the jail IP.
+The WordPress jail created by this script is designed to work behind a reverse proxy. If you don't already have a reverse proxy in place, you must set this up first. Do not attempt to run the WordPress setup wizard directly from the jail. It messes with the formatting when later trying to retrofit WordPress behind a reverse proxy. I cannot impress the importance of this enough; you must do the initial setup of WordPress using the FQDN for the jail (as configured in the reverse proxy) and not via the jail IP.
 
 **DO NOT ATTEMPT TO SET UP AND USE THIS RESOURCE WITHOUT A REVERSE PROXY. IT MAY BE IMPOSSIBLE TO LATER RETROFIT IT BEHIND A REVERSE PROXY.**
+
+If you need to set up a reverse proxy, there are at least two resources available in the resources section of the FreeNAS forum:
+1. [Reverse Proxy using Caddy (with optional automatic TLS](https://www.ixsystems.com/community/resources/reverse-proxy-using-caddy-with-optional-automatic-tls.114/)
+
+
 
 ### Prerequisites (Other)
 Although not required, it's recommended to create a Dataset named `apps` with a sub-dataset named `wordpress` on your main storage pool and nested sub-datasets `files` and `db`.  Many other jail guides also store their configuration and data in subdirectories of `pool/apps/` 
