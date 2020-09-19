@@ -31,7 +31,7 @@ This script will work with FreeNAS 11.3, and it should also work with TrueNAS CO
 ## Usage
 
 ### Prerequisites (Reverse Proxy)
-The WordPress jail created by this script is designed to work behind a reverse proxy. If you don't already have a reverse proxy in place, you must set this up first. Do not attempt to access the WordPress jail directly to do thie initial setup of WordPress. It messes with the formatting making it impossible (well, I haven't worked out how) to retrofit WordPress behind a reverse proxy later. I cannot impress the importance of this enough; you must do the initial setup of WordPress using the FQDN for the jail (as configured in the reverse proxy) and not via the jail IP.
+The WordPress jail created by this script is designed to work behind a reverse proxy. If you don't already have a reverse proxy in place, you must set this up first. Do not attempt to run the WordPress setup wizard directly from the jail. It later messes with the formatting when trying to retrofit WordPress behind a reverse proxy. I cannot impress the importance of this enough; you must do the initial setup of WordPress using the FQDN for the jail (as configured in the reverse proxy) and not via the jail IP.
 
 **DO NOT ATTEMPT TO SET UP AND USE THIS RESOURCE WITHOUT A REVERSE PROXY. IT MAY BE IMPOSSIBLE TO LATER RETROFIT IT BEHIND A REVERSE PROXY.**
 
@@ -78,16 +78,14 @@ DB_PATH="/mnt/tank/apps/wordpress/site1/db"
 Once you've downloaded the script and prepared the configuration file, run this script (`script wordpress.log ./wordpress-jail.sh`).  The script will run for several minutes.  When it finishes, your jail will be created, and WordPress will be installed with all its dependencies. Next, proceed to the post-installation tasks. 
 
 ### Post-Installation Tasks
-
+Refer to `post-installation-tasks.md` in the `freenas-iocage-wordpress` directory. Alternatively, refer to for the post installtion tasks.
 
 ## Support and Discussion
-
 There are self-help resources for WordPress at https://wordpress.org/support/ and support for WordPress, it's themes and plugins in the WordPress support forums at https://wordpress.org/support/forums/.
 
 Questions or issues about this resource can be raised in [this forum thread](). Support is limited to getting WordPress up and running in a FreeNAS jail. 
 
 ### Troubleshooting
-
 Having installation or post-installation issues? First thing to check is `wordpress-config`. You may be asked to provide this if requesting assistance in the discussion area. You may find the logs below useful for troubleshooting. Assuming you jail is named `wordpress`, you can access these through a terminal using `iocage console wordpress`.
 1. The Caddy webserver log file at `/var/log/caddy.log`
 2. The MariaDB error log for the site `wordpress` at `/var/db/mysql/wordpress.err`
