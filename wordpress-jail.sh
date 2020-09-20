@@ -138,8 +138,7 @@ echo -e "${GREEN}Time for a cuppa. Installing packages will take a while.${NOCOL
 echo
 #####
 
-# List packages to be auto-installed after jail creation (,"php74-pdo_mysql")
-# See https://make.wordpress.org/hosting/handbook/handbook/server-environment/
+# List packages to be auto-installed after jail creation
 
 cat <<__EOF__ >/tmp/pkg.json
 	{
