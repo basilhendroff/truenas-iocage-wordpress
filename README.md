@@ -1,5 +1,3 @@
-# freenas-iocage-wordpress. Buggy. Do not use!!!
-
 # Under development
 
 # freenas-iocage-wordpress
