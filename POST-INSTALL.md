@@ -12,6 +12,7 @@ There is the opportunity to incorporate some of the above within the WordPress s
 
 ### Securing MariaDB
 Note the DB root password `cat /root/wordpress_db_password.txt`.
+
 Run the script `/usr/local/bin/mysql_secure_installation`.
 
 ### Authentication Unique Keys and Salts
