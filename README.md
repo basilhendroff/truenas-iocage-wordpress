@@ -13,7 +13,7 @@ This script will work with FreeNAS 11.3, and it should also work with TrueNAS CO
 ## Usage
 
 ### Prerequisites (Reverse Proxy)
-The WordPress jail created by this script is designed to work behind a reverse proxy. If you don't already have a reverse proxy in place, you must set this up first. Do not attempt to run the WordPress setup wizard directly from the jail. It messes with the formatting when later trying to retrofit WordPress behind a reverse proxy. I cannot impress the importance of this enough; you must do the initial setup of WordPress using the FQDN for the jail (as configured in the reverse proxy) and not via the jail IP.
+The WordPress jail created by this script is designed to work behind a reverse proxy. If you don't already have a reverse proxy in place, you must set this up first. Do not attempt to run the WordPress setup wizard directly from the jail. It messes with the formatting when later trying to retrofit WordPress behind a reverse proxy. I cannot impress the importance of this enough; you must run the WordPress setup wizard using the FQDN for the jail (as configured in the reverse proxy) and not via the jail IP.
 
 **DO NOT ATTEMPT TO SET UP AND USE THIS RESOURCE WITHOUT A REVERSE PROXY. IT MAY BE IMPOSSIBLE TO LATER RETROFIT IT BEHIND A REVERSE PROXY.**
 
