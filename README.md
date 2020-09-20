@@ -63,15 +63,15 @@ DB_PATH="/mnt/tank/apps/wordpress/site1/db"
 ```
 
 ### Execution
-Once you've downloaded the script and prepared the configuration file, run this script (`script wordpress.log ./wordpress-jail.sh`).  The script will run for several minutes.  When it finishes, your jail will be created, and WordPress will be installed with all its dependencies. Next, proceed to the post-installation tasks. 
+Once you've downloaded the script and prepared the configuration file, run this script (`script wordpress.log ./wordpress-jail.sh`).  The script will run for several minutes.  When it finishes, your jail will be created, and WordPress will be installed with all its dependencies. Next, complete the post-installation tasks. 
 
 ### Post-Installation Tasks
-Refer to `post-installation-tasks.md` in the `freenas-iocage-wordpress` directory. Alternatively, refer to for the post installtion tasks.
+Refer to post-installation instructions at https://github.com/basilhendroff/freenas-iocage-wordpress/blob/master/POST-INSTALL.md. Alternatively, refer to https://blog.udance.com.au/2020/09/19/wordpress-script-post-installation-tasks/.
 
 ## Support and Discussion
 There are self-help resources for WordPress at https://wordpress.org/support/ and support for WordPress, it's themes and plugins in the WordPress support forums at https://wordpress.org/support/forums/.
 
-Questions or issues about this resource can be raised in [this forum thread](). Support is limited to getting WordPress up and running in a FreeNAS jail. 
+Questions or issues about this resource can be raised in [this forum thread](). Support is limited to getting WordPress up and running in a FreeNAS jail using the script. 
 
 ### Troubleshooting
 Having installation or post-installation issues? First thing to check is `wordpress-config`. You may be asked to provide this if requesting assistance in the discussion area. You may find the logs below useful for troubleshooting. Assuming you jail is named `wordpress`, you can access these through a terminal using `iocage console wordpress`.
