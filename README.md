@@ -103,7 +103,7 @@ I'd also like to hear of any other suggestions for improving the performance, re
 
 > The assumption is that the local network is trusted so local HTTP access to the WordPress jail is considered acceptable. External (HTTPS) access to the WordPress service is granted via a reverse proxy.
 
-It's not my intention to expand the resource scope.
+It's not my intention to expand the resource scope, but to work within it.
 
 ## Disclaimer
 It's your data. It's your responsibility. This resource is provided as a community service. Use it at your own risk.
