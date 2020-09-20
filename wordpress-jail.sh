@@ -187,6 +187,7 @@ echo
 
 FILE="caddy_2.1.1_freebsd_amd64.tar.gz"
 if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://github.com/caddyserver/caddy/releases/latest/download/"${FILE}"
+#if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://github.com/caddyserver/caddy/releases/tag/v2.2.0-rc.3"
 then
 	echo "Failed to download Caddy"
 	exit 1
