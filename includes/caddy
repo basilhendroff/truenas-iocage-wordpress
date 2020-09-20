@@ -38,7 +38,7 @@ pidfile="/var/run/${name}.pid"
 
 required_files="${caddy_config} ${command}"
 
-# Extra Commands
+# Extra Commands 
 extra_commands="validate reload"
 start_cmd="${command} start ${caddy_flags} ${caddy_extra_flags} --pidfile ${pidfile} >> ${caddy_logfile} 2>&1"
 validate_cmd="${command} validate ${caddy_flags}"
