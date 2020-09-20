@@ -5,6 +5,8 @@ Script to create an iocage jail on FreeNAS for the latest WordPress release, inc
 
 This script will create an iocage jail on FreeNAS 11.3 or TrueNAS CORE 12.0 with the latest release of WordPress, along with its dependencies. It will configure the jail to store the database and WordPress data outside the jail, so it will not be lost in the event you need to rebuild the jail.
 
+**THIS IS NOT AN INDEPENDENT MODULE. IT MUST BE USED IN CONJUNCTION WITH A REVERSE PROXY. REFER TO THE PREREQUISITES BELOW.**
+
 ## Status
 This script will work with FreeNAS 11.3, and it should also work with TrueNAS CORE 12.0.  Due to the EOL status of FreeBSD 11.2, it is unlikely to work reliably with earlier releases of FreeNAS.
 
