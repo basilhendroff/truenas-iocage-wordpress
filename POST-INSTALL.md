@@ -17,6 +17,7 @@ Run the script `/usr/local/bin/mysql_secure_installation`.
 
 ### Authentication Unique Keys and Salts
 Click on https://api.wordpress.org/secret-key/1.1/salt/ and then replace the relevant section in `wp-config.php`:
+
 `cd /usr/local/www/wordpress && ee wp-config.php`
 
 ### Configure WordPress for Reverse Proxy
@@ -29,10 +30,12 @@ if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)
 
 ### Setup the WordPress Filesystem
 Find the line `define('DB_PASSWORD', 'password');` in the file `wp-config.php` and paste the following line below it.
+
 `define('FS_METHOD', 'direct');`
 
 ### Configure sSMTP
 First, edit the file  `/etc/mail/mailer.conf`:
+
 `cd /etc/mail && ee mailer.conf`
 
 Locate the following lines:
@@ -53,6 +56,7 @@ hoststat        /usr/bin/true
 purgestat       /usr/bin/true
 ```
 Now edit the file `/usr/local/etc/ssmtp/ssmtp.conf`:
+
 `cd /usr/local/etc/ssmtp && ee ssmtp.conf`
 
 Enter your configuration details in the `ssmtp.conf` file. Modify this example to fit your situation:
@@ -76,9 +80,11 @@ Subject: Testmessage
 This is a test for sending
 ```
 Run the command:
+
 `ssmtp -v yourmail@gmail.com < test.txt`
-Status messages should indicated that the mail was sent successfully.. If there are no errors, you can then check out  `yourmail@gmail.com` and make sure that email has been delivered successfully.
-But, if you do get errors and don't receive the email then check `/var/log/maillog`:
+
+Status messages should indicated that the mail was sent successfully.. If there are no errors, you can then check out `yourmail@gmail.com` and make sure that email has been delivered successfully. But, if you do get errors and don't receive the email then check `/var/log/maillog`:
+
 `cat /var/log/maillog`
 
 ## Configure the Reverse Proxy
