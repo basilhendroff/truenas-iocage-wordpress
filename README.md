@@ -1,24 +1,6 @@
 # freenas-iocage-wordpress. Buggy. Do not use!!!
 
-Under development
-
-###Post-Installation Tasks
-
-Do these within the jail.
-
-1. Secure the database.
-
-/usr/local/bin/mysql_secure_installation
-
-2. Secret key generation. Update wp-config.php
-https://api.wordpress.org/secret-key/1.1/salt/
-
-3. Set up reverse proxy
-
-4. Patch wp-config.php. See https://www.cloudbooklet.com/install-wordpress-with-nginx-reverse-proxy-to-apache-on-ubuntu-18-04-google-cloud/
-
-5. Run WP configuration
-
+# Under development
 
 # freenas-iocage-wordpress
 Script to create an iocage jail on FreeNAS for the latest WordPress release, including Caddy, MariaDB and the PHP scripting language.
@@ -94,7 +76,8 @@ Having installation or post-installation issues? First thing to check is `wordpr
 1. The Caddy webserver log file at `/var/log/caddy.log`
 2. The MariaDB error log for the site `wordpress` at `/var/db/mysql/wordpress.err`
 3. The PHP-FPM log file at `/var/log/php-fpm.log`
-4. If enabled, the WordPress log file at `/usr/local/www/wordpress/wp-content/debug.log`
+4. The mail log at `\var\log\maillog`
+5. If enabled, the WordPress log file at `/usr/local/www/wordpress/wp-content/debug.log`
 
 ### To Do
 There are a number of opportunities to continue to improve the script. Much of it is outside my current sphere of knowledge. You can find the outstanding to-do list at https://blog.udance.com.au/2020/09/20/wordpress-script-opportunities-for-improvement/. If you're able to assist with any of this, or can help refine the script in other ways, please consider submitting a pull request at https://github.com/basilhendroff/freenas-iocage-wordpress. 
