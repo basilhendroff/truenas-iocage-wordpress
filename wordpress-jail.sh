@@ -118,7 +118,13 @@ then
   NETMASK="24"
 fi
 
-# Check for reinstall
+# Check that this is a new installation 
+if [ "$(ls -A "${FILES_PATH}")" ] || [ "$(ls -A "${DB_PATH}")" ]
+then
+  echo "This script only works for new installations. The script cannot proceed if FILES_PATH and DB_PATH are not both empty."
+  exit 1
+fi
+  
 #if [ "$(ls -A "${CONFIG_PATH}")" ]; then
 #	echo "Existing Nextcloud config detected... Checking Database compatibility for reinstall"
 #	if [ "$(ls -A "${DB_PATH}/${DATABASE}")" ]; then
@@ -279,13 +285,8 @@ iocage exec "${JAIL_NAME}" echo "MariaDB database user wordpress password is ${D
 iocage exec "${JAIL_NAME}" mysql -u root -e "CREATE DATABASE wordpress;"
 iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
 iocage exec "${JAIL_NAME}" mysql -u root -e "FLUSH PRIVILEGES;"
-#  iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
-#  iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
-#  iocage exec "${JAIL_NAME}" mysql -u root -e "DROP DATABASE IF EXISTS test;"
-#  iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 
 iocage exec "${JAIL_NAME}" mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
-
 
 #####
 echo
@@ -305,12 +306,6 @@ echo -e "${GREEN}Configure sSMTP...${NOCOLOUR}"
 echo
 #####
 
-#iocage exec "${JAIL_NAME}" sed -i '' "s|sendmail\t/usr/libexec/sendmail/sendmail||sendmail\t/usr/local/sbin/ssmtp|" /etc/mail/mailer.conf
-#iocage exec "${JAIL_NAME}" sed -i '' "s|mailq\t\t/usr/libexec/sendmail/sendmail||mailq\t\t/usr/local/sbin/ssmtp|" /etc/mail/mailer.conf
-#iocage exec "${JAIL_NAME}" sed -i '' "s|newaliases\t/usr/libexec/sendmail/sendmail||newaliases\t/usr/local/sbin/ssmtp|" /etc/mail/mailer.conf
-#iocage exec "${JAIL_NAME}" sed -i '' "s|hoststat\t/usr/bin/true||hoststat\t/usr/bin/true|" /etc/mail/mailer.conf
-#iocage exec "${JAIL_NAME}" sed -i '' "s|purgestat\t/usr/bin/true||purgestat\t/usr/bin/true|" /etc/mail/mailer.conf
-
 iocage exec "${JAIL_NAME}" pw useradd ssmtp -g nogroup -h - -s /sbin/nologin -d /nonexistent -c "sSMTP pseudo-user"
 iocage exec "${JAIL_NAME}" chown ssmtp:wheel /usr/local/etc/ssmtp
 iocage exec "${JAIL_NAME}" chmod 4750 /usr/local/etc/ssmtp
@@ -329,6 +324,5 @@ echo
 
 cat /root/${JAIL_NAME}_db_password.txt
 echo "All passwords are saved in /root/${JAIL_NAME}_db_password.txt"
-echo
-echo "Proceed to the POST-INSTALLATION Tasks"
+echo "Continue with the post installation steps."
 
