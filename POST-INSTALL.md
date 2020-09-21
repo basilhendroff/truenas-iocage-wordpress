@@ -72,7 +72,7 @@ Root=postmaster                  # Mail for root@ is redirected to postmaster@
 ```
 
 ### Test sSMTP
-Create a txt file test.txt with the following text, but remember to alter the email addresses.
+Create a txt file `ee test.txt` with the following text, but remember to alter the email addresses.
 ```
 To: yourmail@gmail.com 
 From: yourmail@gmail.com 
@@ -83,7 +83,7 @@ Run the command:
 
 `ssmtp -v yourmail@gmail.com < test.txt`
 
-Status messages should indicated that the mail was sent successfully.. If there are no errors, you can then check out `yourmail@gmail.com` and make sure that email has been delivered successfully. But, if you do get errors and don't receive the email then check `/var/log/maillog`:
+Status messages should indicated that the mail was sent successfully. If there are no errors, you can then check out `yourmail@gmail.com` and make sure that email has been delivered successfully. But, if you do get errors and don't receive the email then check `/var/log/maillog`:
 
 `cat /var/log/maillog`
 
