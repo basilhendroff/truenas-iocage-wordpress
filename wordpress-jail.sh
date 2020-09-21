@@ -1,9 +1,16 @@
-#!/bin/sh
+#!/bin/bash
 # Build an iocage jail under FreeNAS 11.3-12.0 using the current release of WordPress 5.5
 # git clone https://github.com/basilhendroff/freenas-iocage-wordpress
 
 GREEN="\e[1;32m"
+RED="\e[1;31m"
 NOCOLOUR="\e[0m"
+
+print_msg () {
+  echo
+  echo -e "\e[1;32m" $1 "\e[0m"
+  echo
+}
 
 # Check for root privileges
 if ! [ $(id -u) = 0 ]; then
@@ -12,10 +19,11 @@ if ! [ $(id -u) = 0 ]; then
 fi
 
 #####
-echo
-echo -e "${GREEN}General configuration...${NOCOLOUR}"
-echo
+#echo
+#echo -e "${GREEN}General configuration...${NOCOLOUR}"
+#echo
 #####
+print_msg "General configuration..."
 
 # Initialize defaults
 JAIL_IP=""
@@ -124,18 +132,6 @@ then
   echo "This script only works for new installations. The script cannot proceed if FILES_PATH and DB_PATH are not both empty."
   exit 1
 fi
-  
-#if [ "$(ls -A "${CONFIG_PATH}")" ]; then
-#	echo "Existing Nextcloud config detected... Checking Database compatibility for reinstall"
-#	if [ "$(ls -A "${DB_PATH}/${DATABASE}")" ]; then
-#		echo "Database is compatible, continuing..."
-#		REINSTALL="true"
-#	else
-#		echo "ERROR: You can not reinstall without the previous database"
-#		echo "Please try again after removing your config files or using the same database used previously"
-#		exit 1
-#	fi
-#fi
 
 #####
 echo
