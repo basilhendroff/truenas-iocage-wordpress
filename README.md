@@ -52,7 +52,7 @@ In addition, there are some other options which have sensible defaults, but can 
 - INTERFACE: The network interface to use for the jail. Defaults to `vnet0`.
 - VNET: Whether to use the iocage virtual network stack. Defaults to `on`.
 
-In a multiple site, multiple database configuration, the minimal form for `wordpress-config` changes to:
+Organisationally, I've found the following minimal form for `wordpress-config` useful for multiple site, multiple database configurations.
 ```
 JAIL_IP="192.168.1.4"
 DEFAULT_GW_IP="192.168.1.1"
@@ -63,7 +63,7 @@ DB_PATH="/mnt/tank/apps/wordpress/site1/db"
 ```
 
 ### Execution
-Once you've downloaded the script and prepared the configuration file, run this script (`script wordpress.log ./wordpress-jail.sh`).  The script will run for several minutes.  When it finishes, your jail will be created, and WordPress will be installed with all its dependencies. Next, complete the post-installation tasks. 
+Once you've downloaded the script and prepared the configuration file, run this script `script wordpress.log ./wordpress-jail.sh`.  The script will run for several minutes.  When it finishes, your jail will be created, and WordPress will be installed with all its dependencies. Next, complete the post-installation tasks. 
 
 ### Post-Installation Tasks
 Refer to post-installation instructions at https://github.com/basilhendroff/freenas-iocage-wordpress/blob/master/POST-INSTALL.md. Alternatively, refer to https://blog.udance.com.au/2020/09/19/wordpress-script-post-installation-tasks/.
