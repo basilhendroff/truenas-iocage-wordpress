@@ -21,7 +21,7 @@ If you need to set up a reverse proxy, there are at least two resources availabl
 1. [Reverse Proxy using Caddy (with optional automatic TLS)](https://www.ixsystems.com/community/resources/reverse-proxy-using-caddy-with-optional-automatic-tls.114/)
 2. [How to set up an nginx reverse proxy with SSL termination in a jail](https://www.ixsystems.com/community/resources/how-to-set-up-an-nginx-reverse-proxy-with-ssl-termination-in-a-jail.132/)
 
-If you use either resource, please refer any questions you may have to the discussion area for those resources.
+If you use either resource, please refer any reverse proxy questions you may have to the discussion area for those resources.
 
 ### Prerequisites (Other)
 Although not required, it's recommended to create a Dataset named `apps` with a sub-dataset named `wordpress` on your main storage pool and nested sub-datasets `files` and `db`.  Many other jail guides also store their configuration and data in subdirectories of `pool/apps/` 
