@@ -20,6 +20,7 @@ if ! [ $(id -u) = 0 ]; then
    exit 1
 fi
 
+#####################################################################
 print_msg "General configuration..."
 
 # Initialize defaults
@@ -59,37 +60,30 @@ RELEASE=$(freebsd-version | sed "s/STABLE/RELEASE/g" | sed "s/-p[0-9]*//")
 #RELEASE="12.1-RELEASE"
 JAILS_MOUNT=$(zfs get -H -o value mountpoint $(iocage get -p)/iocage)
 
-#####
-echo 
-echo -e "${GREEN}Input/Config Sanity checks...${NOCOLOUR}"
-echo
-#####
+#####################################################################
+print_msg "Input/Config Sanity checks..."
 
 # Check that necessary variables were set by nextcloud-config
 if [ -z "${JAIL_IP}" ]; then
-  echo 'Configuration error: JAIL_IP must be set'
+  print_err 'Configuration error: JAIL_IP must be set'
   exit 1
 fi
 if [ -z "${JAIL_INTERFACES}" ]; then
-  echo 'JAIL_INTERFACES defaulting to: vnet0:bridge0'
+  print_msg 'JAIL_INTERFACES defaulting to: vnet0:bridge0'
   JAIL_INTERFACES="vnet0:bridge0"
 fi
 if [ -z "${DEFAULT_GW_IP}" ]; then
-  echo 'Configuration error: DEFAULT_GW_IP must be set'
+  print_err 'Configuration error: DEFAULT_GW_IP must be set'
   exit 1
 fi
 if [ -z "${POOL_PATH}" ]; then
   POOL_PATH="/mnt/$(iocage get -p)"
-  echo 'POOL_PATH defaulting to '$POOL_PATH
+  print_msg 'POOL_PATH defaulting to '$POOL_PATH
 fi
 if [ -z "${TIME_ZONE}" ]; then
-  echo 'Configuration error: TIME_ZONE must be set'
+  print_err 'Configuration error: TIME_ZONE must be set'
   exit 1
 fi
-#if [ -z "${HOST_NAME}" ]; then
-#  echo 'Configuration error: HOST_NAME must be set'
-#  exit 1
-#fi
 
 # If DB_PATH and FILES_PATH weren't set in wordpress-config, set them
 if [ -z "${DB_PATH}" ]; then
@@ -102,12 +96,12 @@ fi
 # Sanity check DB_PATH and FILES_PATH -- they have to be different and can't be the same as POOL_PATH
 if [ "${FILES_PATH}" = "${DB_PATH}" ]
 then
-  echo "FILES_PATH and DB_PATH must be different!"
+  print_err "FILES_PATH and DB_PATH must be different!"
   exit 1
 fi
 if [ "${DB_PATH}" = "${POOL_PATH}" ] || [ "${FILES_PATH}" = "${POOL_PATH}" ]
 then
-  echo "DB_PATH and FILES_PATH must all be different from POOL_PATH!"
+  print_err "DB_PATH and FILES_PATH must all be different from POOL_PATH!"
   exit 1
 fi
 
@@ -126,16 +120,12 @@ fi
 # Check that this is a new installation 
 if [ "$(ls -A "${FILES_PATH}")" ] || [ "$(ls -A "${DB_PATH}")" ]
 then
-  echo "This script only works for new installations. The script cannot proceed if FILES_PATH and DB_PATH are not both empty."
+  print_err "This script only works for new installations. The script cannot proceed if FILES_PATH and DB_PATH are not both empty."
   exit 1
 fi
 
-#####
-echo
-echo -e "${GREEN}Jail Creation...`date`${NOCOLOUR}"
-echo -e "${GREEN}Time for a cuppa. Installing packages will take a while.${NOCOLOUR}"
-echo
-#####
+#####################################################################
+print_msg "Jail Creation. Time for a cuppa. Installing packages will take a while..."
 
 # List packages to be auto-installed after jail creation
 
@@ -154,16 +144,13 @@ __EOF__
 # Create the jail and install previously listed packages
 if ! iocage create --name "${JAIL_NAME}" -p /tmp/pkg.json -r "${RELEASE}" interfaces="${JAIL_INTERFACES}" ip4_addr="${INTERFACE}|${IP}/${NETMASK}" defaultrouter="${DEFAULT_GW_IP}" boot="on" host_hostname="${JAIL_NAME}" vnet="${VNET}"
 then
-	echo "Failed to create jail"
+	print_err "Failed to create jail"
 	exit 1
 fi
 rm /tmp/pkg.json
 
-#####
-echo
-echo -e "${GREEN}Directory Creation and Mounting...`date`${NOCOLOUR}"
-echo
-#####
+#####################################################################
+print_msg "Directory Creation and Mounting..."
 
 mkdir -p "${DB_PATH}"
 chown -R 88:88 "${DB_PATH}"
@@ -177,50 +164,42 @@ iocage fstab -a "${JAIL_NAME}" "${FILES_PATH}"  /usr/local/www/wordpress  nullfs
 iocage exec "${JAIL_NAME}" mkdir -p /mnt/includes
 iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" /mnt/includes nullfs rw 0 0
 
-#####
-echo
-echo -e "${GREEN}Caddy download...${NOCOLOUR}"
-echo
-#####
+#####################################################################
+print_msg "Caddy download..."
 
 FILE="caddy_2.1.1_freebsd_amd64.tar.gz"
 if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://github.com/caddyserver/caddy/releases/latest/download/"${FILE}"
 #if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://github.com/caddyserver/caddy/releases/tag/v2.2.0-rc.3"
 then
-	echo "Failed to download Caddy"
+	print_err "Failed to download Caddy"
 	exit 1
 fi
 if ! iocage exec "${JAIL_NAME}" tar xzf /tmp/"${FILE}" -C /usr/local/bin/
 then
-	echo "Failed to extract Caddy"
+	print_err "Failed to extract Caddy"
 	exit 1
 fi
 iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
 
-#####
-echo
-echo -e "${GREEN}Wordpress download...${NOCOLOUR}"  
-echo
-#####
+#####################################################################
+print_msg "Wordpress download..."  
 
 FILE="latest.tar.gz"
 if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://wordpress.org/"${FILE}"
 then
-	echo "Failed to download WordPress"
+	print_err "Failed to download WordPress"
 	exit 1
 fi
 if ! iocage exec "${JAIL_NAME}" tar xzf /tmp/"${FILE}" -C /usr/local/www/
 then
-	echo "Failed to extract WordPress"
+	print_err "Failed to extract WordPress"
 	exit 1
 fi
+iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
 iocage exec "${JAIL_NAME}" chown -R www:www /usr/local/www/wordpress
 
-#####
-echo
-echo -e "${GREEN}Configure and start Caddy...${NOCOLOUR}"
-echo
-#####
+#####################################################################
+print_msg "Configure and start Caddy..."
 
 # Copy and edit pre-written config files
 iocage exec "${JAIL_NAME}" cp -f /mnt/includes/Caddyfile /usr/local/www
@@ -231,11 +210,8 @@ iocage exec "${JAIL_NAME}" sysrc caddy_config="/usr/local/www/Caddyfile"
 
 iocage exec "${JAIL_NAME}" service caddy start
 
-#####
-echo
-echo -e "${GREEN}Configure and start PHP-FPM...${NOCOLOUR}"
-echo
-#####
+#####################################################################
+print_msg "Configure and start PHP-FPM..."
 
 # Copy and edit pre-written config files
 iocage exec "${JAIL_NAME}" cp -f /usr/local/etc/php.ini-production /usr/local/etc/php.ini
@@ -250,21 +226,14 @@ iocage exec "${JAIL_NAME}" sed -i '' "s|;date.timezone =|date.timezone = ${TIME_
 iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
 iocage exec "${JAIL_NAME}" service php-fpm start
 
-#####
-echo
-echo -e "${GREEN}Configure and start MariaDB...${NOCOLOUR}"
-echo
-#####
+#####################################################################
+print_msg "Configure and start MariaDB..."
 
-# Copy and edit pre-written config files
 iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
 iocage exec "${JAIL_NAME}" service mysql-server start
 
-#####
-echo
-echo -e "${GREEN}Create the WordPress database...${NOCOLOUR}"
-echo
-#####
+#####################################################################
+print_msg "Create the WordPress database..."
 
 #ADMIN_PASSWORD=$(openssl rand -base64 12)
 DB_ROOT_PASSWORD=$(openssl rand -base64 16)
@@ -281,11 +250,8 @@ iocage exec "${JAIL_NAME}" mysql -u root -e "FLUSH PRIVILEGES;"
 
 iocage exec "${JAIL_NAME}" mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
 
-#####
-echo
-echo -e "${GREEN}Configure WordPress...${NOCOLOUR}"
-echo
-#####
+#####################################################################
+print_msg "Configure WordPress..."
 
 iocage exec "${JAIL_NAME}" cp -f /usr/local/www/wordpress/wp-config-sample.php /usr/local/www/wordpress/wp-config.php
 iocage exec "${JAIL_NAME}" dos2unix /usr/local/www/wordpress/wp-config.php
@@ -293,11 +259,8 @@ iocage exec "${JAIL_NAME}" sed -i '' "s|database_name_here|wordpress|" /usr/loca
 iocage exec "${JAIL_NAME}" sed -i '' "s|username_here|wordpress|" /usr/local/www/wordpress/wp-config.php
 iocage exec "${JAIL_NAME}" sed -i '' "s|password_here|${DB_PASSWORD}|" /usr/local/www/wordpress/wp-config.php
 
-#####
-echo
-echo -e "${GREEN}Configure sSMTP...${NOCOLOUR}"
-echo
-#####
+#####################################################################
+print_msg "Configure sSMTP..."
 
 iocage exec "${JAIL_NAME}" pw useradd ssmtp -g nogroup -h - -s /sbin/nologin -d /nonexistent -c "sSMTP pseudo-user"
 iocage exec "${JAIL_NAME}" chown ssmtp:wheel /usr/local/etc/ssmtp
@@ -309,13 +272,9 @@ iocage exec "${JAIL_NAME}" chmod 640 /usr/local/etc/ssmtp/ssmtp.conf
 iocage exec "${JAIL_NAME}" chown ssmtp:nogroup /usr/local/sbin/ssmtp
 iocage exec "${JAIL_NAME}" chmod 4555 /usr/local/sbin/ssmtp
 
-#####
-echo
-echo -e "${GREEN}Installation complete!${NOCOLOUR}"
-echo
-#####
+#####################################################################
+print_msg "Installation complete!"
 
 cat /root/${JAIL_NAME}_db_password.txt
-echo "All passwords are saved in /root/${JAIL_NAME}_db_password.txt"
-echo "Continue with the post installation steps."
-
+print_msg "All passwords are saved in /root/${JAIL_NAME}_db_password.txt"
+print_msg "Continue with the post installation steps."
