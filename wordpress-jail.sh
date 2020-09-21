@@ -8,7 +8,7 @@ NOCOLOUR="\e[0m"
 
 print_msg () {
   echo
-  echo -e "\e[1;32m" $1 "\e[0m"
+  echo -e "\e[1;32m"$1"\e[0m"
   echo
 }
 
