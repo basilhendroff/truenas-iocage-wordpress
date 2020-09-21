@@ -10,6 +10,7 @@ print_msg () {
 
 print_err () {
   echo -e "\e[1;31m"$1"\e[0m"
+  echo
 }
 
 # Check for root privileges
