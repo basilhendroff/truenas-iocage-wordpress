@@ -1,10 +1,6 @@
 #!/bin/bash
-# Build an iocage jail under FreeNAS 11.3-12.0 using the current release of WordPress 5.5
+# Build an iocage jail under FreeNAS 11.3-12.0 using the latest release of WordPress
 # git clone https://github.com/basilhendroff/freenas-iocage-wordpress
-
-GREEN="\e[1;32m"
-RED="\e[1;31m"
-NOCOLOUR="\e[0m"
 
 print_msg () {
   echo
@@ -12,17 +8,18 @@ print_msg () {
   echo
 }
 
+print_err () {
+  echo
+  echo -e "\e[1;31m"$1"\e[0m"
+  echo
+}
+
 # Check for root privileges
 if ! [ $(id -u) = 0 ]; then
-   echo "This script must be run with root privileges" 
+   print_err "This script must be run with root privileges" 
    exit 1
 fi
 
-#####
-#echo
-#echo -e "${GREEN}General configuration...${NOCOLOUR}"
-#echo
-#####
 print_msg "General configuration..."
 
 # Initialize defaults
@@ -52,7 +49,7 @@ MAX_INPUT_TIME=1000		# default=60 seconds
 SCRIPT=$(readlink -f "$0")
 SCRIPTPATH=$(dirname "${SCRIPT}")
 if ! [ -e "${SCRIPTPATH}"/"${CONFIG_NAME}" ]; then
-  echo "${SCRIPTPATH}/${CONFIG_NAME} must exist."
+  print_err "${SCRIPTPATH}/${CONFIG_NAME} must exist."
   exit 1
 fi
 . "${SCRIPTPATH}"/"${CONFIG_NAME}"
