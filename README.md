@@ -74,7 +74,7 @@ There are self-help resources for WordPress at https://wordpress.org/support/ an
 Questions or issues about this resource can be raised in [this forum thread](). Support is limited to getting WordPress up and running in a FreeNAS jail using the script. 
 
 ### Troubleshooting
-Having installation or post-installation issues? First thing to check is `wordpress-config`. You may be asked to provide this if requesting assistance in the discussion area. 
+Having installation or post-installation issues? First things to check are `wordpress.log` and `wordpress-config`. You may be asked to provide these if requesting assistance in the discussion area. 
 
 You may find the logs below useful for troubleshooting. Assuming your jail is named `wordpress`, you can access these through a terminal using `iocage console wordpress`.
 1. The Caddy webserver log file at `/var/log/caddy.log`
