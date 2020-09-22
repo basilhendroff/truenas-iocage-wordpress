@@ -71,7 +71,7 @@ Refer to post-installation instructions at https://github.com/basilhendroff/free
 ## Support and Discussion
 There are self-help resources for WordPress at https://wordpress.org/support/ and support for WordPress, it's themes and plugins in the WordPress support forums at https://wordpress.org/support/forums/.
 
-Questions or issues about this resource can be raised in [this forum thread](). Support is limited to getting WordPress up and running in a FreeNAS jail using the script. 
+Questions or issues about this resource can be raised in [this forum thread](). Support is limited to getting WordPress up and running in a FreeNAS jail using the script, including the post-installation tasks. 
 
 ### Troubleshooting
 Having installation or post-installation issues? First things to check are `wordpress.log` and `wordpress-config`. You may be asked to provide these if requesting assistance in the discussion area. 
