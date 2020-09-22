@@ -277,3 +277,4 @@ print_msg "Installation complete!"
 cat /root/${JAIL_NAME}_db_password.txt
 print_msg "All passwords are saved in /root/${JAIL_NAME}_db_password.txt"
 print_msg "Continue with the post installation steps at https://github.com/basilhendroff/freenas-iocage-wordpress/blob/master/POST-INSTALL.md"
+print_msg "Wordpress should be available at http://${JAIL_IP}/index.php"
