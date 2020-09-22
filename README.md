@@ -66,7 +66,7 @@ DB_PATH="/mnt/tank/apps/wordpress/site1/db"
 Once you've downloaded the script and prepared the configuration file, run this script `script wordpress.log ./wordpress-jail.sh`.  The script will run for several minutes.  When it finishes, your jail will be created, and WordPress will be installed with all its dependencies. Next, complete the post-installation tasks. 
 
 ### Post-Installation Tasks
-Refer to post-installation instructions at https://github.com/basilhendroff/freenas-iocage-wordpress/blob/master/POST-INSTALL.md. Alternatively, if you prefer visual cues,  refer to https://blog.udance.com.au/2020/09/19/wordpress-script-post-installation-tasks/.
+Refer to post-installation instructions at https://github.com/basilhendroff/freenas-iocage-wordpress/blob/master/POST-INSTALL.md. Alternatively, if you prefer visual cues,  refer to the blog post [WordPress Script: Post-Installation Tasks](https://blog.udance.com.au/2020/09/19/wordpress-script-post-installation-tasks/).
 
 ## Support and Discussion
 There are self-help resources for WordPress at https://wordpress.org/support/ and support for WordPress, it's themes and plugins in the WordPress support forums at https://wordpress.org/support/forums/.
@@ -84,7 +84,7 @@ You may find the logs below useful for troubleshooting. Assuming your jail is na
 5. If enabled, the WordPress log file at `/usr/local/www/wordpress/wp-content/debug.log`
 
 ### To Do
-There are a number of opportunities to continue to improve the script. Much of it is outside my current sphere of knowledge. You can find the outstanding to-do list at https://blog.udance.com.au/2020/09/20/wordpress-script-opportunities-for-improvement/. If you're able to assist with any of this, or can help refine the script in other ways, please consider submitting a pull request at https://github.com/basilhendroff/freenas-iocage-wordpress. 
+There are a number of opportunities to continue to improve the script. Much of it is outside my current sphere of knowledge. You can find the outstanding to-do list in the blog post [WordPress Script: Opportunities for Improvement](https://blog.udance.com.au/2020/09/20/wordpress-script-opportunities-for-improvement/). If you're able to assist with any of this, or can help refine the script in other ways, please consider submitting a pull request at https://github.com/basilhendroff/freenas-iocage-wordpress. 
 
 I'd also like to hear of any other suggestions for improving the performance, reliability, or security of the scripted resource in the context of its scope, which is: 
 
