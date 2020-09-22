@@ -8,7 +8,7 @@ To complete the following tasks, use a terminal to connect to the jail `iocage c
 5. Configure sSMTP
 6. Test sSMTP
 
-There is the opportunity to incorporate some of the above within the WordPress script. For more information, refer to the post [WordPress Script: Opportunities for Improvement](https://blog.udance.com.au/2020/09/20/wordpress-script-opportunities-for-improvement/).
+There is the opportunity to incorporate some of the above within the WordPress script. For more information, refer to the blog post [WordPress Script: Opportunities for Improvement](https://blog.udance.com.au/2020/09/20/wordpress-script-opportunities-for-improvement/).
 
 ### Securing MariaDB
 Note the DB root password `cat /root/wordpress_db_password.txt`.
