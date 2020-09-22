@@ -7,7 +7,7 @@ This script will create an iocage jail on FreeNAS 11.3 or TrueNAS CORE 12.0 with
 
 **THIS IS NOT AN INDEPENDENT MODULE. IT MUST BE USED IN CONJUNCTION WITH A REVERSE PROXY. REFER TO THE PREREQUISITES BELOW.**
 
-**THE SCRIPT CANNOT BE USED TO UPGRADE AN EXISITNG WORDPRESS SITE.**
+**THE SCRIPT CANNOT BE USED TO UPGRADE AN EXISTING WORDPRESS SITE.**
 
 ## Status
 This script will work with FreeNAS 11.3, and it should also work with TrueNAS CORE 12.0.  Due to the EOL status of FreeBSD 11.2, it is unlikely to work reliably with earlier releases of FreeNAS.
