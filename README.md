@@ -88,7 +88,7 @@ There are a number of opportunities to continue to improve the script. Much of i
 
 I'd also like to hear of any other suggestions for improving the performance, reliability, or security of the scripted resource in the context of its scope, which is: 
 
-> The assumption is that the local network is trusted so local HTTP access to the WordPress jail is considered acceptable. External (HTTPS) access to the WordPress service is granted via a reverse proxy.
+> The assumption is that the local network is trusted so unencrypted (HTTP) communication is considered acceptable on the LAN. External (HTTPS) access to the WordPress service is granted via a reverse proxy.
 
 It's not my intention to expand the resource scope, but to work within it.
 
