@@ -15,7 +15,7 @@ The WordPress jail created by this script is designed to work behind a reverse p
 
 Running the WordPress wizard directly from the jail messes with the formatting when later trying to retrofit WordPress behind a reverse proxy. To appreciate this issue, refer to item **3. Problems retrofitting a WordPress jail behind a reverse proxy** at https://blog.udance.com.au/2020/09/20/wordpress-script-opportunities-for-improvement/.
 
-**DO NOT ATTEMPT TO SET UP AND USE THIS RESOURCE WITHOUT A REVERSE PROXY. IT MAY BE IMPOSSIBLE LATER TO RETROFIT IT BEHIND A REVERSE PROXY.**
+**AGAIN, DO NOT ATTEMPT TO SET UP AND USE THIS RESOURCE WITHOUT A REVERSE PROXY. IT MAY BE IMPOSSIBLE LATER TO RETROFIT IT BEHIND A REVERSE PROXY.**
 
 If you need to set up a reverse proxy, there are at least two resources available in the resources section of the FreeNAS forum that you might like to consider:
 1. [Reverse Proxy using Caddy (with optional automatic TLS)](https://www.ixsystems.com/community/resources/reverse-proxy-using-caddy-with-optional-automatic-tls.114/)
