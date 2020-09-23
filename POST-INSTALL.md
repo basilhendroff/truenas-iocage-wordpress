@@ -92,7 +92,7 @@ If using Caddy, the code block might look something like:
 ```
 blog.mydomain.com {
   encode gzip
-  reverse_proxy http://10.1.1.4
+  reverse_proxy http://192.168.1.4
 }
 ```
 
