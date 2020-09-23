@@ -15,8 +15,8 @@ print_err () {
 
 # Check for root privileges
 if ! [ $(id -u) = 0 ]; then
-   print_err "This script must be run with root privileges" 
-   exit 1
+  print_err "This script must be run with root privileges" 
+  exit 1
 fi
 
 #####################################################################
@@ -135,7 +135,8 @@ cat <<__EOF__ >/tmp/pkg.json
   "php74-mysqli","php74-pecl-libsodium","php74-openssl","php74-pecl-imagick","php74-xml","php74-zip",
   "php74-filter","php74-gd","php74-iconv","php74-pecl-mcrypt","php74-simplexml","php74-xmlreader","php74-zlib",
   "php74-ftp","php74-pecl-ssh2","php74-sockets",
-  "mariadb103-server","unix2dos","ssmtp","php74-xmlrpc","php74-ctype","php74-session"
+  "mariadb103-server","unix2dos","ssmtp",
+  "php74-xmlrpc","php74-ctype","php74-session","php74-xmlwriter"
   ]
 }
 __EOF__
@@ -143,8 +144,8 @@ __EOF__
 # Create the jail and install previously listed packages
 if ! iocage create --name "${JAIL_NAME}" -p /tmp/pkg.json -r "${RELEASE}" interfaces="${JAIL_INTERFACES}" ip4_addr="${INTERFACE}|${IP}/${NETMASK}" defaultrouter="${DEFAULT_GW_IP}" boot="on" host_hostname="${JAIL_NAME}" vnet="${VNET}"
 then
-	print_err "Failed to create jail"
-	exit 1
+  print_err "Failed to create jail"
+  exit 1
 fi
 rm /tmp/pkg.json
 
@@ -170,13 +171,13 @@ FILE="caddy_2.1.1_freebsd_amd64.tar.gz"
 if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://github.com/caddyserver/caddy/releases/latest/download/"${FILE}"
 #if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://github.com/caddyserver/caddy/releases/tag/v2.2.0-rc.3"
 then
-	print_err "Failed to download Caddy"
-	exit 1
+  print_err "Failed to download Caddy"
+  exit 1
 fi
 if ! iocage exec "${JAIL_NAME}" tar xzf /tmp/"${FILE}" -C /usr/local/bin/
 then
-	print_err "Failed to extract Caddy"
-	exit 1
+  print_err "Failed to extract Caddy"
+  exit 1
 fi
 iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
 
@@ -186,13 +187,13 @@ print_msg "Wordpress download..."
 FILE="latest.tar.gz"
 if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://wordpress.org/"${FILE}"
 then
-	print_err "Failed to download WordPress"
-	exit 1
+  print_err "Failed to download WordPress"
+  exit 1
 fi
 if ! iocage exec "${JAIL_NAME}" tar xzf /tmp/"${FILE}" -C /usr/local/www/
 then
-	print_err "Failed to extract WordPress"
-	exit 1
+  print_err "Failed to extract WordPress"
+  exit 1
 fi
 iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
 iocage exec "${JAIL_NAME}" chown -R www:www /usr/local/www/wordpress
@@ -234,7 +235,6 @@ iocage exec "${JAIL_NAME}" service mysql-server start
 #####################################################################
 print_msg "Create the WordPress database..."
 
-#ADMIN_PASSWORD=$(openssl rand -base64 12)
 DB_ROOT_PASSWORD=$(openssl rand -base64 16)
 DB_PASSWORD=$(openssl rand -base64 16)
 
