@@ -241,7 +241,6 @@ DB_PASSWORD=$(openssl rand -base64 16)
 # Save passwords for later reference
 iocage exec "${JAIL_NAME}" echo "MariaDB root password is ${DB_ROOT_PASSWORD}" > /root/${JAIL_NAME}_db_password.txt
 iocage exec "${JAIL_NAME}" echo "MariaDB database user wordpress password is ${DB_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
-#iocage exec "${JAIL_NAME}" echo "Wordpress admin password is ${ADMIN_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
 
 iocage exec "${JAIL_NAME}" mysql -u root -e "CREATE DATABASE wordpress;"
 iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
