@@ -35,6 +35,8 @@ HOST_NAME=""
 DB_PATH=""
 FILES_PATH=""
 CONFIG_NAME="wordpress-config"
+DB_ROOT_PASSWORD=""
+DB_PASSWORD=""
 
 # Exposed configuration parameters
 # php.ini
@@ -119,8 +121,8 @@ fi
 # Check that this is a new installation 
 if [ "$(ls -A "${FILES_PATH}")" ] || [ "$(ls -A "${DB_PATH}")" ]
 then
-  print_err "This script only works for new installations. The script cannot proceed if FILES_PATH and DB_PATH are not both empty."
-  exit 1
+  print_msg "Old install found"
+  REINSTALL="true"
 fi
 
 #####################################################################
@@ -166,7 +168,7 @@ iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" /mnt/includes nullfs rw 0 0
 #####################################################################
 print_msg "Caddy download..."
 
-FILE="caddy_2.1.1_freebsd_amd64.tar.gz"
+FILE="caddy_2.2.0_freebsd_amd64.tar.gz"
 if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://github.com/caddyserver/caddy/releases/latest/download/"${FILE}"
 #if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://github.com/caddyserver/caddy/releases/tag/v2.2.0-rc.3"
 then
@@ -181,6 +183,10 @@ fi
 iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
 
 #####################################################################
+if [ "${REINSTALL}" == "true" ]; then
+print_msg "Found previous install"
+
+else
 print_msg "Wordpress download..."  
 
 FILE="latest.tar.gz"
@@ -196,7 +202,7 @@ then
 fi
 iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
 iocage exec "${JAIL_NAME}" chown -R www:www /usr/local/www/wordpress
-
+fi
 #####################################################################
 print_msg "Configure and start Caddy..."
 
@@ -210,7 +216,7 @@ iocage exec "${JAIL_NAME}" sysrc caddy_config="/usr/local/www/Caddyfile"
 iocage exec "${JAIL_NAME}" service caddy start
 
 #####################################################################
-print_msg "Configure and start PHP-FPM..."
+$print_msg "Configure and start PHP-FPM..."
 
 # Copy and edit pre-written config files
 iocage exec "${JAIL_NAME}" cp -f /usr/local/etc/php.ini-production /usr/local/etc/php.ini
@@ -232,16 +238,17 @@ iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
 iocage exec "${JAIL_NAME}" service mysql-server start
 
 #####################################################################
+if [ "${REINSTALL}" == "true" ]; then
+print_msg "Found previous install will skip database creation"
+else
 print_msg "Create the WordPress database..."
 
-#ADMIN_PASSWORD=$(openssl rand -base64 12)
 DB_ROOT_PASSWORD=$(openssl rand -base64 16)
 DB_PASSWORD=$(openssl rand -base64 16)
 
 # Save passwords for later reference
 iocage exec "${JAIL_NAME}" echo "MariaDB root password is ${DB_ROOT_PASSWORD}" > /root/${JAIL_NAME}_db_password.txt
 iocage exec "${JAIL_NAME}" echo "MariaDB database user wordpress password is ${DB_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
-#iocage exec "${JAIL_NAME}" echo "Wordpress admin password is ${ADMIN_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
 
 iocage exec "${JAIL_NAME}" mysql -u root -e "CREATE DATABASE wordpress;"
 iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
@@ -270,7 +277,7 @@ iocage exec "${JAIL_NAME}" chown ssmtp:wheel /usr/local/etc/ssmtp/ssmtp.conf
 iocage exec "${JAIL_NAME}" chmod 640 /usr/local/etc/ssmtp/ssmtp.conf
 iocage exec "${JAIL_NAME}" chown ssmtp:nogroup /usr/local/sbin/ssmtp
 iocage exec "${JAIL_NAME}" chmod 4555 /usr/local/sbin/ssmtp
-
+fi
 #####################################################################
 print_msg "Installation complete!"
 

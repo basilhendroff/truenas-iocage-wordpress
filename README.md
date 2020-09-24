@@ -52,6 +52,10 @@ In addition, there are some other options which have sensible defaults, but can 
 - INTERFACE: The network interface to use for the jail. Defaults to `vnet0`.
 - VNET: Whether to use the iocage virtual network stack. Defaults to `on`.
 
+Optional Reinstall with existing database
+- DB_ROOT_PASSWORD: Add the database root password for the previous install
+- DB_PASSWORD: Add the wordpress database password from previous install
+
 Organisationally, I've found the following minimal form for `wordpress-config` useful for multiple site, multiple database configurations.
 ```
 JAIL_IP="192.168.1.4"
