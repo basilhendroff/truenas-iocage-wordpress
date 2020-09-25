@@ -216,7 +216,7 @@ iocage exec "${JAIL_NAME}" sysrc caddy_config="/usr/local/www/Caddyfile"
 iocage exec "${JAIL_NAME}" service caddy start
 
 #####################################################################
-$print_msg "Configure and start PHP-FPM..."
+print_msg "Configure and start PHP-FPM..."
 
 # Copy and edit pre-written config files
 iocage exec "${JAIL_NAME}" cp -f /usr/local/etc/php.ini-production /usr/local/etc/php.ini
