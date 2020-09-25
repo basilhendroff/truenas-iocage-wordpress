@@ -240,6 +240,9 @@ iocage exec "${JAIL_NAME}" service mysql-server start
 #####################################################################
 if [ "${REINSTALL}" == "true" ]; then
 print_msg "Found previous install will skip database creation"
+# Save passwords for later reference
+iocage exec "${JAIL_NAME}" echo "MariaDB root password is ${DB_ROOT_PASSWORD}" > /root/${JAIL_NAME}_db_password.txt
+iocage exec "${JAIL_NAME}" echo "MariaDB database user wordpress password is ${DB_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
 else
 print_msg "Create the WordPress database..."
 
