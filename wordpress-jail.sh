@@ -35,8 +35,6 @@ HOST_NAME=""
 DB_PATH=""
 FILES_PATH=""
 CONFIG_NAME="wordpress-config"
-DB_ROOT_PASSWORD=""
-DB_PASSWORD=""
 
 # Exposed configuration parameters
 # php.ini
@@ -119,11 +117,14 @@ then
 fi
 
 # Check that this is a new installation 
-if [ "$(ls -A "${FILES_PATH}")" ] || [ "$(ls -A "${DB_PATH}")" ]
-then
-  print_msg "Old install found"
-  REINSTALL="true"
-fi
+FILE=${FILES_PATH}/wp-config.php
+#if [ "$(ls -A "${FILES_PATH}")" ] || [ "$(ls -A "${DB_PATH}")" ]
+#then
+   if [ -f "${FILE}" ]; then
+     print_msg "Old install found"
+     REINSTALL="true"
+   fi
+#fi
 
 #####################################################################
 print_msg "Jail Creation. Time for a cuppa. Installing packages will take a while..."
@@ -240,9 +241,6 @@ iocage exec "${JAIL_NAME}" service mysql-server start
 #####################################################################
 if [ "${REINSTALL}" == "true" ]; then
 print_msg "Found previous install will skip database creation"
-# Save passwords for later reference
-iocage exec "${JAIL_NAME}" echo "MariaDB root password is ${DB_ROOT_PASSWORD}" > /root/${JAIL_NAME}_db_password.txt
-iocage exec "${JAIL_NAME}" echo "MariaDB database user wordpress password is ${DB_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
 else
 print_msg "Create the WordPress database..."
 
