@@ -123,3 +123,5 @@ You're now ready to do the famous five-minute WordPress installation. Do this by
 2. [Install WordPress with Nginx Reverse Proxy to Apache on Ubuntu 18.04 – Google Cloud](https://www.cloudbooklet.com/install-wordpress-with-nginx-reverse-proxy-to-apache-on-ubuntu-18-04-google-cloud/)
 3. [SecureSSMTP](https://wiki.freebsd.org/SecureSSMTP)
 4. [Using Gmail SMTP to send email in FreeBSD](http://easyos.net/articles/bsd/freebsd/using_gmail_smtp_to_send_email_in_freebsd)
+5. [Requirements — phpMyAdmin 5.1.0-dev documentation](https://docs.phpmyadmin.net/en/latest/require.html)
+6. [Mujahid Jaleel - My Life, My Blog](https://mujahidjaleel.blogspot.com/2018/10/how-to-setup-phpmyadmin-in-iocage-jail.html)
