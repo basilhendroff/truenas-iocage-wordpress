@@ -135,7 +135,7 @@ cat <<__EOF__ >/tmp/pkg.json
   "php74-mysqli","php74-pecl-libsodium","php74-openssl","php74-pecl-imagick","php74-xml","php74-zip",
   "php74-filter","php74-gd","php74-iconv","php74-pecl-mcrypt","php74-simplexml","php74-xmlreader","php74-zlib",
   "php74-ftp","php74-pecl-ssh2","php74-sockets",
-  "mariadb103-server","unix2dos","ssmtp",
+  "mariadb103-server","unix2dos","ssmtp","phpmyadmin5-php74",
   "php74-xmlrpc","php74-ctype","php74-session","php74-xmlwriter"
   ]
 }
@@ -196,6 +196,12 @@ then
 fi
 iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
 iocage exec "${JAIL_NAME}" chown -R www:www /usr/local/www/wordpress
+
+#####################################################################
+print_msg "Enable phpMyAdmin..."
+
+iocage exec "${JAIL_NAME}" rm /usr/local/www/phpMyAdmin/config.inc.php
+iocage exec "${JAIL_NAME}" ln -s /usr/local/www/phpMyAdmin /usr/local/www/wordpress/phpmyadmin
 
 #####################################################################
 print_msg "Configure and start Caddy..."
