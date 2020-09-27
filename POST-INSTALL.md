@@ -12,15 +12,15 @@ To complete the following tasks, use a terminal to connect to the jail `iocage c
 
 There is the opportunity to incorporate some of the above within the WordPress script. For more information, refer to the blog post [WordPress Script: Opportunities for Improvement](https://blog.udance.com.au/2020/09/20/wordpress-script-opportunities-for-improvement/).
 
-### Securing MariaDB
+### 1. Securing MariaDB
 Run the script `/usr/local/bin/mysql_secure_installation`.
 
-### Authentication Unique Keys and Salts
+### 2. Authentication Unique Keys and Salts
 Click on https://api.wordpress.org/secret-key/1.1/salt/ and then replace the relevant section in `wp-config.php`:
 
 `cd /usr/local/www/wordpress && ee wp-config.php`
 
-### Configure WordPress for Reverse Proxy
+### 3. Configure WordPress for Reverse Proxy
 Add these line to the top of the file `wp-config.php`  below `<?php`.
 ```
 define('FORCE_SSL_ADMIN', true); 
@@ -28,12 +28,12 @@ if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)
   $_SERVER['HTTPS']='on';
 ```
 
-### Setup the WordPress Filesystem
+### 4. Setup the WordPress Filesystem
 Find the line `define('DB_PASSWORD', 'password');` in the file `wp-config.php` and paste the following line below it.
 
 `define('FS_METHOD', 'direct');`
 
-### Configure sSMTP
+### 5. Configure sSMTP
 First, edit the file  `/etc/mail/mailer.conf`:
 
 `cd /etc/mail && ee mailer.conf`
@@ -71,7 +71,7 @@ RewriteDomain=myhost.example.com # Where the mail will seem to come from
 Root=postmaster                  # Mail for root@ is redirected to postmaster@
 ```
 
-### Test sSMTP
+### 6. Test sSMTP
 Create a txt file `ee test.txt` with the following text, but remember to alter the email addresses.
 ```
 To: yourmail@gmail.com 
@@ -86,6 +86,25 @@ Run the command:
 Status messages should indicated that the mail was sent successfully. If there are no errors, you can then check out `yourmail@gmail.com` and make sure that email has been delivered successfully. But, if you do get errors and don't receive the email then check `/var/log/maillog`:
 
 `cat /var/log/maillog`
+
+Don't exit the jail just yet.
+
+### 7. Configure phpMyAdmin
+From a browser, use the WordPress jail IP to go to the address `http://jail_ip/phpmyadmin/setup` and configure a database server host.
+
+Click `New server`.
+
+Click `Apply`.
+
+Click `Display`.
+
+Copy the text of the generated configuration file and paste it into the file `/usr/local/www/phpMyAdmin/config.inc.php`.
+
+`cd /usr/local/www/phpMyAdmin && ee config.inc.php`
+
+Save the file and then exit the jail `exit`.
+
+Note: Once you've placed the WordPress jail behind the reverse proxy, you will be able to log in to phpMyAdmin, with your database root username and password, using the jail FQDN instead of the jail IP e.g. `https://blog.mydomain.com/phpmyadmin`.
 
 ## Configure the Reverse Proxy
 If using Caddy, the code block might look something like:
