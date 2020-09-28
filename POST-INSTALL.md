@@ -34,6 +34,8 @@ Find the line `define('DB_PASSWORD', 'password');` in the file `wp-config.php` a
 
 `define('FS_METHOD', 'direct');`
 
+Now save the file.
+
 ### 5. Configure sSMTP
 First, edit the file  `/etc/mail/mailer.conf`:
 
