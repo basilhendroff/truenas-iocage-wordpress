@@ -88,7 +88,7 @@ Run the command:
 
 `ssmtp -v yourmail@gmail.com < test.txt`
 
-Status messages should indicated that the mail was sent successfully. If there are no errors, you can then check out `yourmail@gmail.com` and make sure that email has been delivered successfully. But, if you do get errors recheck your configuration settings in `/usr/local/etc/ssmtp/ssmtp.conf`. If you don't receive the email then check `/var/log/maillog`:
+Status messages should indicated that the mail was sent successfully. If there are no errors, you can then check out `yourmail@gmail.com` and make sure that email has been delivered successfully. But, if you do get errors, recheck your configuration settings in `/usr/local/etc/ssmtp/ssmtp.conf`. If you don't receive the email then check `/var/log/maillog`:
 
 `cat /var/log/maillog`
 
