@@ -109,7 +109,7 @@ Copy the text of the generated configuration file and paste it into the file `/u
 
 Save the file and then exit the jail `exit`.
 
-Note: Once you've placed the WordPress jail behind the reverse proxy, you will be able to log in to phpMyAdmin, with your database root username and password, using the jail FQDN instead of the jail IP e.g. `https://blog.mydomain.com/phpmyadmin`.
+Note: Once you've placed the WordPress jail behind the reverse proxy, you will be able to log in to phpMyAdmin, with your database root username and password, using the jail FQDN instead of the jail IP e.g. `https://blog.mydomain.com/phpmyadmin`. I recommend you set up WordPress beforehand so you have something meaningful to look at in phpMyAdmin. 
 
 ## Configure the Reverse Proxy
 If using Caddy, the code block might look something like:
