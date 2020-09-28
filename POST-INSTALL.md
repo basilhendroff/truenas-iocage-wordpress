@@ -58,6 +58,8 @@ newaliases      /usr/local/sbin/ssmtp
 hoststat        /usr/bin/true
 purgestat       /usr/bin/true
 ```
+Save the file.
+
 Now edit the file `/usr/local/etc/ssmtp/ssmtp.conf`:
 
 `cd /usr/local/etc/ssmtp && ee ssmtp.conf`
