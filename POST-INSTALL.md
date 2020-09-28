@@ -114,6 +114,9 @@ Note: Once you've placed the WordPress jail behind the reverse proxy, you will b
 **CAUTION**
 >SECURITY NOTE: phpMyAdmin is an administrative tool that has had several remote vulnerabilities discovered in the past, some allowing remote attackers to execute arbitrary code with the web server's user credential. All known problems have been fixed, but the FreeBSD Security Team strongly advises that any instance be protected with an additional protection layer, e.g. a different access control mechanism implemented by the web server as shown in the example.  Do consider enabling phpMyAdmin only when it is in use.
 
+One way to disable phpMyAdmin is to unlink it in the jail `rm /usr/local/www/wordpress/phpmyadmin`. This will diable access to phpMyAdmin via the subdirectory path e.g. `https://blog.mydomain.com/phpmyadmin`. To reenable the subdirectory path, link it again `ln -s /usr/local/www/phpMyAdmin /usr/local/www/wordpress/phpmyadmin`.
+
+Refer to [Securing your phpMyAdmin installation](https://docs.phpmyadmin.net/en/latest/setup.html#securing) for other means of securing phpMyAdmin.
 
 ## Configure the Reverse Proxy
 If using Caddy, the code block might look something like:
