@@ -49,7 +49,7 @@ newaliases      /usr/libexec/sendmail/sendmail
 hoststat        /usr/libexec/sendmail/sendmail
 purgestat       /usr/libexec/sendmail/sendmail
 ```
-Change these lines to:
+Replace these lines with:
 ```
 sendmail        /usr/local/sbin/ssmtp
 send-mail       /usr/local/sbin/ssmtp
