@@ -1,5 +1,5 @@
 ## Manual Post-Installation Tasks
-Note the DB root password `cat /root/wordpress_db_password.txt`. You will need this to secure the MariaDB.
+Assuming your WordPress jail is named `wordpress`, note the DB root password `cat /root/wordpress_db_password.txt`. You will need this to secure the MariaDB.
 
 To complete the following tasks, use a terminal to connect to the jail `iocage console wordpress`.
 
