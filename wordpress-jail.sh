@@ -123,6 +123,23 @@ then
   exit 1
 fi
 
+# Reuse the password file if it exists and is valid
+if ! [ -e "/root/${JAIL_NAME}_db_password.txt" ]; then
+  DB_ROOT_PASSWORD=$(openssl rand -base64 16)
+  DB_PASSWORD=$(openssl rand -base64 16)
+
+  # Save passwords for later reference
+  echo "DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD} # root" > /root/${JAIL_NAME}_db_password.txt
+  echo "DB_PASSWORD=${DB_PASSWORD}      # wordpress" >> /root/${JAIL_NAME}_db_password.txt
+else
+  # Check for the existence of password variables
+  . "/root/${JAIL_NAME}_db_password.txt"
+  if [ -z "${DB_ROOT_PASSWORD}" ] || [ -z "${DB_PASSWORD}" ]; then
+    echo "/root/${JAIL_NAME}_db_password.txt is corrupt."
+    exit 1
+  fi
+fi
+
 #####################################################################
 print_msg "Jail Creation. Time for a cuppa. Installing packages will take a while..."
 
@@ -239,13 +256,6 @@ iocage exec "${JAIL_NAME}" service mysql-server start
 
 #####################################################################
 print_msg "Create the WordPress database..."
-
-DB_ROOT_PASSWORD=$(openssl rand -base64 16)
-DB_PASSWORD=$(openssl rand -base64 16)
-
-# Save passwords for later reference
-iocage exec "${JAIL_NAME}" echo "MariaDB root password is ${DB_ROOT_PASSWORD}" > /root/${JAIL_NAME}_db_password.txt
-iocage exec "${JAIL_NAME}" echo "MariaDB database user wordpress password is ${DB_PASSWORD}" >> /root/${JAIL_NAME}_db_password.txt
 
 iocage exec "${JAIL_NAME}" mysql -u root -e "CREATE DATABASE wordpress;"
 iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
