@@ -153,7 +153,8 @@ cat <<__EOF__ >/tmp/pkg.json
   "php74-filter","php74-gd","php74-iconv","php74-pecl-mcrypt","php74-simplexml","php74-xmlreader","php74-zlib",
   "php74-ftp","php74-pecl-ssh2","php74-sockets",
   "mariadb103-server","unix2dos","ssmtp","phpmyadmin5-php74",
-  "php74-xmlrpc","php74-ctype","php74-session","php74-xmlwriter"
+  "php74-xmlrpc","php74-ctype","php74-session","php74-xmlwriter",
+  "redis","php74-pecl-redis"
   ]
 }
 __EOF__
@@ -221,18 +222,6 @@ iocage exec "${JAIL_NAME}" rm /usr/local/www/phpMyAdmin/config.inc.php
 iocage exec "${JAIL_NAME}" ln -s /usr/local/www/phpMyAdmin /usr/local/www/wordpress/phpmyadmin
 
 #####################################################################
-print_msg "Configure and start Caddy..."
-
-# Copy and edit pre-written config files
-iocage exec "${JAIL_NAME}" cp -f /mnt/includes/Caddyfile /usr/local/www
-iocage exec "${JAIL_NAME}" cp -f /mnt/includes/caddy /usr/local/etc/rc.d/
-
-iocage exec "${JAIL_NAME}" sysrc caddy_enable="YES"
-iocage exec "${JAIL_NAME}" sysrc caddy_config="/usr/local/www/Caddyfile"
-
-iocage exec "${JAIL_NAME}" service caddy start
-
-#####################################################################
 print_msg "Configure and start PHP-FPM..."
 
 # Copy and edit pre-written config files
@@ -272,6 +261,19 @@ iocage exec "${JAIL_NAME}" sed -i '' "s|database_name_here|wordpress|" /usr/loca
 iocage exec "${JAIL_NAME}" sed -i '' "s|username_here|wordpress|" /usr/local/www/wordpress/wp-config.php
 iocage exec "${JAIL_NAME}" sed -i '' "s|password_here|${DB_PASSWORD}|" /usr/local/www/wordpress/wp-config.php
 
+##################################################################### ???
+print_msg "Configure and start REDIS..."
+
+# Edit pre-written config files
+iocage exec "${JAIL_NAME}" sed -i '' "s|port 6379|port 0|" /usr/local/etc/redis.conf
+iocage exec "${JAIL_NAME}" sed -i '' "s|# unixsocket /tmp/redis.sock|unixsocket /var/run/redis/redis.sock|" /usr/local/etc/redis.conf
+iocage exec "${JAIL_NAME}" sed -i '' "s|# unixsocketperm 700|unixsocketperm 770|" /usr/local/etc/redis.conf
+
+iocage exec "${JAIL_NAME}" sysrc redis_enable="YES"
+iocage exec "${JAIL_NAME}" service redis start
+
+iocage exec "${JAIL_NAME}" pw usermod www -G redis
+
 #####################################################################
 print_msg "Configure sSMTP..."
 
@@ -284,6 +286,18 @@ iocage exec "${JAIL_NAME}" chown ssmtp:wheel /usr/local/etc/ssmtp/ssmtp.conf
 iocage exec "${JAIL_NAME}" chmod 640 /usr/local/etc/ssmtp/ssmtp.conf
 iocage exec "${JAIL_NAME}" chown ssmtp:nogroup /usr/local/sbin/ssmtp
 iocage exec "${JAIL_NAME}" chmod 4555 /usr/local/sbin/ssmtp
+
+#####################################################################
+print_msg "Configure and start Caddy..."
+
+# Copy and edit pre-written config files
+iocage exec "${JAIL_NAME}" cp -f /mnt/includes/Caddyfile /usr/local/www
+iocage exec "${JAIL_NAME}" cp -f /mnt/includes/caddy /usr/local/etc/rc.d/
+
+iocage exec "${JAIL_NAME}" sysrc caddy_enable="YES"
+iocage exec "${JAIL_NAME}" sysrc caddy_config="/usr/local/www/Caddyfile"
+
+iocage exec "${JAIL_NAME}" service caddy start
 
 #####################################################################
 print_msg "Installation complete!"
