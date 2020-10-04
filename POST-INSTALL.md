@@ -9,8 +9,8 @@ To complete the following tasks, use a terminal to connect to the jail `iocage c
 4. Setup the WordPress Filesystem
 5. Configure Redis
 6. Configure sSMTP
-6a. Test sSMTP
-7. Configure phpMyAdmin
+7. Test sSMTP
+8. Configure phpMyAdmin
 
 There is the opportunity to incorporate some of the above within the WordPress script. For more information, refer to the blog post [WordPress Script: Opportunities for Improvement](https://blog.udance.com.au/2020/09/20/wordpress-script-opportunities-for-improvement/).
 
@@ -88,7 +88,7 @@ RewriteDomain=myhost.example.com # Where the mail will seem to come from
 Root=postmaster                  # Mail for root@ is redirected to postmaster@
 ```
 
-### 6a. Test sSMTP
+### 7. Test sSMTP
 Create a txt file `ee test.txt` with the following text, but remember to alter the email addresses.
 ```
 To: yourmail@gmail.com 
@@ -106,7 +106,7 @@ Status messages should indicated that the mail was sent successfully. If there a
 
 Don't exit the jail just yet.
 
-### 7. Configure phpMyAdmin
+### 8. Configure phpMyAdmin
 From a browser, use the WordPress jail IP to go to the address `http://jail_ip/phpmyadmin/setup` and configure a database server host.
 
 Click `New server`.
