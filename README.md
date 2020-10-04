@@ -80,8 +80,9 @@ You may find the logs below useful for troubleshooting. Assuming your jail is na
 1. The Caddy webserver log file `/var/log/caddy.log` and access log `/var/log/access.log`
 2. The MariaDB error log for the site `wordpress` at `/var/db/mysql/wordpress.err`
 3. The PHP-FPM log file at `/var/log/php-fpm.log`
-4. The mail log at `/var/log/maillog`
-5. If enabled, the WordPress log file at `/usr/local/www/wordpress/wp-content/debug.log`
+4. The Redis log file at `/var/log/redis/redis.log`
+5. The mail log at `/var/log/maillog`
+6. If enabled, the WordPress log file at `/usr/local/www/wordpress/wp-content/debug.log`
 
 ### To Do
 There are a number of opportunities to continue to improve the script. Much of it is outside my current sphere of knowledge. You can find the outstanding to-do list in the blog post [WordPress Script: Opportunities for Improvement](https://blog.udance.com.au/2020/09/20/wordpress-script-opportunities-for-improvement/). If you're able to assist with any of this, or can help refine the script in other ways, please consider submitting a pull request at https://github.com/basilhendroff/freenas-iocage-wordpress. 
