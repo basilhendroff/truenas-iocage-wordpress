@@ -126,7 +126,7 @@ Edit wp-config.php `cd /usr/local/www/wordpress && ee wp-config.php` and add the
 define( 'WP_REDIS_SCHEME', 'unix' );
 define( 'WP_REDIS_PATH', '/var/run/redis/redis.sock' );
 ```
-Note: For WordPress to use Redis, install and activate the Redis Object Cache plugin and using the plugin, `Enable Object Cache `.  
+Note: For WordPress to use Redis, install and activate the Redis Object Cache plugin. Using the plugin, `Enable Object Cache `.  
 
 ## Configure the Reverse Proxy
 If using Caddy, the code block might look something like:
