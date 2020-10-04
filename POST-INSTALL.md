@@ -35,9 +35,18 @@ Find the line `define('DB_PASSWORD', 'password');` in the file `wp-config.php` a
 
 `define('FS_METHOD', 'direct');`
 
+### 5. Configure Redis
+Edit wp-config.php `cd /usr/local/www/wordpress && ee wp-config.php` and add the following code above the line `/* That's all, stop editing! Happy publishing. */`.
+```
+/* Set up Redis */
+define( 'WP_REDIS_SCHEME', 'unix' );
+define( 'WP_REDIS_PATH', '/var/run/redis/redis.sock' );
+```
 Now save the file.
 
-### 5. Configure sSMTP
+Note: For WordPress to use Redis, install and activate the Redis Object Cache plugin. Using the plugin, `Enable Object Cache `.  
+
+### 6. Configure sSMTP
 First, edit the file  `/etc/mail/mailer.conf`:
 
 `cd /etc/mail && ee mailer.conf`
@@ -77,7 +86,7 @@ RewriteDomain=myhost.example.com # Where the mail will seem to come from
 Root=postmaster                  # Mail for root@ is redirected to postmaster@
 ```
 
-### 6. Test sSMTP
+### 6a. Test sSMTP
 Create a txt file `ee test.txt` with the following text, but remember to alter the email addresses.
 ```
 To: yourmail@gmail.com 
@@ -119,15 +128,6 @@ One way to disable phpMyAdmin is to unlink it in the jail `rm /usr/local/www/wor
 
 Refer to [Securing your phpMyAdmin installation](https://docs.phpmyadmin.net/en/latest/setup.html#securing) for other means of securing phpMyAdmin.
 
-### 8. Configure Redis
-Edit wp-config.php `cd /usr/local/www/wordpress && ee wp-config.php` and add the following code above the line `/* That's all, stop editing! Happy publishing. */`.
-```
-/* Set up Redis */
-define( 'WP_REDIS_SCHEME', 'unix' );
-define( 'WP_REDIS_PATH', '/var/run/redis/redis.sock' );
-```
-Note: For WordPress to use Redis, install and activate the Redis Object Cache plugin. Using the plugin, `Enable Object Cache `.  
-
 ## Configure the Reverse Proxy
 If using Caddy, the code block might look something like:
 ```
@@ -147,3 +147,5 @@ You're now ready to do the famous five-minute WordPress installation. Do this by
 4. [Using Gmail SMTP to send email in FreeBSD](http://easyos.net/articles/bsd/freebsd/using_gmail_smtp_to_send_email_in_freebsd)
 5. [Requirements — phpMyAdmin 5.1.0-dev documentation](https://docs.phpmyadmin.net/en/latest/require.html)
 6. [Mujahid Jaleel - My Life, My Blog](https://mujahidjaleel.blogspot.com/2018/10/how-to-setup-phpmyadmin-in-iocage-jail.html)
+7. [Caching and Redis: Samuel Dowling - How to Install Nextcloud on FreeNAS in an iocage Jail with Haredened Security](https://www.samueldowling.com/2020/07/24/install-nextcloud-on-freenas-iocage-jail-with-hardened-security/)
+8. [Redis Object Cache plugin for WordPress - Till Kruss](https://wordpress.org/plugins/redis-cache/)
