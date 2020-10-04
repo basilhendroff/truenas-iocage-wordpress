@@ -23,7 +23,9 @@ Click on https://api.wordpress.org/secret-key/1.1/salt/ and then replace the rel
 `cd /usr/local/www/wordpress && ee wp-config.php`
 
 ### 3. Configure WordPress for Reverse Proxy
-Add these line to the top of the file `wp-config.php`  below `<?php`.
+Edit wp-config.php `cd /usr/local/www/wordpress && ee wp-config.php` 
+
+Add these line to the top of the file below `<?php`.
 ```
 define('FORCE_SSL_ADMIN', true); 
 if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)
@@ -36,7 +38,7 @@ Find the line `define('DB_PASSWORD', 'password');` in the file `wp-config.php` a
 `define('FS_METHOD', 'direct');`
 
 ### 5. Configure Redis
-Edit wp-config.php `cd /usr/local/www/wordpress && ee wp-config.php` and add the following code above the line `/* That's all, stop editing! Happy publishing. */`.
+Add the following code above the line `/* That's all, stop editing! Happy publishing. */`.
 ```
 /* Set up Redis */
 define( 'WP_REDIS_SCHEME', 'unix' );
