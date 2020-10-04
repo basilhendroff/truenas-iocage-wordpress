@@ -10,6 +10,7 @@ To complete the following tasks, use a terminal to connect to the jail `iocage c
 5. Configure sSMTP
 6. Test sSMTP
 7. Configure phpMyAdmin
+8. Configure Redis
 
 There is the opportunity to incorporate some of the above within the WordPress script. For more information, refer to the blog post [WordPress Script: Opportunities for Improvement](https://blog.udance.com.au/2020/09/20/wordpress-script-opportunities-for-improvement/).
 
@@ -117,6 +118,15 @@ Note: Once you've placed the WordPress jail behind the reverse proxy, you will b
 One way to disable phpMyAdmin is to unlink it in the jail `rm /usr/local/www/wordpress/phpmyadmin`. This will disable access to phpMyAdmin via the well-known subdirectory path e.g. `https://blog.mydomain.com/phpmyadmin`. To reenable phpMyAdmin, link the subdirectory path again `ln -s /usr/local/www/phpMyAdmin /usr/local/www/wordpress/phpmyadmin`. Disable it again when finished.
 
 Refer to [Securing your phpMyAdmin installation](https://docs.phpmyadmin.net/en/latest/setup.html#securing) for other means of securing phpMyAdmin.
+
+### 8. Configure Redis
+Edit wp-config.php `cd /usr/local/www/wordpress && ee wp-config.php` and add the following code above the line `/* That's all, stop editing! Happy publishing. */`.
+```
+/* Set up Redis */
+define( 'WP_REDIS_SCHEME', 'unix' );
+define( 'WP_REDIS_PATH', '/var/run/redis/redis.sock' );
+```
+Note: For WordPress to use Redis, install and activate the Redis Object Cache plugin and using the plugin, `Enable Object Cache `.  
 
 ## Configure the Reverse Proxy
 If using Caddy, the code block might look something like:
