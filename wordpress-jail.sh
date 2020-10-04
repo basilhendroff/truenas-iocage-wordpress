@@ -129,8 +129,8 @@ if ! [ -e "/root/${JAIL_NAME}_db_password.txt" ]; then
   DB_PASSWORD=$(openssl rand -base64 16)
 
   # Save passwords for later reference
-  echo "DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD} # root" > /root/${JAIL_NAME}_db_password.txt
-  echo "DB_PASSWORD=${DB_PASSWORD}      # wordpress" >> /root/${JAIL_NAME}_db_password.txt
+  echo "DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD} # user=root" > /root/${JAIL_NAME}_db_password.txt
+  echo "DB_PASSWORD=${DB_PASSWORD}      # user=wordpress" >> /root/${JAIL_NAME}_db_password.txt
 else
   # Check for the existence of password variables
   . "/root/${JAIL_NAME}_db_password.txt"
