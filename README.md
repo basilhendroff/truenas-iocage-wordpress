@@ -48,7 +48,7 @@ In addition, there are some other options which have sensible defaults, but can 
 - JAIL_NAME: The name of the jail, defaults to `wordpress`.
 - POOL_PATH: The path for your data pool. It is set automatically if left blank.
 - FILES_PATH: WordPress site data is stored in this path; defaults to `$POOL_PATH/apps/wordpress/files`.
-- DB_PATH: Selective backups are stored in this path; defaults to `$POOL_PATH/apps/wordpress/db`.
+- DB_PATH: MariaDB database files are stored in this path; defaults to `$POOL_PATH/apps/wordpress/db`.
 - INTERFACE: The network interface to use for the jail. Defaults to `vnet0`.
 - VNET: Whether to use the iocage virtual network stack. Defaults to `on`.
 
