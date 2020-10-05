@@ -1,5 +1,5 @@
 # freenas-iocage-wordpress
-Script to create an iocage jail on FreeNAS for the latest WordPress release, including Caddy, MariaDB, phpMyAdmin and the PHP scripting language.
+Script to create an iocage jail on FreeNAS for the latest WordPress release, including MariaDB, the PHP scripting language, Caddy, Redis and phpMyAdmin.
 
 This script will create an iocage jail on FreeNAS 11.3 or TrueNAS CORE 12.0 with the latest release of WordPress, along with its dependencies. It will configure the jail to store the database and WordPress data outside the jail, where it can be better managed.
 
