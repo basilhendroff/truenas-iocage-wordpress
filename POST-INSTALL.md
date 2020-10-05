@@ -149,6 +149,6 @@ You're now ready to do the famous five-minute WordPress installation. Do this by
 4. [Using Gmail SMTP to send email in FreeBSD](http://easyos.net/articles/bsd/freebsd/using_gmail_smtp_to_send_email_in_freebsd)
 5. [Requirements — phpMyAdmin 5.1.0-dev documentation](https://docs.phpmyadmin.net/en/latest/require.html)
 6. [Mujahid Jaleel - My Life, My Blog](https://mujahidjaleel.blogspot.com/2018/10/how-to-setup-phpmyadmin-in-iocage-jail.html)
-7. [Caching and Redis: Samuel Dowling - How to Install Nextcloud on FreeNAS in an iocage Jail with Haredened Security](https://www.samueldowling.com/2020/07/24/install-nextcloud-on-freenas-iocage-jail-with-hardened-security/)
+7. [Caching and Redis: Samuel Dowling - How to Install Nextcloud on FreeNAS in an iocage Jail with Hardened Security](https://www.samueldowling.com/2020/07/24/install-nextcloud-on-freenas-iocage-jail-with-hardened-security/)
 8. [Redis Object Cache plugin for WordPress - Till Kruss](https://wordpress.org/plugins/redis-cache/)
 9. [How to Improve Your Site Performance Using Redis Cache on WordPress](https://www.cloudways.com/blog/install-redis-cache-wordpress/)
