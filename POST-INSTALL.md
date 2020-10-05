@@ -43,6 +43,7 @@ Add the following code above the line `/* That's all, stop editing! Happy publis
 /* Set up Redis */
 define( 'WP_REDIS_SCHEME', 'unix' );
 define( 'WP_REDIS_PATH', '/var/run/redis/redis.sock' );
+define( 'WP_REDIS_CLIENT', 'phpredis' );
 ```
 Now save the file.
 
