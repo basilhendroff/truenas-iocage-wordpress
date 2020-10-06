@@ -18,14 +18,12 @@ There is the opportunity to incorporate some of the above within the WordPress s
 Run the script `/usr/local/bin/mysql_secure_installation`.
 
 ### 2. Authentication Unique Keys and Salts
-Click on https://api.wordpress.org/secret-key/1.1/salt/ and then replace the relevant section in `wp-config.php`:
+In a browser, enter https://api.wordpress.org/secret-key/1.1/salt/.
 
-`cd /usr/local/www/wordpress && ee wp-config.php`
+In your terminal window, edit wp-config.php `cd /usr/local/www/wordpress && ee wp-config.php` and replace the relevant section with the contents from the broswer.
 
 ### 3. Configure WordPress for Reverse Proxy
-Edit wp-config.php `cd /usr/local/www/wordpress && ee wp-config.php` 
-
-Add these line to the top of the file below `<?php`.
+Add these line to the top of the file `wp-config.php` below `<?php`.
 ```
 define('FORCE_SSL_ADMIN', true); 
 if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)
