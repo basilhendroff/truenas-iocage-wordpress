@@ -31,7 +31,7 @@ For optimal performance, set the record size of the `db` dataset to 16 KB (under
 If these datasets are not present, directories `/apps/wordpress/files` and `/apps/wordpress/db` will be created in `$POOL_PATH`.
 
 ### Installation
-Download the repository to a convenient directory on your FreeNAS system by changing to that directory and running `git clone https://github.com/basilhendroff/freenas-iocage-wordpress`.  Then change into the new `freenas-iocage-wordpress` directory and create a file called `wordpress-config` with your favorite text editor.  In its minimal form, applicable to a single site, it would look something like this:
+Download the repository to a convenient directory on your FreeNAS system by changing to that directory and running `git clone https://github.com/basilhendroff/freenas-iocage-wordpress`.  Then change into the new `freenas-iocage-wordpress` directory and create a file called `wordpress-config` with your favorite text editor.  In its minimal form, it would look something like this:
 ```
 JAIL_IP="192.168.1.4"
 DEFAULT_GW_IP="192.168.1.1"
