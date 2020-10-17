@@ -152,3 +152,5 @@ You're now ready to do the famous five-minute WordPress installation. Do this by
 8. [Redis Object Cache plugin for WordPress - Till Kruss](https://wordpress.org/plugins/redis-cache/)
 9. [How to Improve Your Site Performance Using Redis Cache on WordPress](https://www.cloudways.com/blog/install-redis-cache-wordpress/)
 10. [Some frequently asked questions about Predis](https://github.com/predis/predis/blob/main/FAQ.md)
+11. [Administration Over SSL](https://wordpress.org/support/article/administration-over-ssl/)
+12. [Editing wp-config.php](https://wordpress.org/support/article/editing-wp-config-php/)
