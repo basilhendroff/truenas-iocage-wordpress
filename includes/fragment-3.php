@@ -17,3 +17,4 @@ define ('WPCACHEHOME', '/usr/local/www/wordpress/wp-content/plugins/wp-super-cac
 define( 'WP_REDIS_SCHEME', 'unix' );
 define( 'WP_REDIS_PATH', '/var/run/redis/redis.sock' );
 define( 'WP_REDIS_CLIENT', 'phpredis' );
+
