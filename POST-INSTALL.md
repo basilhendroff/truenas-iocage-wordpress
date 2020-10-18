@@ -5,12 +5,10 @@ To complete the following tasks, use a terminal to connect to the jail `iocage c
 
 1. Securing MariaDB
 2. Authentication Unique Keys and Salts
-3. ~~Configure WordPress for Reverse Proxy~~
-4. ~~Setup the WordPress Filesystem~~
-5. Configure Redis
-6. Configure sSMTP
-7. Test sSMTP
-8. Configure phpMyAdmin
+3. Configure Redis
+4. Configure sSMTP
+5. Test sSMTP
+6. Configure phpMyAdmin
 
 There is the opportunity to incorporate some of the above within the WordPress script. For more information, refer to the blog post [WordPress Script: Opportunities for Improvement](https://blog.udance.com.au/2020/09/20/wordpress-script-opportunities-for-improvement/).
 
@@ -22,33 +20,10 @@ In a browser, enter https://api.wordpress.org/secret-key/1.1/salt/.
 
 In your terminal window, edit wp-config.php `cd /usr/local/www/wordpress && ee wp-config.php` and replace the relevant section with the contents from the broswer.
 
-### ~~3. Configure WordPress for Reverse Proxy~~
-~~Add these line to the top of the file `wp-config.php` below `<?php`.~~
-```
-define('FORCE_SSL_ADMIN', true); 
-if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)
-  $_SERVER['HTTPS']='on';
-```
+### 3. Configure Redis
+For WordPress to use Redis, install and activate the Redis Object Cache plugin. Using the plugin, `Enable Object Cache `.  
 
-### ~~4. Setup the WordPress Filesystem~~
-~~Find the line `define('DB_PASSWORD', 'password');` in the file `wp-config.php` and paste the following line below it.~~
-
-~~`define('FS_METHOD', 'direct');`~~
-
-### 5. Configure Redis
-~~Add the following code above the line `/* That's all, stop editing! Happy publishing. */`.~~
-
-```
-/* Set up Redis */
-define( 'WP_REDIS_SCHEME', 'unix' );
-define( 'WP_REDIS_PATH', '/var/run/redis/redis.sock' );
-define( 'WP_REDIS_CLIENT', 'phpredis' );
-```
-~~Now save the file.~~
-
-Note: For WordPress to use Redis, install and activate the Redis Object Cache plugin. Using the plugin, `Enable Object Cache `.  
-
-### 6. Configure sSMTP
+### 4. Configure sSMTP
 First, edit the file  `/etc/mail/mailer.conf`:
 
 `cd /etc/mail && ee mailer.conf`
@@ -88,7 +63,7 @@ RewriteDomain=myhost.example.com # Where the mail will seem to come from
 Root=postmaster                  # Mail for root@ is redirected to postmaster@
 ```
 
-### 7. Test sSMTP
+### 5. Test sSMTP
 Create a txt file `ee test.txt` with the following text, but remember to alter the email addresses.
 ```
 To: yourmail@gmail.com 
@@ -106,7 +81,7 @@ Status messages should indicated that the mail was sent successfully. If there a
 
 Don't exit the jail just yet.
 
-### 8. Configure phpMyAdmin
+### 6. Configure phpMyAdmin
 From a browser, use the WordPress jail IP to go to the address `http://jail_ip/phpmyadmin/setup` and configure a database server host.
 
 Click `New server`.
