@@ -86,10 +86,10 @@ fi
 
 # If DB_PATH and FILES_PATH weren't set in wordpress-config, set them
 if [ -z "${DB_PATH}" ]; then
-  DB_PATH="${POOL_PATH}"/apps/wordpress/db
+  DB_PATH="${POOL_PATH}"/apps/${JAIL_NAME}/db
 fi
 if [ -z "${FILES_PATH}" ]; then
-  FILES_PATH="${POOL_PATH}"/apps/wordpress/files
+  FILES_PATH="${POOL_PATH}"/apps/${JAIL_NAME}/files
 fi
 
 # Sanity check DB_PATH and FILES_PATH -- they have to be different and can't be the same as POOL_PATH
@@ -185,7 +185,7 @@ iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" /mnt/includes nullfs rw 0 0
 #####################################################################
 print_msg "Caddy download..."
 
-FILE="caddy_2.2.0_freebsd_amd64.tar.gz"
+FILE="caddy_2.2.1_freebsd_amd64.tar.gz"
 if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://github.com/caddyserver/caddy/releases/latest/download/"${FILE}"
 then
   print_err "Failed to download Caddy"
