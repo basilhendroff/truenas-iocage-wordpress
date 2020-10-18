@@ -7,7 +7,7 @@ To complete the following tasks, use a terminal to connect to the jail `iocage c
 2. Authentication Unique Keys and Salts
 3. ~~Configure WordPress for Reverse Proxy~~
 4. ~~Setup the WordPress Filesystem~~
-5. ~~Configure Redis~~
+5. Configure Redis
 6. Configure sSMTP
 7. Test sSMTP
 8. Configure phpMyAdmin
@@ -22,7 +22,7 @@ In a browser, enter https://api.wordpress.org/secret-key/1.1/salt/.
 
 In your terminal window, edit wp-config.php `cd /usr/local/www/wordpress && ee wp-config.php` and replace the relevant section with the contents from the broswer.
 
-### 3. Configure WordPress for Reverse Proxy
+### ~~3. Configure WordPress for Reverse Proxy~~
 ~~Add these line to the top of the file `wp-config.php` below `<?php`.~~
 ```
 define('FORCE_SSL_ADMIN', true); 
@@ -30,7 +30,7 @@ if (strpos($_SERVER['HTTP_X_FORWARDED_PROTO'], 'https') !== false)
   $_SERVER['HTTPS']='on';
 ```
 
-### 4. Setup the WordPress Filesystem
+### ~~4. Setup the WordPress Filesystem~~
 ~~Find the line `define('DB_PASSWORD', 'password');` in the file `wp-config.php` and paste the following line below it.~~
 
 ~~`define('FS_METHOD', 'direct');`~~
