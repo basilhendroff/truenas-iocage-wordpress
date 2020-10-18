@@ -57,7 +57,6 @@ INCLUDES_PATH="${SCRIPTPATH}"/includes
 
 RELEASE=$(freebsd-version | sed "s/STABLE/RELEASE/g" | sed "s/-p[0-9]*//")
 #RELEASE="12.1-RELEASE"
-JAILS_MOUNT=$(zfs get -H -o value mountpoint $(iocage get -p)/iocage)
 
 #####################################################################
 print_msg "Input/Config Sanity checks..."
@@ -260,6 +259,9 @@ iocage exec "${JAIL_NAME}" dos2unix /usr/local/www/wordpress/wp-config.php
 iocage exec "${JAIL_NAME}" sed -i '' "s|database_name_here|wordpress|" /usr/local/www/wordpress/wp-config.php
 iocage exec "${JAIL_NAME}" sed -i '' "s|username_here|wordpress|" /usr/local/www/wordpress/wp-config.php
 iocage exec "${JAIL_NAME}" sed -i '' "s|password_here|${DB_PASSWORD}|" /usr/local/www/wordpress/wp-config.php
+
+# Configure  wp-config.php.
+iocage exec "${JAIL_NAME}" /usr/local/bin/bash /mnt/includes/wp-config.sh
 
 ##################################################################### ???
 print_msg "Configure and start REDIS..."
