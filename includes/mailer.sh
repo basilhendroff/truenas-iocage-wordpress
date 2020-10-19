@@ -1,7 +1,6 @@
 #!/usr/local/bin/bash
 infile="/etc/mail/mailer.conf"
 outfile="/etc/mail/mailer.tmp"
-#rm $outfile
 cat $infile | while IFS= read -r line; do
   case ${line:0:5} in
     sendm)
