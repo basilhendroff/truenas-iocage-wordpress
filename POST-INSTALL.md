@@ -18,36 +18,13 @@ Run the script `/usr/local/bin/mysql_secure_installation`.
 ### 2. Authentication Unique Keys and Salts
 In a browser, enter https://api.wordpress.org/secret-key/1.1/salt/.
 
-In your terminal window, edit wp-config.php `cd /usr/local/www/wordpress && ee wp-config.php` and replace the relevant section with the contents from the broswer.
+In your terminal window, edit wp-config.php `cd /usr/local/www/wordpress && ee wp-config.php` and replace the relevant section with the contents from the browser.
 
 ### 3. Configure Redis
 For WordPress to use Redis, install and activate the Redis Object Cache plugin. Using the plugin, `Enable Object Cache `.  
 
 ### 4. Configure sSMTP
-First, edit the file  `/etc/mail/mailer.conf`:
-
-`cd /etc/mail && ee mailer.conf`
-
-Locate the following lines:
-```
-sendmail        /usr/libexec/sendmail/sendmail
-mailq           /usr/libexec/sendmail/sendmail
-newaliases      /usr/libexec/sendmail/sendmail
-hoststat        /usr/libexec/sendmail/sendmail
-purgestat       /usr/libexec/sendmail/sendmail
-```
-Replace these lines with:
-```
-sendmail        /usr/local/sbin/ssmtp
-send-mail       /usr/local/sbin/ssmtp
-mailq           /usr/local/sbin/ssmtp
-newaliases      /usr/local/sbin/ssmtp
-hoststat        /usr/bin/true
-purgestat       /usr/bin/true
-```
-Save the file.
-
-Now edit the file `/usr/local/etc/ssmtp/ssmtp.conf`:
+Edit the file `/usr/local/etc/ssmtp/ssmtp.conf`:
 
 `cd /usr/local/etc/ssmtp && ee ssmtp.conf`
 
