@@ -289,6 +289,9 @@ iocage exec "${JAIL_NAME}" chmod 640 /usr/local/etc/ssmtp/ssmtp.conf
 iocage exec "${JAIL_NAME}" chown ssmtp:nogroup /usr/local/sbin/ssmtp
 iocage exec "${JAIL_NAME}" chmod 4555 /usr/local/sbin/ssmtp
 
+# Configure  mailer.conf.
+iocage exec "${JAIL_NAME}" /usr/local/bin/bash /mnt/includes/mailer.sh
+
 #####################################################################
 print_msg "Configure and start Caddy..."
 
