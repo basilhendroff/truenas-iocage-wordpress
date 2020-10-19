@@ -115,7 +115,7 @@ blog.mydomain.com {
 ```
 
 ## Set up WordPress
-**IT'S ESSENTIAL THAT YOU SET UP WORDPRESS BEHIND A REVERSE PROXY BEFORE YOU PROCEED WITHTHIS STEP.**
+**IT'S ESSENTIAL THAT YOU SET UP WORDPRESS BEHIND A REVERSE PROXY BEFORE YOU PROCEED WITH THIS STEP.**
 
 You're now ready to do the famous five-minute WordPress installation. Do this by entering your WordPress site FQDN in a browser e.g. https://blog.mydomain.com
 
