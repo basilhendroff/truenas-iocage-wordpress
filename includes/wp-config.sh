@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!usr/local/bin/bash 
 infile="/usr/local/www/wordpress/wp-config.php"
 outfile="/usr/local/www/wordpress/wp-config.tmp"
 cat $infile | while IFS= read -r line; do
