@@ -1,5 +1,5 @@
 ## Manual Post-Installation Tasks
-The following tasks are done within the WordPress jail.
+The following tasks are done within the WordPress jail:
 
 1. Secure MariaDB
 2. Set up Authentication Unique Keys and Salts
