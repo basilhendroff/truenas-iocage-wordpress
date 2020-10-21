@@ -260,7 +260,7 @@ iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.db WHERE Db='test
 # Reload privilege tables
 iocage exec "${JAIL_NAME}" mysql -u root -e "FLUSH PRIVILEGES;"
 
-# iocage exec "${JAIL_NAME}" mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
+iocage exec "${JAIL_NAME}" mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
 
 #####################################################################
 print_msg "Configure WordPress..."
