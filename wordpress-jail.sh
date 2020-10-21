@@ -260,8 +260,6 @@ iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.db WHERE Db='test
 # Reload privilege tables
 iocage exec "${JAIL_NAME}" mysql -u root -e "FLUSH PRIVILEGES;"
 
-iocage exec "${JAIL_NAME}" mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
-
 #####################################################################
 print_msg "Configure WordPress..."
 
@@ -271,7 +269,8 @@ iocage exec "${JAIL_NAME}" sed -i '' "s|database_name_here|wordpress|" /usr/loca
 iocage exec "${JAIL_NAME}" sed -i '' "s|username_here|wordpress|" /usr/local/www/wordpress/wp-config.php
 iocage exec "${JAIL_NAME}" sed -i '' "s|password_here|${DB_PASSWORD}|" /usr/local/www/wordpress/wp-config.php
 
-# Configure  wp-config.php.
+print_msg "Tweak /usr/local/www/wordpress/wp-config.php..."
+
 iocage exec "${JAIL_NAME}" /usr/local/bin/bash /mnt/includes/wp-config.sh
 
 ##################################################################### ???
@@ -300,7 +299,8 @@ iocage exec "${JAIL_NAME}" chmod 640 /usr/local/etc/ssmtp/ssmtp.conf
 iocage exec "${JAIL_NAME}" chown ssmtp:nogroup /usr/local/sbin/ssmtp
 iocage exec "${JAIL_NAME}" chmod 4555 /usr/local/sbin/ssmtp
 
-# Configure  mailer.conf.
+print_msg "Tweak /etc/mail/mailer.conf..."
+
 iocage exec "${JAIL_NAME}" /usr/local/bin/bash /mnt/includes/mailer.sh
 
 #####################################################################
