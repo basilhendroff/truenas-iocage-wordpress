@@ -1,26 +1,18 @@
 ## Manual Post-Installation Tasks
 The following tasks are done within the WordPress jail:
 
-1. Secure MariaDB
-2. Set up Authentication Unique Keys and Salts
-3. Configure and test sSMTP
-4. Configure phpMyAdmin
+1. Set up Authentication Unique Keys and Salts
+2. Configure and test sSMTP
+3. Configure phpMyAdmin
 
 There is the opportunity to incorporate some of the above within the WordPress script. For more information, refer to the blog post [WordPress Script: Opportunities for Improvement](https://blog.udance.com.au/2020/09/20/wordpress-script-opportunities-for-improvement/).
 
-### 1. Secure MariaDB
-Assuming your WordPress jail is named `wordpress`, note the DB root password `cat /root/wordpress_db_password.txt`. 
-
-Use a terminal to enter the jail `iocage console wordpress`.
-
-Run the script `/usr/local/bin/mysql_secure_installation` making use of the DB root password noted previously.
-
-### 2. Set up Authentication Unique Keys and Salts
+### 1. Set up Authentication Unique Keys and Salts
 In a browser, enter https://api.wordpress.org/secret-key/1.1/salt/.
 
 In your terminal window, edit wp-config.php `cd /usr/local/www/wordpress && ee wp-config.php` and replace the relevant section with the contents from the browser.
 
-### 3. Configure and test sSMTP
+### 2. Configure and test sSMTP
 Edit the file `/usr/local/etc/ssmtp/ssmtp.conf`:
 
 `cd /usr/local/etc/ssmtp && ee ssmtp.conf`
@@ -53,7 +45,7 @@ Status messages should indicated that the mail was sent successfully. If there a
 
 Don't exit the jail just yet.
 
-### 4. Configure phpMyAdmin
+### 3. Configure phpMyAdmin
 From a browser, use the WordPress jail IP to go to the address `http://jail_ip/phpmyadmin/setup` and configure a database server host.
 
 Click `New server`.
