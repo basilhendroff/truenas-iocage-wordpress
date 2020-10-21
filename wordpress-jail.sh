@@ -243,13 +243,24 @@ iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
 iocage exec "${JAIL_NAME}" service mysql-server start
 
 #####################################################################
-print_msg "Create the WordPress database..."
+print_msg "Create and secure the WordPress database..."
 
+# Create the database.
 iocage exec "${JAIL_NAME}" mysql -u root -e "CREATE DATABASE wordpress;"
 iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
+
+# Secure the database (equivalent of running /usr/local/bin/mysql_secure_installation)
+# Remove anonymous users
+iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
+# Disallow remote root login
+iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+# Remove test database and access to it
+iocage exec "${JAIL_NAME}" mysql -u root -e "DROP DATABASE IF EXISTS test;"
+iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
+# Reload privilege tables
 iocage exec "${JAIL_NAME}" mysql -u root -e "FLUSH PRIVILEGES;"
 
-iocage exec "${JAIL_NAME}" mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
+# iocage exec "${JAIL_NAME}" mysqladmin --user=root password "${DB_ROOT_PASSWORD}" reload
 
 #####################################################################
 print_msg "Configure WordPress..."
