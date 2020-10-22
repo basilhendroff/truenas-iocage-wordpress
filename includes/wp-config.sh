@@ -1,6 +1,16 @@
 #!usr/local/bin/bash 
+
+# File pointers
 infile="/usr/local/www/wordpress/wp-config.php"
 outfile="/usr/local/www/wordpress/wp-config.tmp"
+
+# Random number generator
+rand() {
+  local rnum=$(LC_ALL=C tr -dc 'A-Za-z0-9!"#$%&\''()*+,-./:;<=>?@[\]^_`{|}~' </dev/urandom | head -c 64 ; echo)
+  echo $rnum
+}
+
+# wp-config.php adjustments
 cat $infile | while IFS= read -r line; do
   case $line in
     "<?php")
@@ -20,6 +30,30 @@ cat $infile | while IFS= read -r line; do
         printf '%s\n' "$frag" >> $outfile
       done
       printf '%s\n' "$line" >> $outfile
+      ;;
+    *'AUTH_KEY'*)
+      printf "define( 'AUTH_KEY',         '%s' );\n" "$(rand)" >> $outfile
+      ;;
+    *'SECURE_AUTH_KEY'*)
+      printf "define( 'SECURE_AUTH_KEY',  '%s' );\n" "$(rand)" >> $outfile
+      ;;
+    *'LOGGED_IN_KEY'*)
+      printf "define( 'LOGGED_IN_KEY',    '%s' );\n" "$(rand)" >> $outfile
+      ;;
+    *'NONCE_KEY'*)
+      printf "define( 'NONCE_KEY',        '%s' );\n" "$(rand)" >> $outfile
+      ;;
+    *'AUTH_SALT'*)
+      printf "define( 'AUTH_SALT',        '%s' );\n" "$(rand)" >> $outfile
+      ;;
+    *'SECURE_AUTH_SALT'*)
+      printf "define( 'SECURE_AUTH_SALT', '%s' );\n" "$(rand)" >> $outfile
+      ;;
+    *'LOGGED_IN_SALT'*)
+      printf "define( 'LOGGED_IN_SALT',   '%s' );\n" "$(rand)" >> $outfile
+      ;;
+    *'NONCE_SALT'*)
+      printf "define( 'NONCE_SALT',       '%s' );\n" "$(rand)" >> $outfile
       ;;
     *)
       printf '%s\n' "$line" >> $outfile
