@@ -19,7 +19,7 @@ $cfg['Servers'][$i]['password'] = '';
 
 /* End of servers configuration */
 
-$cfg['blowfish_secret'] = '';
+$cfg['blowfish_secret'] = 'secret_here';
 $cfg['DefaultLang'] = 'en';
 $cfg['ServerDefault'] = 1;
 $cfg['UploadDir'] = '';
