@@ -6,7 +6,7 @@ outfile="/usr/local/www/wordpress/wp-config.tmp"
 
 # Random number generator
 rand() {
-  local rnum=$(LC_ALL=C tr -dc 'A-Za-z0-9!"#$%&()*+,-./:;<=>?@[\]^_`{|}~' </dev/urandom | head -c 64 ; echo)
+  local rnum=$(LC_ALL=C tr -dc 'A-Za-z0-9!"#$%&()*+,-./:;<=>?@[\]^_`{|}~' </dev/urandom | head -c "$1" ; echo)
   echo $rnum
 }
 
@@ -32,28 +32,28 @@ cat $infile | while IFS= read -r line; do
       printf '%s\n' "$line" >> $outfile
       ;;
     *'AUTH_KEY'*)
-      printf "define( 'AUTH_KEY',         '%s' );\n" "$(rand)" >> $outfile
+      printf "define( 'AUTH_KEY',         '%s' );\n" "$(rand 64)" >> $outfile
       ;;
     *'SECURE_AUTH_KEY'*)
-      printf "define( 'SECURE_AUTH_KEY',  '%s' );\n" "$(rand)" >> $outfile
+      printf "define( 'SECURE_AUTH_KEY',  '%s' );\n" "$(rand 64)" >> $outfile
       ;;
     *'LOGGED_IN_KEY'*)
-      printf "define( 'LOGGED_IN_KEY',    '%s' );\n" "$(rand)" >> $outfile
+      printf "define( 'LOGGED_IN_KEY',    '%s' );\n" "$(rand 64)" >> $outfile
       ;;
     *'NONCE_KEY'*)
-      printf "define( 'NONCE_KEY',        '%s' );\n" "$(rand)" >> $outfile
+      printf "define( 'NONCE_KEY',        '%s' );\n" "$(rand 64)" >> $outfile
       ;;
     *'AUTH_SALT'*)
-      printf "define( 'AUTH_SALT',        '%s' );\n" "$(rand)" >> $outfile
+      printf "define( 'AUTH_SALT',        '%s' );\n" "$(rand 64)" >> $outfile
       ;;
     *'SECURE_AUTH_SALT'*)
-      printf "define( 'SECURE_AUTH_SALT', '%s' );\n" "$(rand)" >> $outfile
+      printf "define( 'SECURE_AUTH_SALT', '%s' );\n" "$(rand 64)" >> $outfile
       ;;
     *'LOGGED_IN_SALT'*)
-      printf "define( 'LOGGED_IN_SALT',   '%s' );\n" "$(rand)" >> $outfile
+      printf "define( 'LOGGED_IN_SALT',   '%s' );\n" "$(rand 64)" >> $outfile
       ;;
     *'NONCE_SALT'*)
-      printf "define( 'NONCE_SALT',       '%s' );\n" "$(rand)" >> $outfile
+      printf "define( 'NONCE_SALT',       '%s' );\n" "$(rand 64)" >> $outfile
       ;;
     *)
       printf '%s\n' "$line" >> $outfile
