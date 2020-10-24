@@ -54,7 +54,7 @@ Copy the text of the generated configuration file and paste it into the file `/u
 
 Save the file and then exit the jail `exit`.
 
-Note: Once you've placed the WordPress jail behind the reverse proxy, you will be able to log in to phpMyAdmin, with your database root username and password, using the jail FQDN instead of the jail IP e.g. `https://blog.mydomain.com/phpmyadmin`. I recommend you set up WordPress beforehand so you have something meaningful to look at in phpMyAdmin. 
+Note: Once you've placed the WordPress jail behind the reverse proxy, you will be able to log in to phpMyAdmin, with your database wordpress username and password, using the jail FQDN instead of the jail IP e.g. `https://blog.mydomain.com/phpmyadmin`. I recommend you set up WordPress beforehand so you have something meaningful to look at in phpMyAdmin. 
 
 **CAUTION**
 >SECURITY NOTE: phpMyAdmin is an administrative tool that has had several remote vulnerabilities discovered in the past, some allowing remote attackers to execute arbitrary code with the web server's user credential. All known problems have been fixed, but the FreeBSD Security Team strongly advises that any instance be protected with an additional protection layer, e.g. a different access control mechanism implemented by the web server as shown in the example.  Do consider enabling phpMyAdmin only when it is in use.
