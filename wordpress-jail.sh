@@ -13,6 +13,11 @@ print_err () {
   echo
 }
 
+rand() {
+  local rnum=$(LC_ALL=C tr -dc 'A-Za-z0-9!#$%&=?@^_+-' </dev/urandom | head -c "$1" ; echo)
+  echo $rnum
+}
+
 # Check for root privileges
 if ! [ $(id -u) = 0 ]; then
   print_err "This script must be run with root privileges" 
@@ -124,8 +129,8 @@ fi
 
 # Reuse the password file if it exists and is valid
 if ! [ -e "/root/${JAIL_NAME}_db_password.txt" ]; then
-  DB_ROOT_PASSWORD=$(openssl rand -base64 16)
-  DB_PASSWORD=$(openssl rand -base64 16)
+  DB_ROOT_PASSWORD=$(rand 24)
+  DB_PASSWORD=$(rand 24)
 
   # Save passwords for later reference
   echo "DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD} # user=root" > /root/${JAIL_NAME}_db_password.txt
@@ -220,10 +225,14 @@ print_msg "Enable phpMyAdmin..."
 iocage exec "${JAIL_NAME}" rm /usr/local/www/phpMyAdmin/config.inc.php
 iocage exec "${JAIL_NAME}" ln -s /usr/local/www/phpMyAdmin /usr/local/www/wordpress/phpmyadmin
 
+# Copy and edit pre-written config file
+iocage exec "${JAIL_NAME}" cp -f /usr/local/www/phpMyAdmin/config.sample.inc.php /usr/local/www/phpMyAdmin/config.inc.php
+iocage exec "${JAIL_NAME}" sed -i '' "s|\$cfg\['blowfish_secret'\] = ''|\$cfg\['blowfish_secret'\] = '$(rand 32)'|" /usr/local/www/phpMyAdmin/config.inc.php
+
 #####################################################################
 print_msg "Configure and start PHP-FPM..."
 
-# Copy and edit pre-written config files
+# Copy and edit pre-written config file
 iocage exec "${JAIL_NAME}" cp -f /usr/local/etc/php.ini-production /usr/local/etc/php.ini
 iocage exec "${JAIL_NAME}" sed -i '' "s|upload_max_filesize = 2M|upload_max_filesize = ${UPLOAD_MAX_FILESIZE}|" /usr/local/etc/php.ini
 iocage exec "${JAIL_NAME}" sed -i '' "s|post_max_size = 8M|post_max_size = ${POST_MAX_SIZE}|" /usr/local/etc/php.ini
@@ -270,10 +279,9 @@ iocage exec "${JAIL_NAME}" sed -i '' "s|username_here|wordpress|" /usr/local/www
 iocage exec "${JAIL_NAME}" sed -i '' "s|password_here|${DB_PASSWORD}|" /usr/local/www/wordpress/wp-config.php
 
 print_msg "Tweak /usr/local/www/wordpress/wp-config.php..."
-
 iocage exec "${JAIL_NAME}" /usr/local/bin/bash /mnt/includes/wp-config.sh
 
-##################################################################### ???
+#####################################################################
 print_msg "Configure and start REDIS..."
 
 # Edit pre-written config files
@@ -300,7 +308,6 @@ iocage exec "${JAIL_NAME}" chown ssmtp:nogroup /usr/local/sbin/ssmtp
 iocage exec "${JAIL_NAME}" chmod 4555 /usr/local/sbin/ssmtp
 
 print_msg "Tweak /etc/mail/mailer.conf..."
-
 iocage exec "${JAIL_NAME}" /usr/local/bin/bash /mnt/includes/mailer.sh
 
 #####################################################################
