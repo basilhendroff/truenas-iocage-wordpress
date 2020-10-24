@@ -4,7 +4,7 @@
 infile="/usr/local/www/wordpress/wp-config.php"
 outfile="/usr/local/www/wordpress/wp-config.tmp"
 
-# Random number generator (allow additional special characters ampersand (&) and pipe symbol (|))
+# Random password generator (allow additional special characters ampersand (&), space ( ) and pipe symbol (|))
 rand() {
   local rnum=$(LC_ALL=C tr -dc 'A-Za-z0-9 !#$%&()*+,-./:;<=>?@[]^_`{|}~' </dev/urandom | head -c "$1" ; echo)
   echo $rnum
