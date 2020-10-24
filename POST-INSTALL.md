@@ -1,12 +1,8 @@
-## Manual Post-Installation Tasks
-The following tasks are done within the WordPress jail:
+## Post-Installation Tasks
 
-1. Configure and test sSMTP
-2. Configure phpMyAdmin
+### Configure and test sSMTP
+Assuming your WordPress jail is named `wordpress`, use a terminal to enter the jail `iocage console wordpress`.  
 
-There is the opportunity to incorporate some of the above within the WordPress script. For more information, refer to the blog post [WordPress Script: Opportunities for Improvement](https://blog.udance.com.au/2020/09/20/wordpress-script-opportunities-for-improvement/).
-
-### 1. Configure and test sSMTP
 Edit the file `/usr/local/etc/ssmtp/ssmtp.conf`:
 
 `cd /usr/local/etc/ssmtp && ee ssmtp.conf`
@@ -37,31 +33,7 @@ Status messages should indicated that the mail was sent successfully. If there a
 
 `cat /var/log/maillog`
 
-Don't exit the jail just yet.
-
-### 2. Configure phpMyAdmin
-From a browser, use the WordPress jail IP to go to the address `http://jail_ip/phpmyadmin/setup` and configure a database server host.
-
-Click `New server`.
-
-Click `Apply`.
-
-Click `Display`.
-
-Copy the text of the generated configuration file and paste it into the file `/usr/local/www/phpMyAdmin/config.inc.php`.
-
-`cd /usr/local/www/phpMyAdmin && ee config.inc.php`
-
-Save the file and then exit the jail `exit`.
-
-Note: Once you've placed the WordPress jail behind the reverse proxy, you will be able to log in to phpMyAdmin, with your database wordpress username and password, using the jail FQDN instead of the jail IP e.g. `https://blog.mydomain.com/phpmyadmin`. I recommend you set up WordPress beforehand so you have something meaningful to look at in phpMyAdmin. 
-
-**CAUTION**
->SECURITY NOTE: phpMyAdmin is an administrative tool that has had several remote vulnerabilities discovered in the past, some allowing remote attackers to execute arbitrary code with the web server's user credential. All known problems have been fixed, but the FreeBSD Security Team strongly advises that any instance be protected with an additional protection layer, e.g. a different access control mechanism implemented by the web server as shown in the example.  Do consider enabling phpMyAdmin only when it is in use.
-
-One way to disable phpMyAdmin is to unlink it in the jail `rm /usr/local/www/wordpress/phpmyadmin`. This will disable access to phpMyAdmin via the well-known subdirectory path e.g. `https://blog.mydomain.com/phpmyadmin`. To reenable phpMyAdmin, link the subdirectory path again `ln -s /usr/local/www/phpMyAdmin /usr/local/www/wordpress/phpmyadmin`. Disable it again when finished.
-
-Refer to [Securing your phpMyAdmin installation](https://docs.phpmyadmin.net/en/latest/setup.html#securing) for other means of securing phpMyAdmin.
+Exit the jail `exit`.
 
 ## Configure the Reverse Proxy
 If using Caddy, the code block might look something like:
@@ -78,7 +50,20 @@ blog.mydomain.com {
 You're now ready to do the famous five-minute WordPress installation. Do this by entering your WordPress site FQDN in a browser e.g. https://blog.mydomain.com
 
 ### Configure Redis
-For WordPress to use Redis, install and activate the Redis Object Cache plugin. Using the plugin, `Enable Object Cache `.  
+For WordPress to use Redis, install and activate the Redis Object Cache plugin. Using the plugin, `Enable Object Cache `.
+
+### phpMyAdmin Considerations
+
+You can log in to phpMyAdmin, with your database `wordpress` username and password, using the jail FQDN instead of the jail IP e.g. `https://blog.mydomain.com/phpmyadmin`. 
+
+**CAUTION**
+>SECURITY NOTE: phpMyAdmin is an administrative tool that has had several remote vulnerabilities discovered in the past, some allowing remote attackers to execute arbitrary code with the web server's user credential. All known problems have been fixed, but the FreeBSD Security Team strongly advises that any instance be protected with an additional protection layer, e.g. a different access control mechanism implemented by the web server as shown in the example.  Do consider enabling phpMyAdmin only when it is in use.
+
+One way to disable phpMyAdmin is to unlink it in the jail `rm /usr/local/www/wordpress/phpmyadmin`. This will disable access to phpMyAdmin via the well-known subdirectory path e.g. `https://blog.mydomain.com/phpmyadmin`. To reenable phpMyAdmin, link the subdirectory path again `ln -s /usr/local/www/phpMyAdmin /usr/local/www/wordpress/phpmyadmin`. Disable it again when finished. This approach isn't particularly convenient though.
+
+If you're using a Caddy reverse proxy, it's straightforward to place phpMyAdmin behind an authorisation proxy. Refer to the blog post [Securing phpMyAdmin in a WordPress Jail](https://blog.udance.com.au/2020/09/29/securing-phpmyadmin-in-a-wordpress-jail/) for further details.
+
+Refer to [Securing your phpMyAdmin installation](https://docs.phpmyadmin.net/en/latest/setup.html#securing) for other means of securing phpMyAdmin.
 
 ## References
 1. [How to install WordPress](https://wordpress.org/support/article/how-to-install-wordpress/)
