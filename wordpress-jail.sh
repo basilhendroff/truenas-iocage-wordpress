@@ -128,19 +128,20 @@ fi
 
 # Reuse the password file if it exists and is valid
 if ! [ -e "/root/${JAIL_NAME}_db_password.txt" ]; then
-  DB_ROOT_PASSWORD=$(rand 24)
   DB_PASSWORD=$(rand 24)
 
   # Save passwords for later reference
-  echo 'DB_ROOT_PASSWORD="'${DB_ROOT_PASSWORD}'" # user=root' > /root/${JAIL_NAME}_db_password.txt
-  echo 'DB_PASSWORD="'${DB_PASSWORD}'"      # user=wordpress' >> /root/${JAIL_NAME}_db_password.txt
+  echo 'DB_PASSWORD="'${DB_PASSWORD}'" # user=wordpress' > /root/${JAIL_NAME}_db_password.txt
 else
   # Check for the existence of password variables
   . "/root/${JAIL_NAME}_db_password.txt"
-  if [ -z "${DB_ROOT_PASSWORD}" ] || [ -z "${DB_PASSWORD}" ]; then
+  if [ -z "${DB_PASSWORD}" ]; then
     print_err "/root/${JAIL_NAME}_db_password.txt is corrupt."
     exit 1
   fi
+  if [ -n "${DB_ROOT_PASSWORD}" ]; then
+    print_err "Please remove DB_ROOT_PASSWORD from /root/${JAIL_NAME}_db_password.txt. It is redundant with MariaDB 10.4 and above."
+  fi  
 fi
 
 #####################################################################
@@ -155,7 +156,7 @@ cat <<__EOF__ >/tmp/pkg.json
   "php74-mysqli","php74-pecl-libsodium","php74-openssl","php74-pecl-imagick","php74-xml","php74-zip",
   "php74-filter","php74-gd","php74-iconv","php74-pecl-mcrypt","php74-simplexml","php74-xmlreader","php74-zlib",
   "php74-ftp","php74-pecl-ssh2","php74-sockets",
-  "mariadb103-server","unix2dos","ssmtp","phpmyadmin5-php74",
+  "mariadb104-server","unix2dos","ssmtp","phpmyadmin5-php74",
   "php74-xmlrpc","php74-ctype","php74-session","php74-xmlwriter",
   "redis","php74-pecl-redis"
   ]
@@ -241,11 +242,17 @@ iocage exec "${JAIL_NAME}" sed -i '' "s|;max_input_vars = 1000|max_input_vars = 
 iocage exec "${JAIL_NAME}" sed -i '' "s|max_input_time = 60|max_input_time = ${MAX_INPUT_TIME}|" /usr/local/etc/php.ini
 iocage exec "${JAIL_NAME}" sed -i '' "s|;date.timezone =|date.timezone = ${TIME_ZONE}|" /usr/local/etc/php.ini
 
+# MariaDB 10.4 requirement
+iocage exec "${JAIL_NAME}" sed -i '' "s|mysqli.default_socket =|mysqli.default_socket = /var/run/mysql/mysql.sock|" /usr/local/etc/php.ini
+
 iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
 iocage exec "${JAIL_NAME}" service php-fpm start
 
 #####################################################################
 print_msg "Configure and start MariaDB..."
+
+# MariaDB 10.4 requirement
+iocage exec "${JAIL_NAME}" chown mysql:mysql /var/run/mysql
 
 iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
 iocage exec "${JAIL_NAME}" service mysql-server start
@@ -253,24 +260,24 @@ iocage exec "${JAIL_NAME}" service mysql-server start
 #####################################################################
 print_msg "Create and secure the WordPress and phpMyAdmin databases..."
 
-# Create the WordPress database.
-iocage exec "${JAIL_NAME}" mysql -u root -e "CREATE DATABASE wordpress;"
-iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
+# Create the database.
+iocage exec "${JAIL_NAME}" mysql -e "CREATE DATABASE wordpress;"
+iocage exec "${JAIL_NAME}" mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
 
 # Create the phpMyAdmin database.
-iocage exec "${JAIL_NAME}" mysql -u root -e "CREATE DATABASE phpmyadmin;"
-iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON phpmyadmin.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
+iocage exec "${JAIL_NAME}" mysql -e "CREATE DATABASE phpmyadmin;"
+iocage exec "${JAIL_NAME}" mysql -e "GRANT ALL PRIVILEGES ON phpmyadmin.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
 
 # Secure the database (equivalent of running /usr/local/bin/mysql_secure_installation)
 # Remove anonymous users
-iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
+iocage exec "${JAIL_NAME}" mysql -e "DELETE FROM mysql.user WHERE User='';"
 # Disallow remote root login
-iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+iocage exec "${JAIL_NAME}" mysql -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
 # Remove test database and access to it
-iocage exec "${JAIL_NAME}" mysql -u root -e "DROP DATABASE IF EXISTS test;"
-iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
+iocage exec "${JAIL_NAME}" mysql -e "DROP DATABASE IF EXISTS test;"
+iocage exec "${JAIL_NAME}" mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 # Reload privilege tables
-iocage exec "${JAIL_NAME}" mysql -u root -e "FLUSH PRIVILEGES;"
+iocage exec "${JAIL_NAME}" mysql -e "FLUSH PRIVILEGES;"
 
 #####################################################################
 print_msg "Configure WordPress..."
@@ -332,5 +339,5 @@ print_msg "Installation complete!"
 iocage fstab -r "${JAIL_NAME}" "${INCLUDES_PATH}" /mnt/includes nullfs rw 0 0
 
 #cat /root/${JAIL_NAME}_db_password.txt
-print_msg "All passwords are saved in /root/${JAIL_NAME}_db_password.txt"
+print_msg "The WordPress database user password is saved in /root/${JAIL_NAME}_db_password.txt"
 print_msg "Continue with the post installation steps at https://github.com/basilhendroff/freenas-iocage-wordpress/blob/master/POST-INSTALL.md"
