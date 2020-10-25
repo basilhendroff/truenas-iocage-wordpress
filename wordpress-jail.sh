@@ -128,19 +128,20 @@ fi
 
 # Reuse the password file if it exists and is valid
 if ! [ -e "/root/${JAIL_NAME}_db_password.txt" ]; then
-  DB_ROOT_PASSWORD=$(rand 24)
   DB_PASSWORD=$(rand 24)
 
   # Save passwords for later reference
-  echo 'DB_ROOT_PASSWORD="'${DB_ROOT_PASSWORD}'" # user=root' > /root/${JAIL_NAME}_db_password.txt
-  echo 'DB_PASSWORD="'${DB_PASSWORD}'"      # user=wordpress' >> /root/${JAIL_NAME}_db_password.txt
+  echo 'DB_PASSWORD="'${DB_PASSWORD}'" # user=wordpress' > /root/${JAIL_NAME}_db_password.txt
 else
   # Check for the existence of password variables
   . "/root/${JAIL_NAME}_db_password.txt"
-  if [ -z "${DB_ROOT_PASSWORD}" ] || [ -z "${DB_PASSWORD}" ]; then
+  if [ -z "${DB_PASSWORD}" ]; then
     print_err "/root/${JAIL_NAME}_db_password.txt is corrupt."
     exit 1
   fi
+  if [ -n "${DB_ROOT_PASSWORD}" ]; then
+    print_err "Please remove DB_ROOT_PASSWORD from /root/${JAIL_NAME}_db_password.txt. It is redundant with MariaDB 10.4 and above."
+  fi  
 fi
 
 #####################################################################
@@ -260,19 +261,19 @@ iocage exec "${JAIL_NAME}" service mysql-server start
 print_msg "Create and secure the WordPress database..."
 
 # Create the database.
-iocage exec "${JAIL_NAME}" mysql -u root -e "CREATE DATABASE wordpress;"
-iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
+iocage exec "${JAIL_NAME}" mysql -e "CREATE DATABASE wordpress;"
+iocage exec "${JAIL_NAME}" mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
 
 # Secure the database (equivalent of running /usr/local/bin/mysql_secure_installation)
 # Remove anonymous users
-iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
+iocage exec "${JAIL_NAME}" mysql -e "DELETE FROM mysql.user WHERE User='';"
 # Disallow remote root login
-iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+iocage exec "${JAIL_NAME}" mysql -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
 # Remove test database and access to it
-iocage exec "${JAIL_NAME}" mysql -u root -e "DROP DATABASE IF EXISTS test;"
-iocage exec "${JAIL_NAME}" mysql -u root -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
+iocage exec "${JAIL_NAME}" mysql -e "DROP DATABASE IF EXISTS test;"
+iocage exec "${JAIL_NAME}" mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
 # Reload privilege tables
-iocage exec "${JAIL_NAME}" mysql -u root -e "FLUSH PRIVILEGES;"
+iocage exec "${JAIL_NAME}" mysql -e "FLUSH PRIVILEGES;"
 
 #####################################################################
 print_msg "Configure WordPress..."
