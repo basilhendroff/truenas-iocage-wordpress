@@ -61,7 +61,6 @@ fi
 INCLUDES_PATH="${SCRIPTPATH}"/includes
 
 RELEASE=$(freebsd-version | sed "s/STABLE/RELEASE/g" | sed "s/-p[0-9]*//")
-#RELEASE="12.1-RELEASE"
 
 #####################################################################
 print_msg "Input/Config Sanity checks..."
