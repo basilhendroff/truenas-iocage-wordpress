@@ -252,11 +252,15 @@ iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
 iocage exec "${JAIL_NAME}" service mysql-server start
 
 #####################################################################
-print_msg "Create and secure the WordPress database..."
+print_msg "Create and secure the WordPress and phpMyAdmin databases..."
 
-# Create the database.
+# Create the WordPress database.
 iocage exec "${JAIL_NAME}" mysql -u root -e "CREATE DATABASE wordpress;"
 iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
+
+# Create the phpMyAdmin database.
+iocage exec "${JAIL_NAME}" mysql -u root -e "CREATE DATABASE phpmyadmin;"
+iocage exec "${JAIL_NAME}" mysql -u root -e "GRANT ALL PRIVILEGES ON phpmyadmin.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
 
 # Secure the database (equivalent of running /usr/local/bin/mysql_secure_installation)
 # Remove anonymous users
