@@ -335,5 +335,5 @@ print_msg "Installation complete!"
 iocage fstab -r "${JAIL_NAME}" "${INCLUDES_PATH}" /mnt/includes nullfs rw 0 0
 
 #cat /root/${JAIL_NAME}_db_password.txt
-print_msg "All passwords are saved in /root/${JAIL_NAME}_db_password.txt"
+print_msg "The WordPress database user password is saved in /root/${JAIL_NAME}_db_password.txt"
 print_msg "Continue with the post installation steps at https://github.com/basilhendroff/freenas-iocage-wordpress/blob/master/POST-INSTALL.md"
