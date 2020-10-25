@@ -258,7 +258,7 @@ iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
 iocage exec "${JAIL_NAME}" service mysql-server start
 
 #####################################################################
-print_msg "Create and secure the WordPress database..."
+print_msg "Create and secure the WordPress and phpMyAdmin databases..."
 
 # Create the database.
 iocage exec "${JAIL_NAME}" mysql -e "CREATE DATABASE wordpress;"
