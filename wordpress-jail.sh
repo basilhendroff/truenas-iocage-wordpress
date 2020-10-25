@@ -61,7 +61,6 @@ fi
 INCLUDES_PATH="${SCRIPTPATH}"/includes
 
 RELEASE=$(freebsd-version | sed "s/STABLE/RELEASE/g" | sed "s/-p[0-9]*//")
-#RELEASE="12.1-RELEASE"
 
 #####################################################################
 print_msg "Input/Config Sanity checks..."
@@ -156,7 +155,7 @@ cat <<__EOF__ >/tmp/pkg.json
   "php74-mysqli","php74-pecl-libsodium","php74-openssl","php74-pecl-imagick","php74-xml","php74-zip",
   "php74-filter","php74-gd","php74-iconv","php74-pecl-mcrypt","php74-simplexml","php74-xmlreader","php74-zlib",
   "php74-ftp","php74-pecl-ssh2","php74-sockets",
-  "mariadb103-server","unix2dos","ssmtp","phpmyadmin5-php74",
+  "mariadb104-server","unix2dos","ssmtp","phpmyadmin5-php74",
   "php74-xmlrpc","php74-ctype","php74-session","php74-xmlwriter",
   "redis","php74-pecl-redis"
   ]
@@ -242,11 +241,17 @@ iocage exec "${JAIL_NAME}" sed -i '' "s|;max_input_vars = 1000|max_input_vars = 
 iocage exec "${JAIL_NAME}" sed -i '' "s|max_input_time = 60|max_input_time = ${MAX_INPUT_TIME}|" /usr/local/etc/php.ini
 iocage exec "${JAIL_NAME}" sed -i '' "s|;date.timezone =|date.timezone = ${TIME_ZONE}|" /usr/local/etc/php.ini
 
+# MariaDB 10.4 requirement
+iocage exec "${JAIL_NAME}" sed -i '' "s|mysqli.default_socket =|mysqli.default_socket = /var/run/mysql/mysql.sock|" /usr/local/etc/php.ini
+
 iocage exec "${JAIL_NAME}" sysrc php_fpm_enable="YES"
 iocage exec "${JAIL_NAME}" service php-fpm start
 
 #####################################################################
 print_msg "Configure and start MariaDB..."
+
+# MariaDB 10.4 requirement
+iocage exec "${JAIL_NAME}" chown mysql:mysql /var/run/mysql
 
 iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
 iocage exec "${JAIL_NAME}" service mysql-server start
