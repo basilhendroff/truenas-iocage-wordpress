@@ -74,7 +74,7 @@ Having installation or post-installation issues? First things to check are `word
 
 You may find the logs below useful for troubleshooting. Assuming your jail is named `wordpress`, you can access these through a terminal using `iocage console wordpress`.
 1. The Caddy webserver log file `/var/log/caddy.log` and access log `/var/log/access.log`
-2. The MariaDB error log `/var/db/mysql/wordpress.err` (for the site `wordpress`)`
+2. The MariaDB error log `/var/db/mysql/wordpress.err` (for the site `wordpress`)
 3. The PHP-FPM log file at `/var/log/php-fpm.log`
 4. The Redis log file at `/var/log/redis/redis.log`
 5. The mail log at `/var/log/maillog`
