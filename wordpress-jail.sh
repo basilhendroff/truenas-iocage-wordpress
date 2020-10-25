@@ -264,6 +264,10 @@ print_msg "Create and secure the WordPress database..."
 iocage exec "${JAIL_NAME}" mysql -e "CREATE DATABASE wordpress;"
 iocage exec "${JAIL_NAME}" mysql -e "GRANT ALL PRIVILEGES ON wordpress.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
 
+# Create the phpMyAdmin database.
+iocage exec "${JAIL_NAME}" mysql -e "CREATE DATABASE phpmyadmin;"
+iocage exec "${JAIL_NAME}" mysql -e "GRANT ALL PRIVILEGES ON phpmyadmin.* TO wordpress@localhost IDENTIFIED BY '${DB_PASSWORD}';"
+
 # Secure the database (equivalent of running /usr/local/bin/mysql_secure_installation)
 # Remove anonymous users
 iocage exec "${JAIL_NAME}" mysql -e "DELETE FROM mysql.user WHERE User='';"
