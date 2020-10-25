@@ -54,7 +54,7 @@ For WordPress to use Redis, install and activate the Redis Object Cache plugin. 
 
 ### phpMyAdmin Considerations
 
-You can log in to phpMyAdmin, with your database `wordpress` username and password, using the jail FQDN instead of the jail IP e.g. `https://blog.mydomain.com/phpmyadmin`. Follow the signposts to store phpMyAdmin configuration data in the `phpmyadmin` databse.
+You can log in to phpMyAdmin, with your database `wordpress` username and password, using the jail FQDN instead of the jail IP e.g. `https://blog.mydomain.com/phpmyadmin`. Follow the signposts to store phpMyAdmin configuration data in the `phpmyadmin` database.
 
 **CAUTION**
 >SECURITY NOTE: phpMyAdmin is an administrative tool that has had several remote vulnerabilities discovered in the past, some allowing remote attackers to execute arbitrary code with the web server's user credential. All known problems have been fixed, but the FreeBSD Security Team strongly advises that any instance be protected with an additional protection layer, e.g. a different access control mechanism implemented by the web server as shown in the example.  Do consider enabling phpMyAdmin only when it is in use.
