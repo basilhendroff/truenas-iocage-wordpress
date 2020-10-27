@@ -139,7 +139,7 @@ else
   # Check for the existence of password variables
   . "/root/${JAIL_NAME}_db_password.txt"
   if [ -z "${DB_ROOT_PASSWORD}" ] || [ -z "${DB_PASSWORD}" ]; then
-    print_err "/root/${JAIL_NAME}_db_password.txt is corrupt."
+    print_err "/root/${JAIL_NAME}_db_password.txt is unusable."
     exit 1
   fi
 fi
