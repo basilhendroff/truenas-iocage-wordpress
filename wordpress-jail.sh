@@ -140,7 +140,7 @@ else
     exit 1
   fi
   if [ -n "${DB_ROOT_PASSWORD}" ]; then
-    print_err "Please remove DB_ROOT_PASSWORD from /root/${JAIL_NAME}_db_password.txt. It is redundant with MariaDB 10.4 and above."
+    print_err "If using the new authentication scheme in MariaDB 10.4 and above, the DB_ROOT_PASSWORD in /root/${JAIL_NAME}_db_password.txt becomes redundant."
   fi  
 fi
 
