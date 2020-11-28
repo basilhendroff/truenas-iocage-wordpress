@@ -305,6 +305,13 @@ iocage exec "${JAIL_NAME}" service redis start
 iocage exec "${JAIL_NAME}" pw usermod www -G redis
 
 #####################################################################
+print_msg "Install the command line tool WP-CLI..."
+
+iocage exec "${JAIL_NAME}" curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+iocage exec "${JAIL_NAME}" chmod +x wp-cli.phar
+iocage exec "${JAIL_NAME}" mv wp-cli.phar /usr/local/bin/wp
+
+#####################################################################
 print_msg "Configure sSMTP..."
 
 iocage exec "${JAIL_NAME}" pw useradd ssmtp -g nogroup -h - -s /sbin/nologin -d /nonexistent -c "sSMTP pseudo-user"
