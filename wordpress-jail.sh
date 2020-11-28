@@ -251,9 +251,6 @@ iocage exec "${JAIL_NAME}" service php-fpm start
 #####################################################################
 print_msg "Configure and start MariaDB..."
 
-# MariaDB 10.4 requirement
-iocage exec "${JAIL_NAME}" chown mysql:mysql /var/run/mysql
-
 iocage exec "${JAIL_NAME}" sysrc mysql_enable="YES"
 iocage exec "${JAIL_NAME}" service mysql-server start
 
