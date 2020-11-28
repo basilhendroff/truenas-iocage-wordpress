@@ -31,11 +31,11 @@ cat $infile | while IFS= read -r line; do
       done
       printf '%s\n' "$line" >> $outfile
       ;;
-    *'AUTH_KEY'*)
-      printf "define( 'AUTH_KEY',         '%s' );\n" "$(rand 64)" >> $outfile
-      ;;
     *'SECURE_AUTH_KEY'*)
-      printf "define( 'SECURE_AUTH_KEY',  '%s' );\n" "$(rand 64)" >> $outfile
+      printf "define( 'SECURE_AUTH_KEY',         '%s' );\n" "$(rand 64)" >> $outfile
+      ;;
+    *'AUTH_KEY'*)
+      printf "define( 'AUTH_KEY',  '%s' );\n" "$(rand 64)" >> $outfile
       ;;
     *'LOGGED_IN_KEY'*)
       printf "define( 'LOGGED_IN_KEY',    '%s' );\n" "$(rand 64)" >> $outfile
@@ -43,11 +43,11 @@ cat $infile | while IFS= read -r line; do
     *'NONCE_KEY'*)
       printf "define( 'NONCE_KEY',        '%s' );\n" "$(rand 64)" >> $outfile
       ;;
-    *'AUTH_SALT'*)
-      printf "define( 'AUTH_SALT',        '%s' );\n" "$(rand 64)" >> $outfile
-      ;;
     *'SECURE_AUTH_SALT'*)
-      printf "define( 'SECURE_AUTH_SALT', '%s' );\n" "$(rand 64)" >> $outfile
+      printf "define( 'SECURE_AUTH_SALT',        '%s' );\n" "$(rand 64)" >> $outfile
+      ;;
+    *'AUTH_SALT'*)
+      printf "define( 'AUTH_SALT', '%s' );\n" "$(rand 64)" >> $outfile
       ;;
     *'LOGGED_IN_SALT'*)
       printf "define( 'LOGGED_IN_SALT',   '%s' );\n" "$(rand 64)" >> $outfile
