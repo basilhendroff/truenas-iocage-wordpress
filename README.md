@@ -1,5 +1,5 @@
 # truenas-iocage-wordpress
-Script to create an iocage jail on TrueNAS for the latest WordPress release, including MariaDB, the PHP scripting language, Caddy, Redis, the command line tool WP-CLI and phpMyAdmin.
+Script to create an iocage jail on TrueNAS for the latest WordPress release, including MariaDB, the PHP scripting language, Caddy, Redis, phpMyAdmin, and the command line tool WP-CLI.
 
 This script will create an iocage jail with the latest release of WordPress, along with its dependencies. It will configure the jail to store the database and WordPress data outside the jail, where it can be better managed.
 
