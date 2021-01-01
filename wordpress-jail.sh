@@ -36,9 +36,7 @@ VNET="on"
 POOL_PATH=""
 JAIL_NAME="wordpress"
 TIME_ZONE=""
-HOST_NAME=""
-DB_PATH=""
-FILES_PATH=""
+WP_ROOT="/apps/wordpress"
 CONFIG_NAME="wordpress-config"
 
 # Exposed configuration parameters
@@ -87,25 +85,8 @@ if [ -z "${TIME_ZONE}" ]; then
   exit 1
 fi
 
-# If DB_PATH and FILES_PATH weren't set in wordpress-config, set them
-if [ -z "${DB_PATH}" ]; then
-  DB_PATH="${POOL_PATH}"/apps/wordpress/db
-fi
-if [ -z "${FILES_PATH}" ]; then
-  FILES_PATH="${POOL_PATH}"/apps/wordpress/files
-fi
-
-# Sanity check DB_PATH and FILES_PATH -- they have to be different and can't be the same as POOL_PATH
-if [ "${FILES_PATH}" = "${DB_PATH}" ]
-then
-  print_err "FILES_PATH and DB_PATH must be different!"
-  exit 1
-fi
-if [ "${DB_PATH}" = "${POOL_PATH}" ] || [ "${FILES_PATH}" = "${POOL_PATH}" ]
-then
-  print_err "DB_PATH and FILES_PATH must all be different from POOL_PATH!"
-  exit 1
-fi
+DB_PATH=${POOL_PATH}${WP_ROOT%/}/db
+FILES_PATH=${POOL_PATH}${WP_ROOT%/}/files
 
 # Extract IP and netmask, sanity check netmask
 IP=$(echo ${JAIL_IP} | cut -f1 -d/)
@@ -189,8 +170,10 @@ iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" /mnt/includes nullfs rw 0 0
 #####################################################################
 print_msg "Caddy download..."
 
-FILE="caddy_2.2.1_freebsd_amd64.tar.gz"
-if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://github.com/caddyserver/caddy/releases/download/v2.2.1/"${FILE}"
+CADDY_VERSION="2.3.0"
+
+FILE="caddy_${CADDY_VERSION}_freebsd_amd64.tar.gz"
+if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://github.com/caddyserver/caddy/releases/download/v"${CADDY_VERSION}"/"${FILE}"
 then
   print_err "Failed to download Caddy"
   exit 1
