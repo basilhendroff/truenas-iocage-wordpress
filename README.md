@@ -22,9 +22,9 @@ If you use either resource, please refer any reverse proxy questions you may hav
 ### Prerequisites (Other)
 Although not required, it's recommended to create a Dataset named `apps` with a sub-dataset named `wordpress` on your main storage pool and nested sub-datasets `files` and `db`.  Many other jail guides also store their configuration and data in subdirectories of `pool/apps/` 
 
-For optimal performance, set the record size of the `db` dataset to 16 KB (under Advanced Settings in the TrueNAS web GUI).  It's also recommended to cache only metadata on the `db` dataset; you can do this by running `zfs set primarycache=metadata poolname/apps/wordpress/db`. 
+For optimal performance, set the record size of the `db` dataset to 16 KB (under Advanced Settings in the TrueNAS web GUI).  It's also recommended to cache only metadata on the `db` dataset; you can do this by running `zfs set primarycache=metadata zfs/path/to/db` e.g. `zfs set primarycache=metadata tank/apps/wordpress/db`.  
 
-If these datasets are not present, directories `/apps/wordpress/files` and `/apps/wordpress/db` will be created in `$POOL_PATH`.
+If these datasets are not present, sub-directories `files` and `db` will be created in `$POOL_PATH` under `WP_ROOT`.
 
 ### Installation
 Download the repository to a convenient directory on your TrueNAS system by changing to that directory and running `git clone https://github.com/basilhendroff/truenas-iocage-wordpress`.  Then change into the new `truenas-iocage-wordpress` directory and create a file called `wordpress-config` with your favorite text editor.  In its minimal form, it would look something like this:
@@ -33,7 +33,7 @@ JAIL_IP="192.168.1.4"
 DEFAULT_GW_IP="192.168.1.1"
 TIME_ZONE="Australia/Perth"
 ```
-Many of the options are self-explanatory, and all should be adjusted to suit your needs, but only a few are mandatory.  The mandatory options are:
+Many of the options are self-explanatory, and all can be adjusted to suit your needs, but only a few are mandatory.  The mandatory options are:
 
 * JAIL_IP is the IP address for your jail.  You can optionally add the netmask in CIDR notation (e.g., 192.168.1.199/24).  If not specified, the netmask defaults to 24 bits.  Values of less than 8 bits or more than 30 bits are invalid.
 * DEFAULT_GW_IP is the address for your default gateway
@@ -43,8 +43,7 @@ In addition, there are some other options which have sensible defaults, but can 
 
 - JAIL_NAME: The name of the jail, defaults to `wordpress`.
 - POOL_PATH: The path for your data pool. It is set automatically if left blank.
-- FILES_PATH: WordPress site data is stored in this path; defaults to `$POOL_PATH/apps/wordpress/files`.
-- DB_PATH: MariaDB database files are stored in this path; defaults to `$POOL_PATH/apps/wordpress/db`.
+- WP_ROOT: The WordPress root, defaults to `/apps/wordpress'. WordPress data is stored under the root in sub-directories `files` and `db`
 - INTERFACE: The network interface to use for the jail. Defaults to `vnet0`.
 - VNET: Whether to use the iocage virtual network stack. Defaults to `on`.
 
@@ -54,8 +53,7 @@ JAIL_IP="192.168.1.4"
 DEFAULT_GW_IP="192.168.1.1"
 TIME_ZONE="Australia/Perth"
 JAIL_NAME="site1"
-FILES_PATH="/mnt/tank/apps/wordpress/site1/files"
-DB_PATH="/mnt/tank/apps/wordpress/site1/db"
+WP_ROOT="/apps/wordpress/site1"
 ```
 
 ### Execution
