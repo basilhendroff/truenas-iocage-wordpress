@@ -43,7 +43,7 @@ In addition, there are some other options which have sensible defaults, but can 
 
 - JAIL_NAME: The name of the jail, defaults to `wordpress`.
 - POOL_PATH: The path for your data pool. It is set automatically if left blank.
-- WP_ROOT: The WordPress root, defaults to `/apps/wordpress'. WordPress data is stored under the root in sub-directories `files` and `db`
+- WP_ROOT: The WordPress root, defaults to `/apps/wordpress`. WordPress data is stored under the root in sub-directories `files` and `db`.
 - INTERFACE: The network interface to use for the jail. Defaults to `vnet0`.
 - VNET: Whether to use the iocage virtual network stack. Defaults to `on`.
 
