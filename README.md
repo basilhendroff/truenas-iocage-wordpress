@@ -24,7 +24,7 @@ Although not required, it's recommended to create a Dataset named `apps` with a 
 
 For optimal performance, set the record size of the `db` dataset to 16 KB (under Advanced Settings in the TrueNAS web GUI).  It's also recommended to cache only metadata on the `db` dataset; you can do this by running `zfs set primarycache=metadata zfs/path/to/db` e.g. `zfs set primarycache=metadata tank/apps/wordpress/db`.  
 
-If these datasets are not present, sub-directories `files` and `db` will be created in `$POOL_PATH` under `WP_ROOT`.
+If these datasets are not present, sub-directories `files` and `db` will be created in `$POOL_PATH` under `$WP_ROOT`.
 
 ### Installation
 Download the repository to a convenient directory on your TrueNAS system by changing to that directory and running `git clone https://github.com/basilhendroff/truenas-iocage-wordpress`.  Then change into the new `truenas-iocage-wordpress` directory and create a file called `wordpress-config` with your favorite text editor.  In its minimal form, it would look something like this:
