@@ -190,7 +190,7 @@ iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" /mnt/includes nullfs rw 0 0
 print_msg "Caddy download..."
 
 FILE="caddy_2.2.1_freebsd_amd64.tar.gz"
-if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://github.com/caddyserver/caddy/releases/latest/download/"${FILE}"
+if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://github.com/caddyserver/caddy/releases/download/v2.2.1/"${FILE}"
 then
   print_err "Failed to download Caddy"
   exit 1
