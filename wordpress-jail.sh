@@ -36,9 +36,7 @@ VNET="on"
 POOL_PATH=""
 JAIL_NAME="wordpress"
 TIME_ZONE=""
-HOST_NAME=""
-DB_PATH=""
-FILES_PATH=""
+WP_ROOT="/apps/wordpress"
 CONFIG_NAME="wordpress-config"
 
 # Exposed configuration parameters
@@ -87,25 +85,8 @@ if [ -z "${TIME_ZONE}" ]; then
   exit 1
 fi
 
-# If DB_PATH and FILES_PATH weren't set in wordpress-config, set them
-if [ -z "${DB_PATH}" ]; then
-  DB_PATH="${POOL_PATH}"/apps/wordpress/db
-fi
-if [ -z "${FILES_PATH}" ]; then
-  FILES_PATH="${POOL_PATH}"/apps/wordpress/files
-fi
-
-# Sanity check DB_PATH and FILES_PATH -- they have to be different and can't be the same as POOL_PATH
-if [ "${FILES_PATH}" = "${DB_PATH}" ]
-then
-  print_err "FILES_PATH and DB_PATH must be different!"
-  exit 1
-fi
-if [ "${DB_PATH}" = "${POOL_PATH}" ] || [ "${FILES_PATH}" = "${POOL_PATH}" ]
-then
-  print_err "DB_PATH and FILES_PATH must all be different from POOL_PATH!"
-  exit 1
-fi
+DB_PATH=${POOL_PATH}${WP_ROOT%/}/db
+FILES_PATH=${POOL_PATH}${WP_ROOT%/}/files
 
 # Extract IP and netmask, sanity check netmask
 IP=$(echo ${JAIL_IP} | cut -f1 -d/)
