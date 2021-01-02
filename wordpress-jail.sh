@@ -86,7 +86,7 @@ if [ -z "${TIME_ZONE}" ]; then
 fi
 
 if [ -n "${FILES_PATH}" ] || [ -n "${DB_PATH}" ]; then
-  print_err 'Configuration error: WP_ROOT replaces FILES_PATH and DB_PATH in newer script versions. Update "${CONFIG_NAME}" and run the script again.'
+  print_err "Configuration error: WP_ROOT replaces FILES_PATH and DB_PATH in newer script versions. Update ${CONFIG_NAME} and run the script again."
   exit 1
 fi
 
