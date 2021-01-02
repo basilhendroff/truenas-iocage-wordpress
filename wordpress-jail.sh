@@ -106,9 +106,9 @@ then
 fi
 
 # Check that this is a new installation 
-if [ "$(ls -A "${FILES_PATH}")" ] || [ "$(ls -A "${DB_PATH}")" ]
+if [ -e "${POOL_PATH}${WP_ROOT}" ]
 then
-  print_err "This script only works for new installations. The script cannot proceed if FILES_PATH and DB_PATH are not both empty."
+  print_err "This script only works for new installations. The script cannot proceed if WP_ROOT exists."
   exit 1
 fi
 
