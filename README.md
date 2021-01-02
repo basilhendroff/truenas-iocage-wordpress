@@ -55,6 +55,17 @@ TIME_ZONE="Australia/Perth"
 JAIL_NAME="site1"
 WP_ROOT="/apps/wordpress/site1"
 ```
+Several `php.ini` configuration parameters have been set to sensible values and 'hard-coded' into the script. You will find these in the initialisation section at the beginning of the script. If you  wish, these can be modified prior to running the script.
+
+```
+# php.ini
+UPLOAD_MAX_FILESIZE="32M"	# default=2M
+POST_MAX_SIZE="48M"		# default=8M
+MEMORY_LIMIT="256M"		# default=128M
+MAX_EXECUTION_TIME=600		# default=30 seconds
+MAX_INPUT_VARS=3000		# default=1000
+MAX_INPUT_TIME=1000		# default=60 seconds
+```
 
 ### Execution
 Once you've downloaded the script and prepared the configuration file, run this script `script wordpress.log ./wordpress-jail.sh`.  The script will run for several minutes.  When it finishes, your jail will be created, and WordPress will be installed with all its dependencies. Next, complete the post-installation tasks. 
