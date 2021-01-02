@@ -55,7 +55,7 @@ TIME_ZONE="Australia/Perth"
 JAIL_NAME="site1"
 WP_ROOT="/apps/wordpress/site1"
 ```
-Several `php.ini` parameters have been set to sensible values and 'hard-coded' into the script. You will find these at the beginning of the script. If you  wish, these can be modified prior to running the script.
+Several `php.ini` configuration parameters have been set to sensible values and 'hard-coded' into the script. You will find these in the initialisation section at the beginning of the script. If you  wish, these can be modified prior to running the script.
 
 ```
 # php.ini
