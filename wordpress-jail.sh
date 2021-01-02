@@ -89,9 +89,15 @@ if [ -n "${FILES_PATH}" ] || [ -n "${DB_PATH}" ]; then
   print_err "Configuration error: WP_ROOT replaces FILES_PATH and DB_PATH in newer script versions. Update ${CONFIG_NAME} and run the script again."
   exit 1
 fi
-
-DB_PATH=${POOL_PATH}${WP_ROOT%/}/db
-FILES_PATH=${POOL_PATH}${WP_ROOT%/}/files
+if [ ${WP_ROOT:0:1} != "/" ]; then
+  WP_ROOT="/${WP_ROOT%/}"
+fi
+# Check that this is a new installation 
+if [ -e "${POOL_PATH}${WP_ROOT}" ]
+then
+  print_err "This script only works for new installations. The script cannot proceed if WP_ROOT exists."
+  exit 1
+fi
 
 # Extract IP and netmask, sanity check netmask
 IP=$(echo ${JAIL_IP} | cut -f1 -d/)
@@ -103,13 +109,6 @@ fi
 if [ "${NETMASK}" -lt 8 ] || [ "${NETMASK}" -gt 30 ]
 then
   NETMASK="24"
-fi
-
-# Check that this is a new installation 
-if [ -e "${POOL_PATH}${WP_ROOT}" ]
-then
-  print_err "This script only works for new installations. The script cannot proceed if WP_ROOT exists."
-  exit 1
 fi
 
 # Reuse the password file if it exists and is valid
@@ -159,6 +158,9 @@ rm /tmp/pkg.json
 
 #####################################################################
 print_msg "Directory Creation and Mounting..."
+
+DB_PATH=${POOL_PATH}${WP_ROOT}/db
+FILES_PATH=${POOL_PATH}${WP_ROOT}/files
 
 mkdir -p "${DB_PATH}"
 chown -R 88:88 "${DB_PATH}"
