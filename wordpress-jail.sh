@@ -90,8 +90,10 @@ if [ -n "${FILES_PATH}" ] || [ -n "${DB_PATH}" ]; then
   exit 1
 fi
 if [ ${WP_ROOT:0:1} != "/" ]; then
-  WP_ROOT="/${WP_ROOT%/}"
+  WP_ROOT="/${WP_ROOT}"
 fi
+WP_ROOT="${WP_ROOT%/}"
+
 # Check that this is a new installation 
 if [ -e "${POOL_PATH}${WP_ROOT}" ]
 then
