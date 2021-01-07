@@ -22,7 +22,7 @@ If you use either resource, please refer any reverse proxy questions you may hav
 ### Prerequisites (Other)
 Although not required, it's recommended to create a Dataset named `apps` with a sub-dataset named `wordpress` on your main storage pool and nested sub-datasets `files` and `db`.  Many other jail guides also store their configuration and data in subdirectories of `pool/apps/` 
 
-For optimal performance, set the record size of the `db` dataset to 16 KB (under Advanced Settings in the TrueNAS web GUI).  It's also recommended to cache only metadata on the `db` dataset; you can do this by running `zfs set primarycache=metadata zfs/path/to/db` e.g. `zfs set primarycache=metadata tank/apps/wordpress/db`.  
+For optimal performance, set the record size of the `db` dataset to 16 KB (under Advanced Settings in the TrueNAS web GUI).  It's also recommended to cache only metadata on the `db` dataset; you can do this by running `zfs set primarycache=metadata path/from/poolname/to/db` e.g. `zfs set primarycache=metadata tank/apps/wordpress/db`.  
 
 If these datasets are not present, sub-directories `files` and `db` will be created in `$POOL_PATH` under `$WP_ROOT`.
 
@@ -42,8 +42,8 @@ Many of the options are self-explanatory, and all can be adjusted to suit your n
 In addition, there are some other options which have sensible defaults, but can be adjusted if needed. These are:
 
 - JAIL_NAME: The name of the jail, defaults to `wordpress`.
-- POOL_PATH: The path for your data pool. It is set automatically if left blank.
-- WP_ROOT: The WordPress root, defaults to `/apps/wordpress`. WordPress data is stored under the root in sub-directories `files` and `db`.
+- POOL_PATH: The path for your data pool. It is set automatically if left blank e.g. `/mnt/tank`.
+- WP_ROOT: The WordPress root under $POOL_PATH, defaults to `/apps/wordpress`. WordPress data is stored under the root in sub-directories `files` and `db`.
 - INTERFACE: The network interface to use for the jail. Defaults to `vnet0`.
 - VNET: Whether to use the iocage virtual network stack. Defaults to `on`.
 
