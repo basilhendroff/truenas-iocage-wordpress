@@ -94,10 +94,13 @@ if [ ${WP_ROOT:0:1} != "/" ]; then
 fi
 WP_ROOT="${WP_ROOT%/}"
 
-# Check that this is a new installation 
-if [ -e "${POOL_PATH}${WP_ROOT}" ]
+DB_PATH=${POOL_PATH}${WP_ROOT}/db
+FILES_PATH=${POOL_PATH}${WP_ROOT}/files
+
+# Check that this is a new installation
+if [ "$(ls -A "${FILES_PATH}")" ] || [ "$(ls -A "${DB_PATH}")" ]
 then
-  print_err "This script only works for new installations. The script cannot proceed if WP_ROOT exists."
+  print_err "This script only works for new installations. The script cannot proceed if ${FILES_PATH} and ${DB_PATH} are not both empty."
   exit 1
 fi
 
@@ -160,9 +163,6 @@ rm /tmp/pkg.json
 
 #####################################################################
 print_msg "Directory Creation and Mounting..."
-
-DB_PATH=${POOL_PATH}${WP_ROOT}/db
-FILES_PATH=${POOL_PATH}${WP_ROOT}/files
 
 mkdir -p "${DB_PATH}"
 chown -R 88:88 "${DB_PATH}"
