@@ -17,6 +17,7 @@
   @forbidden {
     path /wp-content/uploads/*.php
     path /wp-includes/*.php
+    path /wp-config.php
     path /.user.ini
     path /wp-content/debug.log
   }
