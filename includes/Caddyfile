@@ -16,6 +16,7 @@
   # External access denied to these files.
   @forbidden {
     path /wp-content/uploads/*.php
+    path /wp-includes/*.php
     path /.user.ini
     path /wp-content/debug.log
   }
