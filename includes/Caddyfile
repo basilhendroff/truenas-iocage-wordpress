@@ -1,6 +1,14 @@
+#{
+#  log {
+#    format json {
+#      time_format iso8601
+#    }
+#  }
+#}
+#
 :80 {
   root * /usr/local/www/wordpress
-  encode gzip
+  encode gzip zstd
   php_fastcgi 127.0.0.1:9000 {
     env SERVER_PORT 80
   }

@@ -148,7 +148,7 @@ cat <<__EOF__ >/tmp/pkg.json
   "php74-ftp","php74-pecl-ssh2","php74-sockets",
   "mariadb105-server","unix2dos","ssmtp","phpmyadmin5-php74",
   "php74-xmlrpc","php74-ctype","php74-session","php74-xmlwriter",
-  "redis","php74-pecl-redis","php74-phar"
+  "redis","php74-pecl-redis","php74-phar","caddy"
   ]
 }
 __EOF__
@@ -175,24 +175,6 @@ iocage fstab -a "${JAIL_NAME}" "${FILES_PATH}"  /usr/local/www/wordpress  nullfs
 
 iocage exec "${JAIL_NAME}" mkdir -p /mnt/includes
 iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" /mnt/includes nullfs rw 0 0
-
-#####################################################################
-print_msg "Caddy download..."
-
-CADDY_VERSION="2.4.1"
-
-FILE="caddy_${CADDY_VERSION}_freebsd_amd64.tar.gz"
-if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://github.com/caddyserver/caddy/releases/download/v"${CADDY_VERSION}"/"${FILE}"
-then
-  print_err "Failed to download Caddy"
-  exit 1
-fi
-if ! iocage exec "${JAIL_NAME}" tar xzf /tmp/"${FILE}" -C /usr/local/bin/
-then
-  print_err "Failed to extract Caddy"
-  exit 1
-fi
-iocage exec "${JAIL_NAME}" rm /tmp/"${FILE}"
 
 #####################################################################
 print_msg "Wordpress download..."  
@@ -321,10 +303,11 @@ print_msg "Configure and start Caddy..."
 
 # Copy and edit pre-written config files
 iocage exec "${JAIL_NAME}" cp -f /mnt/includes/Caddyfile /usr/local/www
-iocage exec "${JAIL_NAME}" cp -f /mnt/includes/caddy /usr/local/etc/rc.d/
+iocage exec "${JAIL_NAME}" sed -i '' "s|configtest|validate|" /usr/local/etc/rc.d/caddy
 
 iocage exec "${JAIL_NAME}" sysrc caddy_enable="YES"
 iocage exec "${JAIL_NAME}" sysrc caddy_config="/usr/local/www/Caddyfile"
+iocage exec "${JAIL_NAME}" sysrc caddy_logdir="/var/log"
 
 iocage exec "${JAIL_NAME}" service caddy start
 
