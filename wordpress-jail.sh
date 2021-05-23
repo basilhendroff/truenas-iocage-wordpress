@@ -179,7 +179,7 @@ iocage fstab -a "${JAIL_NAME}" "${INCLUDES_PATH}" /mnt/includes nullfs rw 0 0
 #####################################################################
 print_msg "Caddy download..."
 
-CADDY_VERSION="2.3.0"
+CADDY_VERSION="2.4.1"
 
 FILE="caddy_${CADDY_VERSION}_freebsd_amd64.tar.gz"
 if ! iocage exec "${JAIL_NAME}" fetch -o /tmp https://github.com/caddyserver/caddy/releases/download/v"${CADDY_VERSION}"/"${FILE}"
