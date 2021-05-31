@@ -16,7 +16,7 @@
   
   log {
     format json
-    output file /var/log/access.log {
+    output file /var/log/caddy/access.log {
       roll_keep 7
     }
   }
