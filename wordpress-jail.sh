@@ -303,11 +303,9 @@ print_msg "Configure and start Caddy..."
 
 # Copy and edit pre-written config files
 iocage exec "${JAIL_NAME}" cp -f /mnt/includes/Caddyfile /usr/local/www
-# iocage exec "${JAIL_NAME}" sed -i '' "s|configtest|validate|" /usr/local/etc/rc.d/caddy
  
 iocage exec "${JAIL_NAME}" sysrc caddy_enable="YES"
 iocage exec "${JAIL_NAME}" sysrc caddy_config="/usr/local/www/Caddyfile"
-iocage exec "${JAIL_NAME}" sysrc caddy_logdir="/var/log"
 
 iocage exec "${JAIL_NAME}" service caddy start
 
