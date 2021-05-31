@@ -82,7 +82,7 @@ Questions or issues about this resource can be raised in [this forum thread](htt
 Having installation or post-installation issues? First things to check are `wordpress.log` and `wordpress-config`. You may be asked to provide these if requesting assistance in the discussion area. 
 
 You may find the logs below useful for troubleshooting. Assuming your jail is named `wordpress`, you can access these through a terminal using `iocage console wordpress`.
-1. The Caddy webserver log file `/var/log/caddy.log` and access log `/var/log/access.log`
+1. The Caddy webserver process log `/var/log/caddy/caddy.log` and access log `/var/log/caddy/access.log`
 2. The MariaDB error log `/var/log/mysql/sqld.err`
 3. The PHP-FPM log file at `/var/log/php-fpm.log`
 4. The Redis log file at `/var/log/redis/redis.log`
