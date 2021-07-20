@@ -93,7 +93,7 @@ if [ ${WP_ROOT:0:1} != "/" ]; then
   WP_ROOT="/${WP_ROOT}"
 fi
 WP_ROOT="${WP_ROOT%/}"
-
+mkdir -p "${POOL_PATH}${WP_ROOT}"
 DB_PATH=${POOL_PATH}${WP_ROOT}/db
 FILES_PATH=${POOL_PATH}${WP_ROOT}/files
 
@@ -134,7 +134,7 @@ ls else
   if [ -n "${DB_ROOT_PASSWORD}" ]; then
     print_err "If using the new authentication scheme in MariaDB 10.4 and above, the DB_ROOT_PASSWORD in /root/${JAIL_NAME}_db_password.txt becomes redundant."
   fi  
-  # Backup the password file to WP_ROOT
+# Backup the password file to WP_ROOT
   cp /root/${JAIL_NAME}_db_password.txt ${POOL_PATH}${WP_ROOT}
 fi
 
