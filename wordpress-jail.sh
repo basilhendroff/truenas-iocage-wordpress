@@ -122,9 +122,9 @@ if ! [ -e "/root/${JAIL_NAME}_db_password.txt" ]; then
 
   # Save passwords for later reference
   echo 'DB_PASSWORD="'${DB_PASSWORD}'" # user=wordpress' > /root/${JAIL_NAME}_db_password.txt
-  # Backup this file into WP_ROOT
-  cp /root/${JAIL_NAME}_db_password.txt ${POOL_PATH}${WP_ROOT}
-else
+
+
+ls else
   # Check for the existence of password variables
   . "/root/${JAIL_NAME}_db_password.txt"
   if [ -z "${DB_PASSWORD}" ]; then
@@ -133,9 +133,9 @@ else
   fi
   if [ -n "${DB_ROOT_PASSWORD}" ]; then
     print_err "If using the new authentication scheme in MariaDB 10.4 and above, the DB_ROOT_PASSWORD in /root/${JAIL_NAME}_db_password.txt becomes redundant."
-    # Backup this file into WP_ROOT
-    cp /root/${JAIL_NAME}_db_password.txt ${POOL_PATH}${WP_ROOT}
   fi  
+  # Backup the password file to WP_ROOT
+  cp /root/${JAIL_NAME}_db_password.txt ${POOL_PATH}${WP_ROOT}
 fi
 
 #####################################################################
