@@ -143,9 +143,6 @@ print_msg "Jail Creation. Time for a cuppa. Installing packages will take a whil
 # List packages to be auto-installed after jail creation
 
 cat <<__EOF__ >/tmp/pkg.json
-	{# Backup the password file to WP_ROOT
-
-cp /root/${JAIL_NAME}_db_password.txt ${POOL_PATH}${WP_ROOT}
   "pkgs":[
   "php74","php74-curl","php74-dom","php74-exif","php74-fileinfo","php74-json","php74-mbstring",
   "php74-mysqli","php74-pecl-libsodium","php74-openssl","php74-pecl-imagick","php74-xml","php74-zip",
