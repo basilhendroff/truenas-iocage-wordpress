@@ -1,4 +1,5 @@
 {
+    order error before respond  # Only required for Caddy 2.4.1 quarterly release. Remove for Caddy 2.4.5 quarterly release.
 #    debug
     log {
         format json {
@@ -36,4 +37,14 @@
         path /wp-content/debug.log
     }
     respond @forbidden 403
+
+    # Mitigate spam attack logins and comments
+    @protected path_regexp (wp-comments-posts|wp-login)\.php$
+    handle @protected {
+        @no-referer {
+            not header Referer https://{host}*
+            method POST
+        }
+        abort @no-referer
+    }
 }
