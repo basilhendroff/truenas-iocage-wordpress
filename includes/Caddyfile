@@ -1,5 +1,5 @@
 {
-    order error before respond  # Only required for Caddy 2.4.1 quarterly release. Remove for Caddy 2.4.5 quarterly release.
+    order error before respond  # Only required for the Caddy 2.4.1 quarterly release. Remove for Caddy 2.4.5 quarterly release.
 #    debug
     log {
         format json {
