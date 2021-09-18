@@ -1,36 +1,39 @@
 {
-#  debug
-  log {
-    format json {
-      time_format iso8601
+#    debug
+    log {
+        format json {
+            time_format iso8601
+        }
     }
-  }
 }
 
 :80 {
-  encode gzip zstd
-  log {
-    format json {
-      time_format iso8601
+    log {
+        format json {
+            time_format iso8601
+        }
+        output file /var/log/caddy/access.log {
+            roll_keep 7
+        }
     }
-    output file /var/log/caddy/access.log {
-      roll_keep 7
-    }
-  }
   
-  root * /usr/local/www/wordpress
-  php_fastcgi 127.0.0.1:9000 {
-    env SERVER_PORT 80
-  }
-  file_server
+    root * /usr/local/www/wordpress
+    encode gzip zstd
+    php_fastcgi 127.0.0.1:9000 {
+        env SERVER_PORT 80
+    }
+    file_server
 
-# External access denied to these files.
-  @forbidden {
-    path /wp-content/uploads/*.php
-    path /wp-includes/*.php
-    path /wp-config.php
-    path /.user.ini
-    path /wp-content/debug.log
-  }
-  respond @forbidden 404
+    # External access denied to these files.
+    @forbidden {
+        not path /wp-includes/ms-files.php
+        path /wp-admin/includes*
+        path /wp-includes*
+        path /wp-config.php
+
+        path /wp-content/uploads/*.php
+        path /.user.ini
+        path /wp-content/debug.log
+    }
+    respond @forbidden 403
 }
