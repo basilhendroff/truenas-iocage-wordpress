@@ -22,6 +22,7 @@
     encode gzip zstd
     php_fastcgi 127.0.0.1:9000 {
         env SERVER_PORT 80
+        trusted_proxies private_ranges
     }
     file_server
 
